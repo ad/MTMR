@@ -44,6 +44,7 @@ class WeatherBarItem: CustomButtonTouchBarItem, CLLocationManagerDelegate {
         
         super.init(identifier: identifier, title: "⏳", onTap: onTap, onLongTap: onLongTap)
 
+        button.bezelColor = .clear
         self.view = button
         
         let status = CLLocationManager.authorizationStatus()

@@ -20,6 +20,7 @@ class InputSourceBarItem: CustomButtonTouchBarItem {
         observeIputSourceChangedNotification();
         textInputSourceDidChange()
 
+        self.button.bezelColor = .clear
         self.button.cell?.action = #selector(switchInputSource)
         self.button.action = #selector(switchInputSource)
         
