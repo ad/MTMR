@@ -67,7 +67,7 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
 
         createAndUpdatePreset()
     }
-    
+
     func createAndUpdatePreset(jsonItems: [BarItemDefinition]? = nil) {
         if let oldBar = self.touchBar {
             NSTouchBar.minimizeSystemModalFunctionBar(oldBar)
@@ -79,26 +79,26 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
         self.leftIdentifiers = []
         self.centerItems = []
         self.rightIdentifiers = []
-        
+
         if (jsonItems == nil) {
             jsonItems = readConfig()
         }
         loadItemDefinitions(jsonItems: jsonItems!)
         createItems()
-        
+
         centerItems = centerIdentifiers.compactMap({ (identifier) -> NSTouchBarItem? in
             return items[identifier]
         })
-        
+
         self.centerScrollArea = NSTouchBarItem.Identifier("com.toxblh.mtmr.scrollArea.".appending(UUID().uuidString))
         self.scrollArea = ScrollViewItem(identifier: centerScrollArea, items: centerItems)
-        
+
         touchBar.delegate = self
         touchBar.defaultItemIdentifiers = []
         touchBar.defaultItemIdentifiers = self.leftIdentifiers + [centerScrollArea] + self.rightIdentifiers
         self.presentTouchBar()
     }
-    
+
     func readConfig() -> [BarItemDefinition]?  {
         let appSupportDirectory = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first!.appending("/MTMR")
         let presetPath = appSupportDirectory.appending("/items.json")
@@ -107,12 +107,12 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
             try? FileManager.default.createDirectory(atPath: appSupportDirectory, withIntermediateDirectories: true, attributes: nil)
             try? FileManager.default.copyItem(atPath: defaultPreset, toPath: presetPath)
         }
-        
+
         let jsonData = presetPath.fileData
-        
+
         return jsonData?.barItemDefinitions() ?? [BarItemDefinition(type: .staticButton(title: "bad preset"))]
     }
-    
+
     func loadItemDefinitions(jsonItems: [BarItemDefinition]) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH-mm-ss"
@@ -132,13 +132,13 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
             }
         }
     }
-    
+
     func createItems() {
         for (identifier, definition) in self.itemDefinitions {
             self.items[identifier] = self.createItem(forIdentifier: identifier, definition: definition)
         }
     }
-    
+
     @objc func setupControlStripPresence() {
         DFRSystemModalShowsCloseBoxWhenFrontMost(false)
         let item = NSCustomTouchBarItem(identifier: .controlStripItem)
@@ -171,12 +171,12 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
         }
         return item
     }
-    
+
     func createItem(forIdentifier identifier: NSTouchBarItem.Identifier, definition item: BarItemDefinition) -> NSTouchBarItem? {
         var action = self.action(forItem: item)
         let longTapAction = self.longTapAction(forItem: item)
         let tapAction = self.tapAction(forItem: item)
-        
+
         if item.action == .none {
             action = tapAction
         }
@@ -212,23 +212,35 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
         case .inputsource():
             barItem = InputSourceBarItem(identifier: identifier, onLongTap: longTapAction)
         }
-        
+
         if case .width(let value)? = item.additionalParameters[.width], let widthBarItem = barItem as? CanSetWidth {
             widthBarItem.setWidth(value: value)
         }
+        if case .bordered(let bordered)? = item.additionalParameters[.bordered], let item = barItem as? CustomButtonTouchBarItem {
+            item.button.isBordered = bordered
+            item.button.bezelStyle = bordered ? .rounded : .inline
+        }
         if case .background(let color)? = item.additionalParameters[.background], let item = barItem as? CustomButtonTouchBarItem {
-            let button = item.button!
-            if button.bezelColor == nil {
-                button.bezelColor = color
+            if item.button.cell?.isBordered == false {
+                let newCell = NSButtonCell()
+                newCell.title = item.button.title
+                item.button.cell = newCell
+                item.button.cell?.isBordered = true
             }
+            item.button.bezelColor = color
+            (item.button.cell as? NSButtonCell)?.backgroundColor = color
         }
         if case .image(let source)? = item.additionalParameters[.image], let item = barItem as? CustomButtonTouchBarItem {
             let button = item.button!
             button.imageScaling = .scaleProportionallyDown
             button.imagePosition = .imageLeading
+
+            if (button.title == "") {
+                button.imagePosition = .imageOnly
+            }
+
             button.imageHugsTitle = true
-            button.cell?.image = source.image
-            button.bezelColor = .clear
+            button.image = source.image
         }
         return barItem
     }
@@ -274,8 +286,8 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
             return {}
         }
     }
-    
-    
+
+
     func longTapAction(forItem item: BarItemDefinition) -> ()->() {
         switch item.longTapAction.actionType {
         case TapActionType.hidKey:
@@ -312,7 +324,7 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
             return item.longTapAction.custom as! () -> ()
         }
     }
-    
+
     func tapAction(forItem item: BarItemDefinition) -> ()->() {
         switch item.tapAction.actionType {
         case TapActionType.hidKey:

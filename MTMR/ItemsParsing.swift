@@ -18,7 +18,7 @@ struct BarItemDefinition: Decodable {
     let longTapAction: LongTapAction
     let tapAction: TapAction
     let additionalParameters: [GeneralParameters.CodingKeys: GeneralParameter]
-    
+
     private enum CodingKeys: String, CodingKey {
         case type
         case tapAction
@@ -499,6 +499,7 @@ enum GeneralParameter {
     case width(_: CGFloat)
     case image(source: SourceProtocol)
     case align(_: Align)
+    case bordered(_: Bool)
     case background(_:NSColor)
 }
 
@@ -509,6 +510,7 @@ struct GeneralParameters: Decodable {
         case width
         case image
         case align
+        case bordered
         case background
     }
     init(from decoder: Decoder) throws {
@@ -522,9 +524,13 @@ struct GeneralParameters: Decodable {
         }
         let align = try container.decodeIfPresent(Align.self, forKey: .align) ?? .center
         result[.align] = .align(align)
-        
-        let background = try container.decodeIfPresent(String.self, forKey: .background)?.hexColor ?? NSColor.clear
-        result[.background] = .background(background)
+
+        if let borderedFlag = try container.decodeIfPresent(Bool.self, forKey: .bordered) {
+            result[.bordered] = .bordered(borderedFlag)
+        }
+        if let backgroundColor = try container.decodeIfPresent(String.self, forKey: .background)?.hexColor {
+            result[.background] = .background(backgroundColor)
+        }
 
         parameters = result
     }
@@ -538,13 +544,13 @@ struct Source: Decodable, SourceProtocol {
     let filePath: String?
     let base64: String?
     let inline: String?
-    
+
     private enum CodingKeys: String, CodingKey {
         case filePath
         case base64
         case inline
     }
-    
+
     var data: Data? {
         return base64?.base64Data ?? inline?.data(using: .utf8) ?? filePath?.fileData
     }
@@ -611,7 +617,7 @@ struct TapAction: Codable {
     let executablePath: String?
     let shellArguments: [String]?
     let custom: () -> ()?
-    
+
     enum CodingKeys: String, CodingKey {
         case actionType = "type"
         case url
@@ -620,7 +626,7 @@ struct TapAction: Codable {
         case executablePath
         case shellArguments
     }
-    
+
     init(actionType: TapActionType, url: String? = "", keycode: Int? = -1, appleScript: String? = "", executablePath: String? = "", shellArguments: [String]? = [], custom: @escaping () -> Void? = {return}) {
         self.actionType = actionType
         self.url = url
@@ -630,7 +636,7 @@ struct TapAction: Codable {
         self.shellArguments = shellArguments
         self.custom = custom
     }
-    
+
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let actionType = try container.decode(TapActionType.self, forKey: .actionType)
@@ -660,7 +666,7 @@ struct LongTapAction: Codable {
     let executablePath: String?
     let shellArguments: [String]?
     let custom: () -> ()?
-    
+
     enum CodingKeys: String, CodingKey {
         case actionType = "type"
         case url
@@ -669,7 +675,7 @@ struct LongTapAction: Codable {
         case executablePath
         case shellArguments
     }
-    
+
     init(actionType: TapActionType, url: String? = "", keycode: Int? = -1, appleScript: String? = "", executablePath: String? = "", shellArguments: [String]? = [], custom: @escaping () -> Void? = {return}) {
         self.actionType = actionType
         self.url = url
@@ -679,7 +685,7 @@ struct LongTapAction: Codable {
         self.shellArguments = shellArguments
         self.custom = custom
     }
-    
+
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let actionType = try container.decode(TapActionType.self, forKey: .actionType)
@@ -703,9 +709,9 @@ struct LongTapAction: Codable {
 
 enum TapActionType: Codable {
     func encode(to encoder: Encoder) throws {
-        
+
     }
-    
+
     case none
     case hidKey
     case keyPress
@@ -713,11 +719,11 @@ enum TapActionType: Codable {
     case shellScript
     case custom
     case openUrl
-    
+
     private enum CodingKeys: String, CodingKey {
         case type
     }
-    
+
     private enum ActionTypeRaw: String, Decodable {
         case hidKey
         case keyPress
@@ -725,10 +731,10 @@ enum TapActionType: Codable {
         case shellScript
         case openUrl
     }
-    
+
     init(from decoder: Decoder) throws {
         self = .none
-        
+
         let container = try decoder.singleValueContainer()
         let actionType = try container.decode(ActionTypeRaw.self)
         switch actionType {
