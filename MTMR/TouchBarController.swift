@@ -216,6 +216,12 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
         if case .width(let value)? = item.additionalParameters[.width], let widthBarItem = barItem as? CanSetWidth {
             widthBarItem.setWidth(value: value)
         }
+        if case .background(let color)? = item.additionalParameters[.background], let item = barItem as? CustomButtonTouchBarItem {
+            let button = item.button!
+            if button.bezelColor == nil {
+                button.bezelColor = color
+            }
+        }
         if case .image(let source)? = item.additionalParameters[.image], let item = barItem as? CustomButtonTouchBarItem {
             let button = item.button!
             button.imageScaling = .scaleProportionallyDown

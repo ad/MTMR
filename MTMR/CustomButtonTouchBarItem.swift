@@ -23,12 +23,16 @@ class CustomButtonTouchBarItem: NSCustomTouchBarItem, NSGestureRecognizerDelegat
         super.init(identifier: identifier)
         button = NSButton(title: title, target: self, action: nil)
         
-        button.cell = CustomButtonCell(backgroundColor: bezelColor!)
+        if bezelColor != .clear {
+            button.cell = CustomButtonCell(backgroundColor: bezelColor!)
+            button.bezelColor = bezelColor
+        } else {
+            button.cell = CustomButtonCell()
+        }
         button.cell?.title = title
         button.title = title
         
         button.bezelStyle = .rounded
-        button.bezelColor = bezelColor
         self.view = button
         
         longClick = NSPressGestureRecognizer(target: self, action: #selector(handleGestureLong))
@@ -88,6 +92,10 @@ class CustomButtonTouchBarItem: NSCustomTouchBarItem, NSGestureRecognizerDelegat
 }
 
 class CustomButtonCell: NSButtonCell {
+    init() {
+        super.init(textCell: "")
+    }
+    
     init(backgroundColor: NSColor) {
         super.init(textCell: "")
         if backgroundColor != .clear {
@@ -102,7 +110,7 @@ class CustomButtonCell: NSButtonCell {
         if flag {
             self.isBordered = true
         } else {
-            self.isBordered = false
+//            self.isBordered = false
         }
         super.highlight(flag, withFrame: cellFrame, in: controlView)
     }
