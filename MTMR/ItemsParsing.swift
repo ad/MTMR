@@ -27,26 +27,24 @@ struct BarItemDefinition: Decodable {
 
     init(type: ItemType, action: ActionType? = .none, tapAction: TapAction? = TapAction(actionType: TapActionType.none), longTapAction: LongTapAction? = LongTapAction(actionType: TapActionType.none), additionalParameters: [GeneralParameters.CodingKeys:GeneralParameter]? = [:]) {
         self.type = type
-        self.action = action!
-        self.longTapAction = longTapAction!
-        self.tapAction = tapAction!
-        self.additionalParameters = additionalParameters!
+        self.action = action ?? .none
+        self.longTapAction = longTapAction ?? LongTapAction(actionType: TapActionType.none)
+        self.tapAction = tapAction ?? TapAction(actionType: TapActionType.none)
+        self.additionalParameters = additionalParameters ?? [:]
     }
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        var additionalParameters = try GeneralParameters(from: decoder).parameters
         let type = try container.decode(String.self, forKey: .type)
         let parametersDecoder = SupportedTypesHolder.sharedInstance.lookup(by: type)
-//        let tapAction = try container.decodeIfPresent(TapAction.self, forKey: .tapAction)
-//        let longTapAction = try container.decodeIfPresent(LongTapAction.self, forKey: .longTapAction)
-        var additionalParameters = try GeneralParameters(from: decoder).parameters
         do {
             if let result = try? parametersDecoder(decoder),
                 case let (itemType, action, tapAction, longTapAction, parameters) = result {
                 parameters.forEach { additionalParameters[$0] = $1 }
                 self.init(type: itemType, action: action, tapAction: tapAction, longTapAction: longTapAction, additionalParameters: additionalParameters)
             } else {
-                self.init(type: .staticButton(title: "unknown"), additionalParameters: additionalParameters)
+                self.init(type: .staticButton(title: "\(type) unknown"))
             }
         } catch {
             print("\(error)")
@@ -304,7 +302,19 @@ class SupportedTypesHolder {
 
     func lookup(by type: String) -> ParametersDecoder {
         return supportedTypes[type] ?? { decoder in
-            return (item: try ItemType(from: decoder), action: try ActionType(from: decoder), tapAction: try TapAction(from: decoder), longTapAction: try LongTapAction(from: decoder), parameters: [:])
+            enum CodingKeys: String, CodingKey { case tapAction; case longTapAction }
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            let type = try ItemType(from: decoder)
+            let action = try ActionType(from: decoder) ?? .none
+            let tapAction = try container.decodeIfPresent(TapAction.self, forKey: .tapAction) ?? TapAction(actionType: TapActionType.none)
+            let longTapAction = try container.decodeIfPresent(LongTapAction.self, forKey: .longTapAction) ?? LongTapAction(actionType: TapActionType.none)
+            return (
+                item: type,
+                action: action,
+                tapAction: tapAction,
+                longTapAction: longTapAction,
+                parameters: [:]
+            )
         }
     }
 
