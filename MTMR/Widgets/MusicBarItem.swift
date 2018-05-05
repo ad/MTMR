@@ -10,8 +10,7 @@ import Cocoa
 import ScriptingBridge
 
 class MusicBarItem: CustomButtonTouchBarItem {
-    private let activity: NSBackgroundActivityScheduler
-    
+    private let interval: TimeInterval
     private var _currentTrack: MusicTrack?
     
     let playerBundleIdentifiers = [
@@ -21,8 +20,7 @@ class MusicBarItem: CustomButtonTouchBarItem {
     ]
     
     init(identifier: NSTouchBarItem.Identifier, interval: TimeInterval, onLongTap: @escaping () -> ()) {
-        activity = NSBackgroundActivityScheduler(identifier: "\(identifier.rawValue).updatecheck")
-        activity.interval = interval
+        self.interval = interval
         
         super.init(identifier: identifier, title: "⏳", onTap: onLongTap, onLongTap: onLongTap)
         
@@ -33,14 +31,11 @@ class MusicBarItem: CustomButtonTouchBarItem {
         button.target = self
         button.cell?.action = #selector(playPause)
         button.action = #selector(playPause)
-        
-        activity.repeats = true
-        activity.qualityOfService = .utility
-        activity.schedule { (completion: NSBackgroundActivityScheduler.CompletionHandler) in
+
+        DispatchQueue.main.async {
             self.updatePlayer()
-            completion(NSBackgroundActivityScheduler.Result.finished)
         }
-        updatePlayer()
+        
     }
     
     required init?(coder: NSCoder) {
@@ -111,6 +106,9 @@ class MusicBarItem: CustomButtonTouchBarItem {
                 self.button.cell?.title = ""
             }
         }
+        DispatchQueue.main.asyncAfter(deadline: .now() + self.interval) { [weak self] in
+            self?.updatePlayer()
+        }
     }
 }
 
@@ -144,12 +142,11 @@ extension SpotifyApplication {
 
 @objc protocol iTunesApplication {
     @objc optional var currentTrack: iTunesTrack {get}
-    @objc optional func nextTrack()
     @objc optional func playpause()
+    @objc optional func nextTrack()
     @objc optional func previousTrack()
 }
 extension SBApplication: iTunesApplication{}
-
 
 @objc protocol iTunesTrack {
     @objc optional var artist: String? {get}
