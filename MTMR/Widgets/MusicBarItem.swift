@@ -11,7 +11,8 @@ import ScriptingBridge
 
 class MusicBarItem: CustomButtonTouchBarItem {
     private let interval: TimeInterval
-    private var _currentTrack: MusicTrack?
+    private var songTitle: String?
+    private var timer: Timer?
     
     let playerBundleIdentifiers = [
         "com.apple.iTunes",
@@ -35,7 +36,15 @@ class MusicBarItem: CustomButtonTouchBarItem {
         DispatchQueue.main.async {
             self.updatePlayer()
         }
-        
+    }
+
+    @objc func marquee(){
+        let str = self.button.title
+        if (str.count > 10) {
+            let indexFirst = str.index(str.startIndex, offsetBy: 0)
+            let indexSecond = str.index(str.startIndex, offsetBy: 1)
+            self.button.title = String(str.suffix(from: indexSecond)) + String(str[indexFirst])
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -69,16 +78,22 @@ class MusicBarItem: CustomButtonTouchBarItem {
         for ident in playerBundleIdentifiers {
             if let musicPlayer = SBApplication(bundleIdentifier: ident) {
                 if (musicPlayer.isRunning) {
-
+                    var tempTitle = ""
                     if (musicPlayer.className == "SpotifyApplication") {
-                        let mp = (musicPlayer as SpotifyApplication)
-                        self._currentTrack = mp._currentTrack
+                        tempTitle = (musicPlayer as SpotifyApplication).title
                     } else if (musicPlayer.className == "ITunesApplication") {
-                        let mp = (musicPlayer as iTunesApplication)
-                        self._currentTrack = mp._currentTrack
+                        tempTitle = (musicPlayer as iTunesApplication).title
                     } else if (musicPlayer.className == "VOXApplication") {
-                        let mp = (musicPlayer as VoxApplication)
-                        self._currentTrack = mp._currentTrack
+                        tempTitle = (musicPlayer as VoxApplication).title
+                    }
+                    
+                    if (tempTitle == self.songTitle) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + self.interval) { [weak self] in
+                            self?.updatePlayer()
+                        }
+                        return
+                    } else {
+                        self.songTitle = tempTitle
                     }
                     
                     DispatchQueue.main.async {
@@ -87,9 +102,12 @@ class MusicBarItem: CustomButtonTouchBarItem {
                             iconUpdated = true
                         }
 
-                        if ((self._currentTrack) != nil && self._currentTrack?.artist != nil && self._currentTrack?.title != nil) {
-                            self.button.cell?.title = " " + (self._currentTrack?.artist!)! + " — " + (self._currentTrack?.title!)!
+                        if (self.songTitle != "") {
+                            self.button.cell?.title = " " + self.songTitle! + "     "
                             titleUpdated = true
+                            self.timer?.invalidate()
+                            self.timer = nil
+                            self.timer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(self.marquee), userInfo: nil, repeats: true)
                         }
                     }
                     break
@@ -112,12 +130,6 @@ class MusicBarItem: CustomButtonTouchBarItem {
     }
 }
 
-public struct MusicTrack {
-    public var title:   String?
-    public var artist: String?
-}
-
-
 @objc protocol SpotifyApplication {
     @objc optional var currentTrack: SpotifyTrack {get}
     @objc optional func nextTrack()
@@ -127,15 +139,15 @@ public struct MusicTrack {
 extension SBApplication: SpotifyApplication{}
 
 @objc protocol SpotifyTrack {
-    @objc optional var artist: String? {get}
-    @objc optional var name: String? {get}
+    @objc optional var artist: String {get}
+    @objc optional var name: String {get}
 }
 extension SBObject: SpotifyTrack{}
 
 extension SpotifyApplication {
-    var _currentTrack: MusicTrack? {
-        guard let t = currentTrack else { return nil }
-        return MusicTrack(title: t.name ?? nil, artist: t.artist ?? nil)
+    var title: String {
+        guard let t = currentTrack else { return "" }
+        return (t.artist ?? "") + " — " + (t.name ?? "")
     }
 }
 
@@ -149,15 +161,15 @@ extension SpotifyApplication {
 extension SBApplication: iTunesApplication{}
 
 @objc protocol iTunesTrack {
-    @objc optional var artist: String? {get}
-    @objc optional var name: String? {get}
+    @objc optional var artist: String {get}
+    @objc optional var name: String {get}
 }
 extension SBObject: iTunesTrack{}
 
 extension iTunesApplication {
-    var _currentTrack: MusicTrack? {
-        guard let t = currentTrack else { return nil }
-        return MusicTrack(title: t.name ?? nil, artist: t.artist ?? nil)
+    var title: String {
+        guard let t = currentTrack else { return "" }
+        return (t.artist ?? "") + " — " + (t.name ?? "")
     }
 }
 
@@ -167,13 +179,13 @@ extension iTunesApplication {
     @objc optional func playpause()
     @objc optional func next()
     @objc optional func previous()
-    @objc optional var track: String? {get}
-    @objc optional var artist: String? {get}
+    @objc optional var track: String {get}
+    @objc optional var artist: String {get}
 }
 extension SBApplication: VoxApplication{}
 
 extension VoxApplication {
-    var _currentTrack: MusicTrack {
-        return MusicTrack(title: track ?? nil, artist: artist ?? nil)
+    var title: String {
+        return (artist ?? "") + " — " + (track ?? "")
     }
 }
