@@ -13,6 +13,7 @@ class MusicBarItem: CustomButtonTouchBarItem {
     private let interval: TimeInterval
     private var songTitle: String?
     private var timer: Timer?
+    let buttonSize = NSSize(width: 21, height: 21)
     
     let playerBundleIdentifiers = [
         "com.apple.iTunes",
@@ -28,6 +29,7 @@ class MusicBarItem: CustomButtonTouchBarItem {
         button.bezelColor = .clear
         button.imageScaling = .scaleProportionallyDown
         button.imagePosition = .imageLeading
+        button.image?.size = NSSize(width: 24, height: 24)
         
         button.target = self
         button.cell?.action = #selector(playPause)
@@ -99,6 +101,7 @@ class MusicBarItem: CustomButtonTouchBarItem {
                     DispatchQueue.main.async {
                         if let appPath = NSWorkspace.shared.absolutePathForApplication(withBundleIdentifier: ident) {
                             self.button.cell?.image = NSWorkspace.shared.icon(forFile: appPath)
+                            self.button.cell?.image?.size = self.buttonSize
                             iconUpdated = true
                         }
 
