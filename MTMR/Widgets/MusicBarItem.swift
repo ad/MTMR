@@ -106,10 +106,11 @@ class MusicBarItem: CustomButtonTouchBarItem {
                                 } else if (tab.URL?.starts(with: "https://www.youtube.com/watch"))! {
                                     tempTitle = (tab.name)!
                                     break
-                                } else {
-                                    ident = ""
                                 }
                             }
+                        }
+                        if tempTitle == "" {
+                            ident = ""
                         }
                     }
                 
