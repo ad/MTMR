@@ -91,7 +91,7 @@ class MusicBarItem: CustomButtonTouchBarItem {
                         tempTitle = (musicPlayer as VoxApplication).title
                     } else if (musicPlayer.className == "SafariApplication") {
                         let safariApplication = musicPlayer as SafariApplication
-                        let safariWindows = safariApplication.windows?().flatMap({ $0 as? SafariWindow })
+                        let safariWindows = safariApplication.windows?().compactMap({ $0 as? SafariWindow })
                         for window in safariWindows! {
                             for tab in window.tabs!() {
                                 let tab = tab as! SafariTab
