@@ -18,7 +18,9 @@ class MusicBarItem: CustomButtonTouchBarItem {
     let playerBundleIdentifiers = [
         "com.apple.iTunes",
         "com.spotify.client",
-        "com.coppertino.Vox"
+        "com.coppertino.Vox",
+        "com.google.Chrome",
+        "com.apple.Safari"
     ]
     
     init(identifier: NSTouchBarItem.Identifier, interval: TimeInterval, onLongTap: @escaping () -> ()) {
@@ -87,8 +89,28 @@ class MusicBarItem: CustomButtonTouchBarItem {
                         tempTitle = (musicPlayer as iTunesApplication).title
                     } else if (musicPlayer.className == "VOXApplication") {
                         tempTitle = (musicPlayer as VoxApplication).title
+                    } else if (musicPlayer.className == "SafariApplication") {
+                        let safariApplication = musicPlayer as SafariApplication
+                        let safariWindows = safariApplication.windows?().flatMap({ $0 as? SafariWindow })
+                        for window in safariWindows! {
+                            for tab in window.tabs!() {
+                                let tab = tab as! SafariTab
+                                if (tab.URL?.starts(with: "https://music.yandex.ru"))! {
+                                    if (!(tab.name?.hasSuffix("на Яндекс.Музыке"))!) {
+                                        tempTitle = (tab.name)!
+                                        break
+                                    }
+                                } else if ((tab.URL?.starts(with: "https://vk.com/audios"))! || (tab.URL?.starts(with: "https://vk.com/music"))!) {
+                                    tempTitle = (tab.name)!
+                                    break
+                                } else if (tab.URL?.starts(with: "https://www.youtube.com/watch"))! {
+                                    tempTitle = (tab.name)!
+                                    break
+                                }
+                            }
+                        }
                     }
-                    
+                
                     if (tempTitle == self.songTitle) {
                         DispatchQueue.main.asyncAfter(deadline: .now() + self.interval) { [weak self] in
                             self?.updatePlayer()
@@ -192,3 +214,30 @@ extension VoxApplication {
         return (artist ?? "") + " — " + (track ?? "")
     }
 }
+
+
+@objc public protocol SBObjectProtocol: NSObjectProtocol {
+    func get() -> Any!
+}
+
+@objc public protocol SBApplicationProtocol: SBObjectProtocol {
+    func activate()
+    var delegate: SBApplicationDelegate! { get set }
+}
+
+@objc public protocol SafariApplication: SBApplicationProtocol {
+    @objc optional func windows() -> SBElementArray
+}
+extension SBApplication: SafariApplication {}
+
+@objc public protocol SafariWindow: SBObjectProtocol {
+    @objc optional var name: String { get } // The title of the window.
+    @objc optional func tabs() -> SBElementArray
+}
+extension SBObject: SafariWindow {}
+
+@objc public protocol SafariTab: SBObjectProtocol {
+    @objc optional var URL: String { get } // The current URL of the tab.
+    @objc optional var name: String { get } // The name of the tab.
+}
+extension SBObject: SafariTab {}
