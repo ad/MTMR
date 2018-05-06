@@ -79,7 +79,7 @@ class MusicBarItem: CustomButtonTouchBarItem {
         var iconUpdated = false
         var titleUpdated = false
 
-        for ident in playerBundleIdentifiers {
+        for var ident in playerBundleIdentifiers {
             if let musicPlayer = SBApplication(bundleIdentifier: ident) {
                 if (musicPlayer.isRunning) {
                     var tempTitle = ""
@@ -106,6 +106,8 @@ class MusicBarItem: CustomButtonTouchBarItem {
                                 } else if (tab.URL?.starts(with: "https://www.youtube.com/watch"))! {
                                     tempTitle = (tab.name)!
                                     break
+                                } else {
+                                    ident = ""
                                 }
                             }
                         }
@@ -121,10 +123,12 @@ class MusicBarItem: CustomButtonTouchBarItem {
                     }
                     
                     DispatchQueue.main.async {
-                        if let appPath = NSWorkspace.shared.absolutePathForApplication(withBundleIdentifier: ident) {
-                            self.button.cell?.image = NSWorkspace.shared.icon(forFile: appPath)
-                            self.button.cell?.image?.size = self.buttonSize
-                            iconUpdated = true
+                        if ident != "" {
+                            if let appPath = NSWorkspace.shared.absolutePathForApplication(withBundleIdentifier: ident) {
+                                self.button.cell?.image = NSWorkspace.shared.icon(forFile: appPath)
+                                self.button.cell?.image?.size = self.buttonSize
+                                iconUpdated = true
+                            }
                         }
 
                         if (self.songTitle != "") {
