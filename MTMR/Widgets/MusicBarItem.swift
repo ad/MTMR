@@ -112,6 +112,29 @@ class MusicBarItem: CustomButtonTouchBarItem {
                         if tempTitle == "" {
                             ident = ""
                         }
+                    } else if (musicPlayer.className == "GoogleChromeApplication") {
+                        let chromeApplication = musicPlayer as GoogleChromeApplication
+                        let chromeWindows = chromeApplication.windows?().flatMap({ $0 as? GoogleChromeWindow })
+                        for window in chromeWindows! {
+                            for tab in window.tabs!() {
+                                let tab = tab as! GoogleChromeTab
+                                if (tab.URL?.starts(with: "https://music.yandex.ru"))! {
+                                    if (!(tab.title?.hasSuffix("на Яндекс.Музыке"))!) {
+                                        tempTitle = tab.title!
+                                        break
+                                    }
+                                } else if ((tab.URL?.starts(with: "https://vk.com/audios"))! || (tab.URL?.starts(with: "https://vk.com/music"))!) {
+                                    tempTitle = tab.title!
+                                    break
+                                } else if (tab.URL?.starts(with: "https://www.youtube.com/watch"))! {
+                                    tempTitle = tab.title!
+                                    break
+                                }
+                            }
+                        }
+                        if tempTitle == "" {
+                            ident = ""
+                        }
                     }
                 
                     if (tempTitle == self.songTitle) {
@@ -246,3 +269,22 @@ extension SBObject: SafariWindow {}
     @objc optional var name: String { get } // The name of the tab.
 }
 extension SBObject: SafariTab {}
+
+
+
+@objc public protocol GoogleChromeApplication: SBApplicationProtocol {
+    @objc optional func windows() -> SBElementArray
+}
+extension SBApplication: GoogleChromeApplication {}
+
+@objc public protocol GoogleChromeWindow: SBObjectProtocol {
+    @objc optional var name: String { get } // The title of the window.
+    @objc optional func tabs() -> SBElementArray
+}
+extension SBObject: GoogleChromeWindow {}
+
+@objc public protocol GoogleChromeTab: SBObjectProtocol {
+    @objc optional var URL: String { get } // The current URL of the tab.
+    @objc optional var title: String { get } // The name of the tab.
+}
+extension SBObject: GoogleChromeTab {}
