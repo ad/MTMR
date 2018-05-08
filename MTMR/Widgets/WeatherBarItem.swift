@@ -55,6 +55,7 @@ class WeatherBarItem: CustomButtonTouchBarItem, CLLocationManagerDelegate {
         
         if !CLLocationManager.locationServicesEnabled() {
             print("Location services not enabled");
+            self.button.cell?.title = "➤"
             return
         }
 
