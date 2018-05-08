@@ -33,9 +33,8 @@ class MusicBarItem: CustomButtonTouchBarItem {
         button.imagePosition = .imageLeading
         button.image?.size = NSSize(width: 24, height: 24)
         
-        button.target = self
-        button.cell?.action = #selector(playPause)
-        button.action = #selector(playPause)
+        self.tapClosure = { [weak self] in self?.playPause() }
+        self.longTapClosure = { [weak self] in self?.nextTrack() }
 
         DispatchQueue.main.async {
             self.updatePlayer()
@@ -113,6 +112,26 @@ class MusicBarItem: CustomButtonTouchBarItem {
         }
     }
 
+    @objc func nextTrack() {
+        for ident in playerBundleIdentifiers {
+            if let musicPlayer = SBApplication(bundleIdentifier: ident) {
+                if (musicPlayer.isRunning) {
+                    if (musicPlayer.className == "SpotifyApplication") {
+                        let mp = (musicPlayer as SpotifyApplication)
+                        mp.nextTrack!()
+                    } else if (musicPlayer.className == "ITunesApplication") {
+                        let mp = (musicPlayer as iTunesApplication)
+                        mp.nextTrack!()
+                    } else if (musicPlayer.className == "VOXApplication") {
+                        let mp = (musicPlayer as VoxApplication)
+                        mp.next!()
+                    }
+                    break
+                }
+            }
+        }
+    }
+    
     func updatePlayer() {
         var iconUpdated = false
         var titleUpdated = false
