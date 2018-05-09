@@ -430,7 +430,7 @@ enum ItemType: Decodable {
 
 enum ActionType: Decodable {
     case none
-    case hidKey(keycode: Int)
+    case hidKey(keycode: Int32)
     case keyPress(keycode: Int)
     case appleSctipt(source: SourceProtocol)
     case shellScript(executable: String, parameters: [String])
@@ -459,7 +459,7 @@ enum ActionType: Decodable {
         let type = try container.decodeIfPresent(ActionTypeRaw.self, forKey: .action)
         switch type {
         case .some(.hidKey):
-            let keycode = try container.decode(Int.self, forKey: .keycode)
+            let keycode = try container.decode(Int32.self, forKey: .keycode)
             self = .hidKey(keycode: keycode)
         case .some(.keyPress):
             let keycode = try container.decode(Int.self, forKey: .keycode)
@@ -480,35 +480,55 @@ enum ActionType: Decodable {
     }
 }
 
-extension ItemType: Equatable {}
-func ==(lhs: ItemType, rhs: ItemType) -> Bool {
-    switch (lhs, rhs) {
-    case let (.staticButton(a), .staticButton(b)):
-        return a == b
-    case let (.appleScriptTitledButton(a, b), .appleScriptTitledButton(c, d)):
-        return a == c && b == d
+enum LongActionType: Decodable {
+    case none
+    case hidKey(keycode: Int32)
+    case keyPress(keycode: Int)
+    case appleSctipt(source: SourceProtocol)
+    case shellScript(executable: String, parameters: [String])
+    case custom(closure: ()->())
+    case openUrl(url: String)
 
-    default:
-        return false
+    private enum CodingKeys: String, CodingKey {
+        case longAction
+        case keycode
+        case actionAppleScript
+        case executablePath
+        case shellArguments
+        case longUrl
     }
-}
 
-extension ActionType: Equatable {}
-func ==(lhs: ActionType, rhs: ActionType) -> Bool {
-    switch (lhs, rhs) {
-    case (.none, .none):
-        return true
-    case let (.hidKey(a), .hidKey(b)),
-         let (.keyPress(a), .keyPress(b)):
-        return a == b
-    case let (.appleSctipt(a), .appleSctipt(b)):
-        return a == b
-    case let (.shellScript(a, b), .shellScript(c, d)):
-        return a == c && b == d
-    case let (.openUrl(a), .openUrl(b)):
-        return a == b
-    default:
-        return false
+    private enum LongActionTypeRaw: String, Decodable {
+        case hidKey
+        case keyPress
+        case appleScript
+        case shellScript
+        case openUrl
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let longType = try container.decodeIfPresent(LongActionTypeRaw.self, forKey: .longAction)
+        switch longType {
+        case .some(.hidKey):
+            let keycode = try container.decode(Int32.self, forKey: .keycode)
+            self = .hidKey(keycode: keycode)
+        case .some(.keyPress):
+            let keycode = try container.decode(Int.self, forKey: .keycode)
+            self = .keyPress(keycode: keycode)
+        case .some(.appleScript):
+            let source = try container.decode(Source.self, forKey: .actionAppleScript)
+            self = .appleSctipt(source: source)
+        case .some(.shellScript):
+            let executable = try container.decode(String.self, forKey: .executablePath)
+            let parameters = try container.decodeIfPresent([String].self, forKey: .shellArguments) ?? []
+            self = .shellScript(executable: executable, parameters: parameters)
+        case .some(.openUrl):
+            let longUrl = try container.decode(String.self, forKey: .longUrl)
+            self = .openUrl(url: longUrl)
+        case .none:
+            self = .none
+        }
     }
 }
 
@@ -597,10 +617,6 @@ extension NSImage: SourceProtocol {
     var image: NSImage? {
         return self
     }
-}
-extension SourceProtocol where Self: Equatable {}
-func ==(left: SourceProtocol, right: SourceProtocol) -> Bool {
-    return left.data == right.data
 }
 
 extension String {
