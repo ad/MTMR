@@ -221,22 +221,20 @@ class MusicBarItem: CustomButtonTouchBarItem {
                     } else {
                         self.songTitle = tempTitle
                     }
-                    
-                    DispatchQueue.main.async {
-                        if ident != "" {
-                            if let appPath = NSWorkspace.shared.absolutePathForApplication(withBundleIdentifier: ident) {
-                                self.button.cell?.image = NSWorkspace.shared.icon(forFile: appPath)
-                                self.button.cell?.image?.size = self.buttonSize
-                                iconUpdated = true
-                            }
-                        }
 
-                        if (self.songTitle != "") {
-                            self.button.cell?.title = " " + self.songTitle! + "     "
-                            titleUpdated = true
-                            self.timer?.invalidate()
-                            self.timer = nil
-                            self.timer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(self.marquee), userInfo: nil, repeats: true)
+                    if (self.songTitle != "") {
+                        self.button.cell?.title = " " + self.songTitle! + "     "
+                        titleUpdated = true
+                        self.timer?.invalidate()
+                        self.timer = nil
+                        self.timer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(self.marquee), userInfo: nil, repeats: true)
+                    }
+                    if ident != "" {
+                        if let appPath = NSWorkspace.shared.absolutePathForApplication(withBundleIdentifier: ident) {
+                            self.button.image = NSWorkspace.shared.icon(forFile: appPath)
+                            self.button.image?.size = self.buttonSize
+                            self.button.imagePosition = .imageLeft
+                            iconUpdated = true
                         }
                     }
                     break
