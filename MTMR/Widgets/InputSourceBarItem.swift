@@ -16,16 +16,15 @@ class InputSourceBarItem: CustomButtonTouchBarItem {
     init(identifier: NSTouchBarItem.Identifier, onLongTap: @escaping () -> ()) {
         notificationCenter = CFNotificationCenterGetDistributedCenter();
         super.init(identifier: identifier, title: "⏳", onTap: onLongTap, onLongTap: onLongTap)
-
-        observeIputSourceChangedNotification();
-        textInputSourceDidChange()
-
         self.button.bezelColor = .clear
         self.button.cell?.action = #selector(switchInputSource)
         self.button.action = #selector(switchInputSource)
         
         self.button.frame.size = buttonSize
         self.button.bounds.size = buttonSize
+        
+        observeIputSourceChangedNotification();
+        textInputSourceDidChange()
     }
 
     required init?(coder: NSCoder) {

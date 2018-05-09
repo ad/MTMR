@@ -76,7 +76,7 @@ class SupportedTypesHolder {
             let imageParameter = GeneralParameter.image(source: #imageLiteral(resourceName: "brightnessUp"))
             return (
                 item: .staticButton(title: ""),
-                action: .hidKey(keycode: Int(NX_KEYTYPE_BRIGHTNESS_UP)),
+                action: .hidKey(keycode: NX_KEYTYPE_BRIGHTNESS_UP),
                 tapAction: TapAction(actionType: TapActionType.hidKey, keycode: Int(NX_KEYTYPE_BRIGHTNESS_UP)),
                 longTapAction: LongTapAction(actionType: TapActionType.none),
                 parameters: [.image: imageParameter]
@@ -86,7 +86,7 @@ class SupportedTypesHolder {
             let imageParameter = GeneralParameter.image(source: #imageLiteral(resourceName: "brightnessDown"))
             return (
                 item: .staticButton(title: ""),
-                action: .hidKey(keycode: Int(NX_KEYTYPE_BRIGHTNESS_DOWN)),
+                action: .hidKey(keycode: NX_KEYTYPE_BRIGHTNESS_DOWN),
                 tapAction: TapAction(actionType: TapActionType.hidKey, keycode: Int(NX_KEYTYPE_BRIGHTNESS_DOWN)),
                 longTapAction: LongTapAction(actionType: TapActionType.none),
                 parameters: [.image: imageParameter]
@@ -96,7 +96,7 @@ class SupportedTypesHolder {
             let imageParameter = GeneralParameter.image(source: NSImage(named: .touchBarVolumeDownTemplate)!)
             return (
                 item: .staticButton(title: ""),
-                action: .hidKey(keycode: Int(NX_KEYTYPE_SOUND_DOWN)),
+                action: .hidKey(keycode: NX_KEYTYPE_SOUND_DOWN),
                 tapAction: TapAction(actionType: TapActionType.hidKey, keycode: Int(NX_KEYTYPE_SOUND_DOWN)),
                 longTapAction: LongTapAction(actionType: TapActionType.none),
                 parameters: [.image: imageParameter]
@@ -106,7 +106,7 @@ class SupportedTypesHolder {
             let imageParameter = GeneralParameter.image(source: NSImage(named: .touchBarVolumeUpTemplate)!)
             return (
                 item: .staticButton(title: ""),
-                action: .hidKey(keycode: Int(NX_KEYTYPE_SOUND_UP)),
+                action: .hidKey(keycode: NX_KEYTYPE_SOUND_UP),
                 tapAction: TapAction(actionType: TapActionType.hidKey, keycode: Int(NX_KEYTYPE_SOUND_UP)),
                 longTapAction: LongTapAction(actionType: TapActionType.none),
                 parameters: [.image: imageParameter]
@@ -116,7 +116,7 @@ class SupportedTypesHolder {
             let imageParameter = GeneralParameter.image(source: NSImage(named: .touchBarAudioOutputMuteTemplate)!)
             return (
                 item: .staticButton(title: ""),
-                action: .hidKey(keycode: Int(NX_KEYTYPE_MUTE)),
+                action: .hidKey(keycode: NX_KEYTYPE_MUTE),
                 tapAction: TapAction(actionType: TapActionType.hidKey, keycode: Int(NX_KEYTYPE_MUTE)),
                 longTapAction: LongTapAction(actionType: TapActionType.none),
                 parameters: [.image: imageParameter]
@@ -126,7 +126,7 @@ class SupportedTypesHolder {
             let imageParameter = GeneralParameter.image(source: NSImage(named: .touchBarRewindTemplate)!)
             return (
                 item: .staticButton(title: ""),
-                action: .hidKey(keycode: Int(NX_KEYTYPE_PREVIOUS)),
+                action: .hidKey(keycode: NX_KEYTYPE_PREVIOUS),
                 tapAction: TapAction(actionType: TapActionType.hidKey, keycode: Int(NX_KEYTYPE_PREVIOUS)),
                 longTapAction: LongTapAction(actionType: TapActionType.none),
                 parameters: [.image: imageParameter]
@@ -136,7 +136,7 @@ class SupportedTypesHolder {
             let imageParameter = GeneralParameter.image(source: NSImage(named: .touchBarPlayPauseTemplate)!)
             return (
                 item: .staticButton(title: ""),
-                action: .hidKey(keycode: Int(NX_KEYTYPE_PLAY)),
+                action: .hidKey(keycode: NX_KEYTYPE_PLAY),
                 tapAction: TapAction(actionType: TapActionType.hidKey, keycode: Int(NX_KEYTYPE_PLAY)),
                 longTapAction: LongTapAction(actionType: TapActionType.none),
                 parameters: [.image: imageParameter]
@@ -146,7 +146,7 @@ class SupportedTypesHolder {
             let imageParameter = GeneralParameter.image(source: NSImage(named: .touchBarFastForwardTemplate)!)
             return (
                 item: .staticButton(title: ""),
-                action: .hidKey(keycode: Int(NX_KEYTYPE_NEXT)),
+                action: .hidKey(keycode: NX_KEYTYPE_NEXT),
                 tapAction: TapAction(actionType: TapActionType.hidKey, keycode: Int(NX_KEYTYPE_NEXT)),
                 longTapAction: LongTapAction(actionType: TapActionType.none),
                 parameters: [.image: imageParameter]
@@ -317,7 +317,7 @@ class SupportedTypesHolder {
             enum CodingKeys: String, CodingKey { case tapAction; case longTapAction }
             let container = try decoder.container(keyedBy: CodingKeys.self)
             let type = try ItemType(from: decoder)
-            let action = try ActionType(from: decoder) ?? .none
+            let action = try ActionType(from: decoder)
             let tapAction = try container.decodeIfPresent(TapAction.self, forKey: .tapAction) ?? TapAction(actionType: TapActionType.none)
             let longTapAction = try container.decodeIfPresent(LongTapAction.self, forKey: .longTapAction) ?? LongTapAction(actionType: TapActionType.none)
             return (
@@ -477,6 +477,22 @@ enum ActionType: Decodable {
         case .none:
             self = .none
         }
+    }
+}
+
+extension ActionType: Equatable {}
+func ==(lhs: ActionType, rhs: ActionType) -> Bool {
+    switch (lhs, rhs) {
+    case (.none, .none):
+        return true
+    case let (.hidKey(a), .hidKey(b)):
+        return a == b
+    case let (.shellScript(a, b), .shellScript(c, d)):
+        return a == c && b == d
+    case let (.openUrl(a), .openUrl(b)):
+        return a == b
+    default:
+        return false
     }
 }
 

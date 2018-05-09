@@ -287,7 +287,7 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
     func longTapAction(forItem item: BarItemDefinition) -> ()->() {
         switch item.longTapAction.actionType {
         case TapActionType.hidKey:
-            return { HIDPostAuxKey(item.longTapAction.keycode) }
+            return { HIDPostAuxKey(Int32(item.longTapAction.keycode)) }
         case TapActionType.keyPress:
             return { GenericKeyPress(keyCode: CGKeyCode(item.longTapAction.keycode)).send() }
         case TapActionType.appleScript:
@@ -324,7 +324,7 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
     func tapAction(forItem item: BarItemDefinition) -> ()->() {
         switch item.tapAction.actionType {
         case TapActionType.hidKey:
-            return { HIDPostAuxKey(item.tapAction.keycode) }
+            return { HIDPostAuxKey(Int32(item.tapAction.keycode)) }
         case TapActionType.keyPress:
             return { GenericKeyPress(keyCode: CGKeyCode(item.tapAction.keycode)).send() }
         case TapActionType.appleScript:

@@ -167,7 +167,7 @@ class MusicBarItem: CustomButtonTouchBarItem {
                         tempTitle = (musicPlayer as VoxApplication).title
                     } else if (musicPlayer.className == "SafariApplication") {
                         let safariApplication = musicPlayer as SafariApplication
-                        let safariWindows = safariApplication.windows?().flatMap({ $0 as? SafariWindow })
+                        let safariWindows = safariApplication.windows?().compactMap({ $0 as? SafariWindow })
                         for window in safariWindows! {
                             for tab in window.tabs!() {
                                 let tab = tab as! SafariTab
@@ -190,7 +190,7 @@ class MusicBarItem: CustomButtonTouchBarItem {
                         }
                     } else if (musicPlayer.className == "GoogleChromeApplication") {
                         let chromeApplication = musicPlayer as GoogleChromeApplication
-                        let chromeWindows = chromeApplication.windows?().flatMap({ $0 as? GoogleChromeWindow })
+                        let chromeWindows = chromeApplication.windows?().compactMap({ $0 as? GoogleChromeWindow })
                         for window in chromeWindows! {
                             for tab in window.tabs!() {
                                 let tab = tab as! GoogleChromeTab
