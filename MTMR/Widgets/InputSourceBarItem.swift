@@ -15,10 +15,8 @@ class InputSourceBarItem: CustomButtonTouchBarItem {
 
     init(identifier: NSTouchBarItem.Identifier, onLongTap: @escaping () -> ()) {
         notificationCenter = CFNotificationCenterGetDistributedCenter();
-        super.init(identifier: identifier, title: "⏳", onTap: onLongTap, onLongTap: onLongTap)
-        self.button.bezelColor = .clear
-        self.button.cell?.action = #selector(switchInputSource)
-        self.button.action = #selector(switchInputSource)
+        super.init(identifier: identifier, title: "", onTap: onLongTap, onLongTap: onLongTap)        
+        self.tapClosure = { [weak self] in self?.switchInputSource() }
         
         self.button.frame.size = buttonSize
         self.button.bounds.size = buttonSize
@@ -33,11 +31,6 @@ class InputSourceBarItem: CustomButtonTouchBarItem {
     
     deinit {
         CFNotificationCenterRemoveEveryObserver(notificationCenter, UnsafeRawPointer(Unmanaged.passUnretained(self).toOpaque()));
-    }
-    
-    @objc override func handleGestureSingle(gr: NSClickGestureRecognizer) {
-        super.handleGestureSingle(gr: gr)
-        switchInputSource()
     }
 
     @objc public func textInputSourceDidChange() {
