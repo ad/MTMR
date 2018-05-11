@@ -329,7 +329,7 @@ class SupportedTypesHolder {
             enum CodingKeys: String, CodingKey { case tapAction; case longTapAction }
             let container = try decoder.container(keyedBy: CodingKeys.self)
             let type = try ItemType(from: decoder)
-            let action = try ActionType(from: decoder)
+            let action = try ActionType(from: decoder) 
             let tapAction = try container.decodeIfPresent(TapAction.self, forKey: .tapAction) ?? TapAction(actionType: TapActionType.none)
             let longTapAction = try container.decodeIfPresent(LongTapAction.self, forKey: .longTapAction) ?? LongTapAction(actionType: TapActionType.none)
             return (
