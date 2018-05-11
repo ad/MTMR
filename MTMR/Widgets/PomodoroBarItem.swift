@@ -29,6 +29,11 @@ class PomodoroBarItem: CustomButtonTouchBarItem {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        timer?.cancel()
+        timer = nil
+    }
+    
     @objc func startStopAction() {
         timer == nil ? start() : cancel()
     }
