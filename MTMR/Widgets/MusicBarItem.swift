@@ -61,12 +61,15 @@ class MusicBarItem: CustomButtonTouchBarItem {
                     if (musicPlayer.className == "SpotifyApplication") {
                         let mp = (musicPlayer as SpotifyApplication)
                         mp.playpause!()
+                        break
                     } else if (musicPlayer.className == "ITunesApplication") {
                         let mp = (musicPlayer as iTunesApplication)
                         mp.playpause!()
+                        break
                     } else if (musicPlayer.className == "VOXApplication") {
                         let mp = (musicPlayer as VoxApplication)
                         mp.playpause!()
+                        break
                     } else if (musicPlayer.className == "SafariApplication") {
                         // You must enable the 'Allow JavaScript from Apple Events' option in Safari's Develop menu to use 'do JavaScript'.
                         let safariApplication = musicPlayer as SafariApplication
@@ -119,12 +122,15 @@ class MusicBarItem: CustomButtonTouchBarItem {
                     if (musicPlayer.className == "SpotifyApplication") {
                         let mp = (musicPlayer as SpotifyApplication)
                         mp.nextTrack!()
+                        break
                     } else if (musicPlayer.className == "ITunesApplication") {
                         let mp = (musicPlayer as iTunesApplication)
                         mp.nextTrack!()
+                        break
                     } else if (musicPlayer.className == "VOXApplication") {
                         let mp = (musicPlayer as VoxApplication)
                         mp.next!()
+                        break
                     } else if (musicPlayer.className == "SafariApplication") {
                         // You must enable the 'Allow JavaScript from Apple Events' option in Safari's Develop menu to use 'do JavaScript'.
                         let safariApplication = musicPlayer as SafariApplication

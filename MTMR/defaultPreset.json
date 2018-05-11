@@ -85,7 +85,7 @@
   "type": "pomodoro",
   "align": "right",
   "bordered": false,
-  "refreshInterval": 2,
+  "refreshInterval": 1500,
   },
   {
   "type": "timeButton",
