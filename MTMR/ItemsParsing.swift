@@ -308,6 +308,18 @@ class SupportedTypesHolder {
                 parameters: [:]
             )
         },
+        "pomodoro": { decoder in
+            enum CodingKeys: String, CodingKey { case refreshInterval }
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            let interval = try container.decodeIfPresent(Double.self, forKey: .refreshInterval)
+            return (
+                item: .pomodoro(interval: interval ?? 1500.00),
+                action: .none,
+                tapAction: TapAction(actionType: TapActionType.none),
+                longTapAction: LongTapAction(actionType: TapActionType.none),
+                parameters: [:]
+            )
+        },
     ]
 
     static let sharedInstance = SupportedTypesHolder()
@@ -354,6 +366,7 @@ enum ItemType: Decodable {
     case currency(interval: Double, from: String, to: String)
     case inputsource()
     case music(interval: Double)
+    case pomodoro(interval: Double)
 
     private enum CodingKeys: String, CodingKey {
         case type
@@ -383,6 +396,7 @@ enum ItemType: Decodable {
         case currency
         case inputsource
         case music
+        case pomodoro
     }
 
     init(from decoder: Decoder) throws {
@@ -424,6 +438,9 @@ enum ItemType: Decodable {
         case .music:
             let interval = try container.decodeIfPresent(Double.self, forKey: .refreshInterval) ?? 1800.0
             self = .music(interval: interval)
+        case .pomodoro:
+            let interval = try container.decodeIfPresent(Double.self, forKey: .refreshInterval) ?? 1500.0
+            self = .pomodoro(interval: interval)
         }
     }
 }

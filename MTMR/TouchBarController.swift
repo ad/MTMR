@@ -39,6 +39,8 @@ extension ItemType {
             return "com.toxblh.mtmr.inputsource."
         case .music(interval: _):
             return "com.toxblh.mtmr.music."
+        case .pomodoro(interval: _):
+            return "com.toxblh.mtmr.pomodoro."
         }
     }
 
@@ -215,6 +217,8 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
             barItem = InputSourceBarItem(identifier: identifier, onLongTap: longTapAction)
         case .music(interval: let interval):
             barItem = MusicBarItem(identifier: identifier, interval: interval, onLongTap: longTapAction)
+        case .pomodoro(interval: let interval):
+            barItem = PomodoroBarItem(identifier: identifier, interval: interval, onLongTap: longTapAction)
         }
         if case .bordered(let bordered)? = item.additionalParameters[.bordered], let item = barItem as? CustomButtonTouchBarItem {
             item.isBordered = bordered

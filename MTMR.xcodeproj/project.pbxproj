@@ -23,6 +23,7 @@
 		6042B6AA2083E27000C525C8 /* DeprecatedCarbonAPI.c in Sources */ = {isa = PBXBuildFile; fileRef = 6042B6A92083E27000C525C8 /* DeprecatedCarbonAPI.c */; };
 		607EEA4B2087835F009DA5F0 /* WeatherBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607EEA4A2087835F009DA5F0 /* WeatherBarItem.swift */; };
 		607EEA4D2087A8DA009DA5F0 /* CurrencyBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607EEA4C2087A8DA009DA5F0 /* CurrencyBarItem.swift */; };
+		608A54BE20A495040093EF88 /* PomodoroBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608A54BD20A495040093EF88 /* PomodoroBarItem.swift */; };
 		60EF94FC20A1987B009D9E18 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60EF94FB20A1987A009D9E18 /* CoreLocation.framework */; };
 		60F24309209E0EE000679C1C /* MusicBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F24308209E0EE000679C1C /* MusicBarItem.swift */; };
 		60F7D454208CC31400ABF5D2 /* InputSourceBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F7D453208CC31400ABF5D2 /* InputSourceBarItem.swift */; };
@@ -70,6 +71,7 @@
 		6042B6A92083E27000C525C8 /* DeprecatedCarbonAPI.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = DeprecatedCarbonAPI.c; sourceTree = "<group>"; };
 		607EEA4A2087835F009DA5F0 /* WeatherBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherBarItem.swift; sourceTree = "<group>"; };
 		607EEA4C2087A8DA009DA5F0 /* CurrencyBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyBarItem.swift; sourceTree = "<group>"; };
+		608A54BD20A495040093EF88 /* PomodoroBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroBarItem.swift; sourceTree = "<group>"; };
 		60EF94FB20A1987A009D9E18 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		60F24308209E0EE000679C1C /* MusicBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicBarItem.swift; sourceTree = "<group>"; };
 		60F7D453208CC31400ABF5D2 /* InputSourceBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSourceBarItem.swift; sourceTree = "<group>"; };
@@ -237,6 +239,7 @@
 				6042B6A62083E03A00C525C8 /* AppScrubberTouchBarItem.swift */,
 				60F7D453208CC31400ABF5D2 /* InputSourceBarItem.swift */,
 				60F24308209E0EE000679C1C /* MusicBarItem.swift */,
+				608A54BD20A495040093EF88 /* PomodoroBarItem.swift */,
 			);
 			path = Widgets;
 			sourceTree = "<group>";
@@ -357,6 +360,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B059D622205E03F5006E6B86 /* TouchBarController.swift in Sources */,
+				608A54BE20A495040093EF88 /* PomodoroBarItem.swift in Sources */,
 				B05600D32083E9BB00EB218D /* CustomSlider.swift in Sources */,
 				36C2ECD9207B74B4003CDA33 /* AppleScriptTouchBarItem.swift in Sources */,
 				B0F8771A207AC1EA00D6E430 /* TouchBarSupport.m in Sources */,
