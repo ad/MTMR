@@ -223,7 +223,7 @@ class MusicBarItem: CustomButtonTouchBarItem {
                     }
 
                     if (self.songTitle != "") {
-                        self.button.cell?.title = " " + self.songTitle! + "     "
+                        self.title = " " + self.songTitle! + "     "
                         titleUpdated = true
                         self.timer?.invalidate()
                         self.timer = nil
@@ -248,7 +248,7 @@ class MusicBarItem: CustomButtonTouchBarItem {
             }
             
             if !titleUpdated {
-                self.button.cell?.title = ""
+                self.title = ""
             }
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + self.interval) { [weak self] in

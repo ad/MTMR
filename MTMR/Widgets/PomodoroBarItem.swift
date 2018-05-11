@@ -64,16 +64,15 @@ class PomodoroBarItem: CustomButtonTouchBarItem {
         timer = nil
 
         self.isBordered = false
-        self.backgroundColor = .clear
-        self.button.cell?.title = " 🍅 "
-        self.button.bezelStyle = .inline
+        self.backgroundColor = nil
+        self.title = " 🍅 "
     }
     
     private func tick() {
         timeLeft -= 1
         DispatchQueue.main.async {
             if self.timeLeft >= 0 {
-                self.button.cell?.title = self.timeLeftString
+                self.title = self.timeLeftString
             } else {
                 self.finish()
             }
