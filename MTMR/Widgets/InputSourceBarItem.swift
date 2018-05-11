@@ -15,17 +15,14 @@ class InputSourceBarItem: CustomButtonTouchBarItem {
 
     init(identifier: NSTouchBarItem.Identifier, onLongTap: @escaping () -> ()) {
         notificationCenter = CFNotificationCenterGetDistributedCenter();
-        super.init(identifier: identifier, title: "⏳", onTap: onLongTap, onLongTap: onLongTap)
-
-        observeIputSourceChangedNotification();
-        textInputSourceDidChange()
-
-        self.button.bezelColor = .clear
-        self.button.cell?.action = #selector(switchInputSource)
-        self.button.action = #selector(switchInputSource)
+        super.init(identifier: identifier, title: "", onTap: onLongTap, onLongTap: onLongTap)        
+        self.tapClosure = { [weak self] in self?.switchInputSource() }
         
         self.button.frame.size = buttonSize
         self.button.bounds.size = buttonSize
+        
+        observeIputSourceChangedNotification();
+        textInputSourceDidChange()
     }
 
     required init?(coder: NSCoder) {
@@ -34,11 +31,6 @@ class InputSourceBarItem: CustomButtonTouchBarItem {
     
     deinit {
         CFNotificationCenterRemoveEveryObserver(notificationCenter, UnsafeRawPointer(Unmanaged.passUnretained(self).toOpaque()));
-    }
-    
-    @objc override func handleGestureSingle(gr: NSClickGestureRecognizer) {
-        super.handleGestureSingle(gr: gr)
-        switchInputSource()
     }
 
     @objc public func textInputSourceDidChange() {
@@ -59,8 +51,9 @@ class InputSourceBarItem: CustomButtonTouchBarItem {
         if (iconImage != nil) {
             self.button.cell?.image = iconImage
             self.button.cell?.image?.size = buttonSize
+            self.title = ""
         } else {
-            self.button.title = currentSource.name
+            self.title = currentSource.name
         }
     }
 

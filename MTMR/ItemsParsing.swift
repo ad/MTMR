@@ -76,7 +76,7 @@ class SupportedTypesHolder {
             let imageParameter = GeneralParameter.image(source: #imageLiteral(resourceName: "brightnessUp"))
             return (
                 item: .staticButton(title: ""),
-                action: .hidKey(keycode: Int(NX_KEYTYPE_BRIGHTNESS_UP)),
+                action: .hidKey(keycode: NX_KEYTYPE_BRIGHTNESS_UP),
                 tapAction: TapAction(actionType: TapActionType.hidKey, keycode: Int(NX_KEYTYPE_BRIGHTNESS_UP)),
                 longTapAction: LongTapAction(actionType: TapActionType.none),
                 parameters: [.image: imageParameter]
@@ -86,7 +86,7 @@ class SupportedTypesHolder {
             let imageParameter = GeneralParameter.image(source: #imageLiteral(resourceName: "brightnessDown"))
             return (
                 item: .staticButton(title: ""),
-                action: .hidKey(keycode: Int(NX_KEYTYPE_BRIGHTNESS_DOWN)),
+                action: .hidKey(keycode: NX_KEYTYPE_BRIGHTNESS_DOWN),
                 tapAction: TapAction(actionType: TapActionType.hidKey, keycode: Int(NX_KEYTYPE_BRIGHTNESS_DOWN)),
                 longTapAction: LongTapAction(actionType: TapActionType.none),
                 parameters: [.image: imageParameter]
@@ -96,7 +96,7 @@ class SupportedTypesHolder {
             let imageParameter = GeneralParameter.image(source: NSImage(named: .touchBarVolumeDownTemplate)!)
             return (
                 item: .staticButton(title: ""),
-                action: .hidKey(keycode: Int(NX_KEYTYPE_SOUND_DOWN)),
+                action: .hidKey(keycode: NX_KEYTYPE_SOUND_DOWN),
                 tapAction: TapAction(actionType: TapActionType.hidKey, keycode: Int(NX_KEYTYPE_SOUND_DOWN)),
                 longTapAction: LongTapAction(actionType: TapActionType.none),
                 parameters: [.image: imageParameter]
@@ -106,7 +106,7 @@ class SupportedTypesHolder {
             let imageParameter = GeneralParameter.image(source: NSImage(named: .touchBarVolumeUpTemplate)!)
             return (
                 item: .staticButton(title: ""),
-                action: .hidKey(keycode: Int(NX_KEYTYPE_SOUND_UP)),
+                action: .hidKey(keycode: NX_KEYTYPE_SOUND_UP),
                 tapAction: TapAction(actionType: TapActionType.hidKey, keycode: Int(NX_KEYTYPE_SOUND_UP)),
                 longTapAction: LongTapAction(actionType: TapActionType.none),
                 parameters: [.image: imageParameter]
@@ -116,7 +116,7 @@ class SupportedTypesHolder {
             let imageParameter = GeneralParameter.image(source: NSImage(named: .touchBarAudioOutputMuteTemplate)!)
             return (
                 item: .staticButton(title: ""),
-                action: .hidKey(keycode: Int(NX_KEYTYPE_MUTE)),
+                action: .hidKey(keycode: NX_KEYTYPE_MUTE),
                 tapAction: TapAction(actionType: TapActionType.hidKey, keycode: Int(NX_KEYTYPE_MUTE)),
                 longTapAction: LongTapAction(actionType: TapActionType.none),
                 parameters: [.image: imageParameter]
@@ -126,7 +126,7 @@ class SupportedTypesHolder {
             let imageParameter = GeneralParameter.image(source: NSImage(named: .touchBarRewindTemplate)!)
             return (
                 item: .staticButton(title: ""),
-                action: .hidKey(keycode: Int(NX_KEYTYPE_PREVIOUS)),
+                action: .hidKey(keycode: NX_KEYTYPE_PREVIOUS),
                 tapAction: TapAction(actionType: TapActionType.hidKey, keycode: Int(NX_KEYTYPE_PREVIOUS)),
                 longTapAction: LongTapAction(actionType: TapActionType.none),
                 parameters: [.image: imageParameter]
@@ -136,7 +136,7 @@ class SupportedTypesHolder {
             let imageParameter = GeneralParameter.image(source: NSImage(named: .touchBarPlayPauseTemplate)!)
             return (
                 item: .staticButton(title: ""),
-                action: .hidKey(keycode: Int(NX_KEYTYPE_PLAY)),
+                action: .hidKey(keycode: NX_KEYTYPE_PLAY),
                 tapAction: TapAction(actionType: TapActionType.hidKey, keycode: Int(NX_KEYTYPE_PLAY)),
                 longTapAction: LongTapAction(actionType: TapActionType.none),
                 parameters: [.image: imageParameter]
@@ -146,7 +146,7 @@ class SupportedTypesHolder {
             let imageParameter = GeneralParameter.image(source: NSImage(named: .touchBarFastForwardTemplate)!)
             return (
                 item: .staticButton(title: ""),
-                action: .hidKey(keycode: Int(NX_KEYTYPE_NEXT)),
+                action: .hidKey(keycode: NX_KEYTYPE_NEXT),
                 tapAction: TapAction(actionType: TapActionType.hidKey, keycode: Int(NX_KEYTYPE_NEXT)),
                 longTapAction: LongTapAction(actionType: TapActionType.none),
                 parameters: [.image: imageParameter]
@@ -308,6 +308,18 @@ class SupportedTypesHolder {
                 parameters: [:]
             )
         },
+        "pomodoro": { decoder in
+            enum CodingKeys: String, CodingKey { case refreshInterval }
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            let interval = try container.decodeIfPresent(Double.self, forKey: .refreshInterval)
+            return (
+                item: .pomodoro(interval: interval ?? 1500.00),
+                action: .none,
+                tapAction: TapAction(actionType: TapActionType.none),
+                longTapAction: LongTapAction(actionType: TapActionType.none),
+                parameters: [:]
+            )
+        },
     ]
 
     static let sharedInstance = SupportedTypesHolder()
@@ -354,6 +366,7 @@ enum ItemType: Decodable {
     case currency(interval: Double, from: String, to: String)
     case inputsource()
     case music(interval: Double)
+    case pomodoro(interval: Double)
 
     private enum CodingKeys: String, CodingKey {
         case type
@@ -383,6 +396,7 @@ enum ItemType: Decodable {
         case currency
         case inputsource
         case music
+        case pomodoro
     }
 
     init(from decoder: Decoder) throws {
@@ -424,13 +438,16 @@ enum ItemType: Decodable {
         case .music:
             let interval = try container.decodeIfPresent(Double.self, forKey: .refreshInterval) ?? 1800.0
             self = .music(interval: interval)
+        case .pomodoro:
+            let interval = try container.decodeIfPresent(Double.self, forKey: .refreshInterval) ?? 1500.0
+            self = .pomodoro(interval: interval)
         }
     }
 }
 
 enum ActionType: Decodable {
     case none
-    case hidKey(keycode: Int)
+    case hidKey(keycode: Int32)
     case keyPress(keycode: Int)
     case appleSctipt(source: SourceProtocol)
     case shellScript(executable: String, parameters: [String])
@@ -459,7 +476,7 @@ enum ActionType: Decodable {
         let type = try container.decodeIfPresent(ActionTypeRaw.self, forKey: .action)
         switch type {
         case .some(.hidKey):
-            let keycode = try container.decode(Int.self, forKey: .keycode)
+            let keycode = try container.decode(Int32.self, forKey: .keycode)
             self = .hidKey(keycode: keycode)
         case .some(.keyPress):
             let keycode = try container.decode(Int.self, forKey: .keycode)
@@ -480,28 +497,12 @@ enum ActionType: Decodable {
     }
 }
 
-extension ItemType: Equatable {}
-func ==(lhs: ItemType, rhs: ItemType) -> Bool {
-    switch (lhs, rhs) {
-    case let (.staticButton(a), .staticButton(b)):
-        return a == b
-    case let (.appleScriptTitledButton(a, b), .appleScriptTitledButton(c, d)):
-        return a == c && b == d
-
-    default:
-        return false
-    }
-}
-
 extension ActionType: Equatable {}
 func ==(lhs: ActionType, rhs: ActionType) -> Bool {
     switch (lhs, rhs) {
     case (.none, .none):
         return true
-    case let (.hidKey(a), .hidKey(b)),
-         let (.keyPress(a), .keyPress(b)):
-        return a == b
-    case let (.appleSctipt(a), .appleSctipt(b)):
+    case let (.hidKey(a), .hidKey(b)):
         return a == b
     case let (.shellScript(a, b), .shellScript(c, d)):
         return a == c && b == d
@@ -509,6 +510,58 @@ func ==(lhs: ActionType, rhs: ActionType) -> Bool {
         return a == b
     default:
         return false
+    }
+}
+
+enum LongActionType: Decodable {
+    case none
+    case hidKey(keycode: Int32)
+    case keyPress(keycode: Int)
+    case appleSctipt(source: SourceProtocol)
+    case shellScript(executable: String, parameters: [String])
+    case custom(closure: ()->())
+    case openUrl(url: String)
+
+    private enum CodingKeys: String, CodingKey {
+        case longAction
+        case keycode
+        case actionAppleScript
+        case executablePath
+        case shellArguments
+        case longUrl
+    }
+
+    private enum LongActionTypeRaw: String, Decodable {
+        case hidKey
+        case keyPress
+        case appleScript
+        case shellScript
+        case openUrl
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let longType = try container.decodeIfPresent(LongActionTypeRaw.self, forKey: .longAction)
+        switch longType {
+        case .some(.hidKey):
+            let keycode = try container.decode(Int32.self, forKey: .keycode)
+            self = .hidKey(keycode: keycode)
+        case .some(.keyPress):
+            let keycode = try container.decode(Int.self, forKey: .keycode)
+            self = .keyPress(keycode: keycode)
+        case .some(.appleScript):
+            let source = try container.decode(Source.self, forKey: .actionAppleScript)
+            self = .appleSctipt(source: source)
+        case .some(.shellScript):
+            let executable = try container.decode(String.self, forKey: .executablePath)
+            let parameters = try container.decodeIfPresent([String].self, forKey: .shellArguments) ?? []
+            self = .shellScript(executable: executable, parameters: parameters)
+        case .some(.openUrl):
+            let longUrl = try container.decode(String.self, forKey: .longUrl)
+            self = .openUrl(url: longUrl)
+        case .none:
+            self = .none
+        }
     }
 }
 
@@ -597,10 +650,6 @@ extension NSImage: SourceProtocol {
     var image: NSImage? {
         return self
     }
-}
-extension SourceProtocol where Self: Equatable {}
-func ==(left: SourceProtocol, right: SourceProtocol) -> Bool {
-    return left.data == right.data
 }
 
 extension String {

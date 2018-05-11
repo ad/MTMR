@@ -39,6 +39,8 @@ extension ItemType {
             return "com.toxblh.mtmr.inputsource."
         case .music(interval: _):
             return "com.toxblh.mtmr.music."
+        case .pomodoro(interval: _):
+            return "com.toxblh.mtmr.pomodoro."
         }
     }
 
@@ -215,31 +217,24 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
             barItem = InputSourceBarItem(identifier: identifier, onLongTap: longTapAction)
         case .music(interval: let interval):
             barItem = MusicBarItem(identifier: identifier, interval: interval, onLongTap: longTapAction)
-        }
-
-        if case .width(let value)? = item.additionalParameters[.width], let widthBarItem = barItem as? CanSetWidth {
-            widthBarItem.setWidth(value: value)
+        case .pomodoro(interval: let interval):
+            barItem = PomodoroBarItem(identifier: identifier, interval: interval, onLongTap: longTapAction)
         }
         if case .bordered(let bordered)? = item.additionalParameters[.bordered], let item = barItem as? CustomButtonTouchBarItem {
-            item.button.isBordered = bordered
-            item.button.bezelStyle = bordered ? .rounded : .inline
+            item.isBordered = bordered
         }
         if case .background(let color)? = item.additionalParameters[.background], let item = barItem as? CustomButtonTouchBarItem {
-            if item.button.cell?.isBordered == false {
-                let newCell = NSButtonCell()
-                newCell.title = item.button.title
-                item.button.cell = newCell
-                item.button.cell?.isBordered = true
-            }
-            item.button.bezelColor = color
-            (item.button.cell as? NSButtonCell)?.backgroundColor = color
+            item.backgroundColor = color
+        }
+        if case .width(let value)? = item.additionalParameters[.width], let widthBarItem = barItem as? CanSetWidth {
+            widthBarItem.setWidth(value: value)
         }
         if case .image(let source)? = item.additionalParameters[.image], let item = barItem as? CustomButtonTouchBarItem {
             let button = item.button!
             button.imageScaling = .scaleProportionallyDown
             button.imagePosition = .imageLeading
-
-            if (button.title == "") {
+ 
+            if (item.title == "") {
                 button.imagePosition = .imageOnly
             }
 
@@ -295,7 +290,7 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
     func longTapAction(forItem item: BarItemDefinition) -> ()->() {
         switch item.longTapAction.actionType {
         case TapActionType.hidKey:
-            return { HIDPostAuxKey(item.longTapAction.keycode) }
+            return { HIDPostAuxKey(Int32(item.longTapAction.keycode)) }
         case TapActionType.keyPress:
             return { GenericKeyPress(keyCode: CGKeyCode(item.longTapAction.keycode)).send() }
         case TapActionType.appleScript:
@@ -332,7 +327,7 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
     func tapAction(forItem item: BarItemDefinition) -> ()->() {
         switch item.tapAction.actionType {
         case TapActionType.hidKey:
-            return { HIDPostAuxKey(item.tapAction.keycode) }
+            return { HIDPostAuxKey(Int32(item.tapAction.keycode)) }
         case TapActionType.keyPress:
             return { GenericKeyPress(keyCode: CGKeyCode(item.tapAction.keycode)).send() }
         case TapActionType.appleScript:

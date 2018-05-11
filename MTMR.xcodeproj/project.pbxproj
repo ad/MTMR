@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		36300E83209F040900B31C71 /* SupportHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0008E542080286C003AD4DD /* SupportHelpers.swift */; };
+		36300E8F20A2CF3400B31C71 /* AppleScriptDefinitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36300E8E20A2CF3400B31C71 /* AppleScriptDefinitionTests.swift */; };
+		36300E9120A2D2B200B31C71 /* BackgroundColorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36300E9020A2D2B200B31C71 /* BackgroundColorTests.swift */; };
 		368EDDE720812A1D00E10953 /* ScrollViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368EDDE620812A1D00E10953 /* ScrollViewItem.swift */; };
 		36C2ECD7207B6DAE003CDA33 /* TimeTouchBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C2ECD6207B6DAE003CDA33 /* TimeTouchBarItem.swift */; };
 		36C2ECD9207B74B4003CDA33 /* AppleScriptTouchBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C2ECD8207B74B4003CDA33 /* AppleScriptTouchBarItem.swift */; };
@@ -20,6 +23,8 @@
 		6042B6AA2083E27000C525C8 /* DeprecatedCarbonAPI.c in Sources */ = {isa = PBXBuildFile; fileRef = 6042B6A92083E27000C525C8 /* DeprecatedCarbonAPI.c */; };
 		607EEA4B2087835F009DA5F0 /* WeatherBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607EEA4A2087835F009DA5F0 /* WeatherBarItem.swift */; };
 		607EEA4D2087A8DA009DA5F0 /* CurrencyBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607EEA4C2087A8DA009DA5F0 /* CurrencyBarItem.swift */; };
+		608A54BE20A495040093EF88 /* PomodoroBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608A54BD20A495040093EF88 /* PomodoroBarItem.swift */; };
+		60EF94FC20A1987B009D9E18 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60EF94FB20A1987A009D9E18 /* CoreLocation.framework */; };
 		60F24309209E0EE000679C1C /* MusicBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F24308209E0EE000679C1C /* MusicBarItem.swift */; };
 		60F7D454208CC31400ABF5D2 /* InputSourceBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F7D453208CC31400ABF5D2 /* InputSourceBarItem.swift */; };
 		B0008E552080286C003AD4DD /* SupportHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0008E542080286C003AD4DD /* SupportHelpers.swift */; };
@@ -47,17 +52,10 @@
 		B0F8771A207AC1EA00D6E430 /* TouchBarSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = B0F87719207AC1EA00D6E430 /* TouchBarSupport.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		B082B262205C7D8000BC04DC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B082B247205C7D8000BC04DC /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B082B24E205C7D8000BC04DC;
-			remoteInfo = MTMR;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
+		36300E85209FD16700B31C71 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = SOURCE_ROOT; };
+		36300E8E20A2CF3400B31C71 /* AppleScriptDefinitionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleScriptDefinitionTests.swift; sourceTree = "<group>"; };
+		36300E9020A2D2B200B31C71 /* BackgroundColorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundColorTests.swift; sourceTree = "<group>"; };
 		368EDDE620812A1D00E10953 /* ScrollViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewItem.swift; sourceTree = "<group>"; };
 		36BDC22F207CDA8600FCFEBE /* TECHNICAL_DEBT.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TECHNICAL_DEBT.md; sourceTree = "<group>"; };
 		36C2ECD2207B3B1D003CDA33 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -73,6 +71,8 @@
 		6042B6A92083E27000C525C8 /* DeprecatedCarbonAPI.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = DeprecatedCarbonAPI.c; sourceTree = "<group>"; };
 		607EEA4A2087835F009DA5F0 /* WeatherBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherBarItem.swift; sourceTree = "<group>"; };
 		607EEA4C2087A8DA009DA5F0 /* CurrencyBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyBarItem.swift; sourceTree = "<group>"; };
+		608A54BD20A495040093EF88 /* PomodoroBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroBarItem.swift; sourceTree = "<group>"; };
+		60EF94FB20A1987A009D9E18 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		60F24308209E0EE000679C1C /* MusicBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicBarItem.swift; sourceTree = "<group>"; };
 		60F7D453208CC31400ABF5D2 /* InputSourceBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSourceBarItem.swift; sourceTree = "<group>"; };
 		B0008E542080286C003AD4DD /* SupportHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportHelpers.swift; sourceTree = "<group>"; };
@@ -113,6 +113,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60EF94FC20A1987B009D9E18 /* CoreLocation.framework in Frameworks */,
 				B059D62D205F11E8006E6B86 /* DFRFoundation.framework in Frameworks */,
 				B09EB1E6207C0F8E00D5C1E0 /* MultitouchSupport.framework in Frameworks */,
 			);
@@ -131,6 +132,7 @@
 		B059D62B205F11E8006E6B86 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				60EF94FB20A1987A009D9E18 /* CoreLocation.framework */,
 				B09EB1E5207C0F8E00D5C1E0 /* MultitouchSupport.framework */,
 				B059D62C205F11E8006E6B86 /* DFRFoundation.framework */,
 			);
@@ -186,8 +188,11 @@
 		B082B264205C7D8000BC04DC /* MTMRTests */ = {
 			isa = PBXGroup;
 			children = (
+				36300E85209FD16700B31C71 /* .travis.yml */,
 				36C2ECDC207C723B003CDA33 /* ParseConfigTests.swift */,
 				B082B267205C7D8000BC04DC /* Info.plist */,
+				36300E8E20A2CF3400B31C71 /* AppleScriptDefinitionTests.swift */,
+				36300E9020A2D2B200B31C71 /* BackgroundColorTests.swift */,
 			);
 			path = MTMRTests;
 			sourceTree = "<group>";
@@ -234,6 +239,7 @@
 				6042B6A62083E03A00C525C8 /* AppScrubberTouchBarItem.swift */,
 				60F7D453208CC31400ABF5D2 /* InputSourceBarItem.swift */,
 				60F24308209E0EE000679C1C /* MusicBarItem.swift */,
+				608A54BD20A495040093EF88 /* PomodoroBarItem.swift */,
 			);
 			path = Widgets;
 			sourceTree = "<group>";
@@ -269,7 +275,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				B082B263205C7D8000BC04DC /* PBXTargetDependency */,
 			);
 			name = MTMRTests;
 			productName = MTMRTests;
@@ -355,6 +360,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B059D622205E03F5006E6B86 /* TouchBarController.swift in Sources */,
+				608A54BE20A495040093EF88 /* PomodoroBarItem.swift in Sources */,
 				B05600D32083E9BB00EB218D /* CustomSlider.swift in Sources */,
 				36C2ECD9207B74B4003CDA33 /* AppleScriptTouchBarItem.swift in Sources */,
 				B0F8771A207AC1EA00D6E430 /* TouchBarSupport.m in Sources */,
@@ -382,20 +388,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				36300E9120A2D2B200B31C71 /* BackgroundColorTests.swift in Sources */,
+				36300E8F20A2CF3400B31C71 /* AppleScriptDefinitionTests.swift in Sources */,
 				36C2ECDD207C723B003CDA33 /* ParseConfigTests.swift in Sources */,
+				36300E83209F040900B31C71 /* SupportHelpers.swift in Sources */,
 				36C2ECDE207C82DE003CDA33 /* ItemsParsing.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		B082B263205C7D8000BC04DC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = B082B24E205C7D8000BC04DC /* MTMR */;
-			targetProxy = B082B262205C7D8000BC04DC /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		B082B258205C7D8000BC04DC /* Main.storyboard */ = {
@@ -498,7 +499,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -522,8 +523,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
@@ -542,9 +545,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = D6D8BR2QNB;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",

@@ -55,6 +55,7 @@ class WeatherBarItem: CustomButtonTouchBarItem, CLLocationManagerDelegate {
         
         if !CLLocationManager.locationServicesEnabled() {
             print("Location services not enabled");
+            self.title = "➤"
             return
         }
 
@@ -118,7 +119,7 @@ class WeatherBarItem: CustomButtonTouchBarItem, CLLocationManagerDelegate {
     }
     
     func setWeather(text: String) {
-        button.title = text
+        self.title = text
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
