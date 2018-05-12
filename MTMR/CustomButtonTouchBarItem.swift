@@ -9,18 +9,14 @@
 import Cocoa
 
 class CustomButtonTouchBarItem: NSCustomTouchBarItem, NSGestureRecognizerDelegate {
-
-    public var tapClosure: (() -> ())?
-    public var longTapClosure: (() -> ())?
-    private(set) var button: NSButton! //todo hide completely
+    var tapClosure: (() -> ())?
+    var longTapClosure: (() -> ())?
+    private var button: NSButton!
     
     private var singleClick: NSClickGestureRecognizer!
     private var longClick: NSPressGestureRecognizer!
 
-    init(identifier: NSTouchBarItem.Identifier, title: String, onTap callback: @escaping () -> (), onLongTap callbackLong: @escaping () -> (), bezelColor: NSColor? = .clear) {
-        self.tapClosure = callback
-        self.longTapClosure = callbackLong
-
+    init(identifier: NSTouchBarItem.Identifier, title: String) {
         self.attributedTitle = title.defaultTouchbarAttributedString
         
         super.init(identifier: identifier)
@@ -65,7 +61,14 @@ class CustomButtonTouchBarItem: NSCustomTouchBarItem, NSGestureRecognizerDelegat
     
     var attributedTitle: NSAttributedString {
         didSet {
+            self.button?.imagePosition = attributedTitle.length > 0 ? .imageLeading : .imageOnly
             self.button?.attributedTitle = attributedTitle
+        }
+    }
+    
+    var image: NSImage? {
+        didSet {
+            button.image = image
         }
     }
     
@@ -81,9 +84,13 @@ class CustomButtonTouchBarItem: NSCustomTouchBarItem, NSGestureRecognizerDelegat
             cell.backgroundColor = color
         } else {
             button.isBordered = isBordered
-            button.bezelStyle = isBordered ? .rounded : .inline
         }
+        button.bezelStyle = isBordered ? .rounded : .inline
+        
+        button.imageScaling = .scaleProportionallyDown
+        button.imageHugsTitle = true
         button.attributedTitle = title
+        self.button?.imagePosition = title.length > 0 ? .imageLeading : .imageOnly
         button.image = image
         self.view = button
 
@@ -120,7 +127,6 @@ class CustomButtonTouchBarItem: NSCustomTouchBarItem, NSGestureRecognizerDelegat
             } else if let closure = self.tapClosure {
                 hf.tap(strong: 6)
                 closure()
-                print("long click")
             }
             break
         default:

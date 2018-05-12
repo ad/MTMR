@@ -13,16 +13,15 @@ class InputSourceBarItem: CustomButtonTouchBarItem {
     fileprivate var notificationCenter: CFNotificationCenter
     let buttonSize = NSSize(width: 21, height: 21)
 
-    init(identifier: NSTouchBarItem.Identifier, onLongTap: @escaping () -> ()) {
+    init(identifier: NSTouchBarItem.Identifier) {
         notificationCenter = CFNotificationCenterGetDistributedCenter();
-        super.init(identifier: identifier, title: "", onTap: onLongTap, onLongTap: onLongTap)        
-        self.tapClosure = { [weak self] in self?.switchInputSource() }
-        
-        self.button.frame.size = buttonSize
-        self.button.bounds.size = buttonSize
-        
+        super.init(identifier: identifier, title: "⏳")
+
         observeIputSourceChangedNotification();
         textInputSourceDidChange()
+        self.tapClosure = { [weak self] in
+            self?.switchInputSource()
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -38,19 +37,16 @@ class InputSourceBarItem: CustomButtonTouchBarItem {
 
         var iconImage: NSImage? = nil
 
-        if let imageURL = currentSource.iconImageURL {
-            if let image = NSImage(contentsOf: imageURL) {
-                iconImage = image
-            }
-        }
-
-        if iconImage == nil, let iconRef = currentSource.iconRef {
+        if let imageURL = currentSource.iconImageURL,
+            let image = NSImage(contentsOf: imageURL) {
+            iconImage = image
+        } else if let iconRef = currentSource.iconRef {
             iconImage = NSImage(iconRef: iconRef)
         }
 
-        if (iconImage != nil) {
-            self.button.cell?.image = iconImage
-            self.button.cell?.image?.size = buttonSize
+        if let iconImage = iconImage {
+            iconImage.size = buttonSize
+            self.image = iconImage
             self.title = ""
         } else {
             self.title = currentSource.name

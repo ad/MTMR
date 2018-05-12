@@ -62,7 +62,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             TouchBarController.shared.updateActiveApp()
         }
     }
-    
+
     @objc func openPreset(_ sender: Any?) {
         let dialog = NSOpenPanel();
         

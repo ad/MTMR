@@ -23,15 +23,15 @@ class MusicBarItem: CustomButtonTouchBarItem {
         "com.apple.Safari"
     ]
     
-    init(identifier: NSTouchBarItem.Identifier, interval: TimeInterval, onLongTap: @escaping () -> ()) {
+    init(identifier: NSTouchBarItem.Identifier, interval: TimeInterval) {
         self.interval = interval
         
-        super.init(identifier: identifier, title: "⏳", onTap: onLongTap, onLongTap: onLongTap)
+        super.init(identifier: identifier, title: "⏳")
         
-        button.bezelColor = .clear
-        button.imageScaling = .scaleProportionallyDown
-        button.imagePosition = .imageLeading
-        button.image?.size = NSSize(width: 24, height: 24)
+//        self.bezelColor = .clear
+//        self.imageScaling = .scaleProportionallyDown
+//        self.imagePosition = .imageLeading
+        self.image?.size = NSSize(width: 24, height: 24)
         
         self.tapClosure = { [weak self] in self?.playPause() }
         self.longTapClosure = { [weak self] in self?.nextTrack() }
@@ -42,11 +42,11 @@ class MusicBarItem: CustomButtonTouchBarItem {
     }
 
     @objc func marquee(){
-        let str = self.button.title
+        let str = self.title
         if (str.count > 10) {
             let indexFirst = str.index(str.startIndex, offsetBy: 0)
             let indexSecond = str.index(str.startIndex, offsetBy: 1)
-            self.button.title = String(str.suffix(from: indexSecond)) + String(str[indexFirst])
+            self.title = String(str.suffix(from: indexSecond)) + String(str[indexFirst])
         }
     }
     
@@ -237,9 +237,9 @@ class MusicBarItem: CustomButtonTouchBarItem {
                     }
                     if ident != "" {
                         if let appPath = NSWorkspace.shared.absolutePathForApplication(withBundleIdentifier: ident) {
-                            self.button.image = NSWorkspace.shared.icon(forFile: appPath)
-                            self.button.image?.size = self.buttonSize
-                            self.button.imagePosition = .imageLeft
+                            self.image = NSWorkspace.shared.icon(forFile: appPath)
+                            self.image?.size = self.buttonSize
+//                            self.imagePosition = .imageLeft
                             iconUpdated = true
                         }
                     }
@@ -250,7 +250,7 @@ class MusicBarItem: CustomButtonTouchBarItem {
  
         DispatchQueue.main.async {
             if !iconUpdated {
-                self.button.cell?.image = nil
+                self.image = nil
             }
             
             if !titleUpdated {

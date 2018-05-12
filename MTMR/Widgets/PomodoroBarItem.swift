@@ -19,9 +19,9 @@ class PomodoroBarItem: CustomButtonTouchBarItem {
         return String(format: "%.2i:%.2i", timeLeft / 60, timeLeft % 60)
     }
     
-    init(identifier: NSTouchBarItem.Identifier, interval: TimeInterval, onLongTap: @escaping () -> ()) {
+    init(identifier: NSTouchBarItem.Identifier, interval: TimeInterval) {
         self.interval = interval
-        super.init(identifier: identifier, title: " 🍅 ", onTap: onLongTap, onLongTap: onLongTap)
+        super.init(identifier: identifier, title: " 🍅 ")
         self.tapClosure = { [weak self] in self?.startStopAction() }
     }
     
@@ -41,7 +41,6 @@ class PomodoroBarItem: CustomButtonTouchBarItem {
     private func start() {
         self.isBordered = true
         self.backgroundColor = .systemGreen
-        self.button.bezelStyle = .rounded
 
         timeLeft = Int(interval)
         let queue: DispatchQueue = DispatchQueue(label: "Timer")
