@@ -26,6 +26,7 @@
 		608A54BE20A495040093EF88 /* PomodoroBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608A54BD20A495040093EF88 /* PomodoroBarItem.swift */; };
 		60EF94FC20A1987B009D9E18 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60EF94FB20A1987A009D9E18 /* CoreLocation.framework */; };
 		60F24309209E0EE000679C1C /* MusicBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F24308209E0EE000679C1C /* MusicBarItem.swift */; };
+		60F253CC20A5E0B700C3082E /* GroupBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F253CB20A5E0B700C3082E /* GroupBarItem.swift */; };
 		60F7D454208CC31400ABF5D2 /* InputSourceBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F7D453208CC31400ABF5D2 /* InputSourceBarItem.swift */; };
 		B0008E552080286C003AD4DD /* SupportHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0008E542080286C003AD4DD /* SupportHelpers.swift */; };
 		B04B7BB72087398C00C835D0 /* BatteryBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04B7BB62087398C00C835D0 /* BatteryBarItem.swift */; };
@@ -74,6 +75,7 @@
 		608A54BD20A495040093EF88 /* PomodoroBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroBarItem.swift; sourceTree = "<group>"; };
 		60EF94FB20A1987A009D9E18 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		60F24308209E0EE000679C1C /* MusicBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicBarItem.swift; sourceTree = "<group>"; };
+		60F253CB20A5E0B700C3082E /* GroupBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupBarItem.swift; sourceTree = "<group>"; };
 		60F7D453208CC31400ABF5D2 /* InputSourceBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSourceBarItem.swift; sourceTree = "<group>"; };
 		B0008E542080286C003AD4DD /* SupportHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportHelpers.swift; sourceTree = "<group>"; };
 		B04B7BB62087398C00C835D0 /* BatteryBarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryBarItem.swift; sourceTree = "<group>"; };
@@ -240,6 +242,7 @@
 				60F7D453208CC31400ABF5D2 /* InputSourceBarItem.swift */,
 				60F24308209E0EE000679C1C /* MusicBarItem.swift */,
 				608A54BD20A495040093EF88 /* PomodoroBarItem.swift */,
+				60F253CB20A5E0B700C3082E /* GroupBarItem.swift */,
 			);
 			path = Widgets;
 			sourceTree = "<group>";
@@ -374,6 +377,7 @@
 				6042B6AA2083E27000C525C8 /* DeprecatedCarbonAPI.c in Sources */,
 				B09EB1E4207C082000D5C1E0 /* HapticFeedback.swift in Sources */,
 				60F7D454208CC31400ABF5D2 /* InputSourceBarItem.swift in Sources */,
+				60F253CC20A5E0B700C3082E /* GroupBarItem.swift in Sources */,
 				36C2ECDB207C3FE7003CDA33 /* ItemsParsing.swift in Sources */,
 				B0A7E9AA205D6AA400EEF070 /* KeyPress.swift in Sources */,
 				36C2ECD7207B6DAE003CDA33 /* TimeTouchBarItem.swift in Sources */,

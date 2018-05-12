@@ -41,6 +41,8 @@ extension ItemType {
             return "com.toxblh.mtmr.music."
         case .pomodoro(interval: _):
             return "com.toxblh.mtmr.pomodoro."
+        case .groupBar(title: _):
+            return "com.toxblh.mtmr.groupBar."
         }
     }
 
@@ -85,6 +87,8 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
     private override init() {
         super.init()
         SupportedTypesHolder.sharedInstance.register(typename: "exitTouchbar", item: .staticButton(title: "exit"), action: .custom(closure: { [weak self] in self?.dismissTouchBar()}))
+        
+        SupportedTypesHolder.sharedInstance.register(typename: "test", item: .groupBar(title: "test"), action: .custom(closure: { [weak self] in self?.dismissTouchBar()}))
 
         if let blackListed = UserDefaults.standard.stringArray(forKey: "com.toxblh.mtmr.blackListedApps") {
             self.blacklistAppIdentifiers = blackListed
@@ -266,6 +270,8 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
             barItem = MusicBarItem(identifier: identifier, interval: interval, onLongTap: longTapAction)
         case .pomodoro(interval: let interval):
             barItem = PomodoroBarItem(identifier: identifier, interval: interval, onLongTap: longTapAction)
+        case .groupBar(title: let title):
+            barItem = GroupBarItem(identifier: identifier, title: title, onLongTap: longTapAction)
         }
         if case .bordered(let bordered)? = item.additionalParameters[.bordered], let item = barItem as? CustomButtonTouchBarItem {
             item.isBordered = bordered
