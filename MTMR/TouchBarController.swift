@@ -184,7 +184,7 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
     @objc func setupControlStripPresence() {
         DFRSystemModalShowsCloseBoxWhenFrontMost(false)
         let item = NSCustomTouchBarItem(identifier: .controlStripItem)
-        item.view = NSButton(image: #imageLiteral(resourceName: "Strip"), target: self, action: #selector(presentTouchBar))
+        item.view = NSButton(image: #imageLiteral(resourceName: "StatusImage"), target: self, action: #selector(presentTouchBar))
         NSTouchBarItem.addSystemTrayItem(item)
         DFRElementSetControlStripPresenceForIdentifier(.controlStripItem, true)
     }
@@ -299,10 +299,12 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
                 return {}
             }
             return {
-                var error: NSDictionary?
-                appleScript.executeAndReturnError(&error)
-                if let error = error {
-                    print("error \(error) when handling \(item) ")
+                DispatchQueue.appleScriptQueue.async {
+                    var error: NSDictionary?
+                    appleScript.executeAndReturnError(&error)
+                    if let error = error {
+                        print("error \(error) when handling \(item) ")
+                    }
                 }
             }
         case .shellScript(executable: let executable, parameters: let parameters):
