@@ -27,15 +27,11 @@ class MusicBarItem: CustomButtonTouchBarItem {
         self.interval = interval
         
         super.init(identifier: identifier, title: "⏳")
-        
-//        self.bezelColor = .clear
-//        self.imageScaling = .scaleProportionallyDown
-//        self.imagePosition = .imageLeading
-        self.image?.size = NSSize(width: 24, height: 24)
+        self.isBordered = false
         
         self.tapClosure = { [weak self] in self?.playPause() }
         self.longTapClosure = { [weak self] in self?.nextTrack() }
-
+        
         DispatchQueue.main.async {
             self.updatePlayer()
         }
@@ -61,15 +57,15 @@ class MusicBarItem: CustomButtonTouchBarItem {
                     if (musicPlayer.className == "SpotifyApplication") {
                         let mp = (musicPlayer as SpotifyApplication)
                         mp.playpause!()
-                        break
+                        return
                     } else if (musicPlayer.className == "ITunesApplication") {
                         let mp = (musicPlayer as iTunesApplication)
                         mp.playpause!()
-                        break
+                        return
                     } else if (musicPlayer.className == "VOXApplication") {
                         let mp = (musicPlayer as VoxApplication)
                         mp.playpause!()
-                        break
+                        return
                     } else if (musicPlayer.className == "SafariApplication") {
                         // You must enable the 'Allow JavaScript from Apple Events' option in Safari's Develop menu to use 'do JavaScript'.
                         let safariApplication = musicPlayer as SafariApplication
@@ -78,37 +74,37 @@ class MusicBarItem: CustomButtonTouchBarItem {
                             for tab in window.tabs!() {
                                 let tab = tab as! SafariTab
                                 if (tab.URL?.starts(with: "https://music.yandex.ru"))! {
-                                    safariApplication.doJavaScript!("document.getElementsByClassName('player-controls__btn_play')[0].click()", in: tab)
-                                    break
+                                    _ = safariApplication.doJavaScript!("document.getElementsByClassName('player-controls__btn_play')[0].click()", in: tab)
+                                    return
                                 } else if ((tab.URL?.starts(with: "https://vk.com/audios"))! || (tab.URL?.starts(with: "https://vk.com/music"))!) {
-                                    safariApplication.doJavaScript!("document.getElementsByClassName('audio_page_player_play')[0].click()", in: tab)
-                                    break
+                                    _ = safariApplication.doJavaScript!("document.getElementsByClassName('audio_page_player_play')[0].click()", in: tab)
+                                    return
                                 } else if (tab.URL?.starts(with: "https://www.youtube.com/watch"))! {
-                                    safariApplication.doJavaScript!("document.getElementById('movie_player').click()", in: tab)
-                                    break
+                                    _ = safariApplication.doJavaScript!("document.getElementById('movie_player').click()", in: tab)
+                                    return
                                 }
                             }
                         }
                     }
-//                    else if (musicPlayer.className == "GoogleChromeApplication") {
-//                        let chromeApplication = musicPlayer as GoogleChromeApplication
-//                        let chromeWindows = chromeApplication.windows?().compactMap({ $0 as? GoogleChromeWindow })
-//                        for window in chromeWindows! {
-//                            for tab in window.tabs!() {
-//                                let tab = tab as! GoogleChromeTab
-//                                if (tab.URL?.starts(with: "https://music.yandex.ru"))! {
-//                                    chromeApplication.executeJavaScript!(javascript: "document.getElementsByClassName('player-controls__btn_play')[0].click()")
-//                                    break
-//                                } else if ((tab.URL?.starts(with: "https://vk.com/audios"))! || (tab.URL?.starts(with: "https://vk.com/music"))!) {
-//                                    chromeApplication.executeJavaScript!(javascript: "document.getElementsByClassName('audio_page_player_ctrl')[0].click()")
-//                                    break
-//                                } else if (tab.URL?.starts(with: "https://www.youtube.com/watch"))! {
-//                                    chromeApplication.executeJavaScript!(javascript: "alert(document.title)") // , id: tab
-//                                    break // document.getElementById('movie_player').click()
-//                                }
-//                            }
-//                        }
-//                    }
+                    //                    else if (musicPlayer.className == "GoogleChromeApplication") {
+                    //                        let chromeApplication = musicPlayer as GoogleChromeApplication
+                    //                        let chromeWindows = chromeApplication.windows?().compactMap({ $0 as? GoogleChromeWindow })
+                    //                        for window in chromeWindows! {
+                    //                            for tab in window.tabs!() {
+                    //                                let tab = tab as! GoogleChromeTab
+                    //                                if (tab.URL?.starts(with: "https://music.yandex.ru"))! {
+                    //                                    chromeApplication.executeJavaScript!(javascript: "document.getElementsByClassName('player-controls__btn_play')[0].click()")
+                    //                                    break
+                    //                                } else if ((tab.URL?.starts(with: "https://vk.com/audios"))! || (tab.URL?.starts(with: "https://vk.com/music"))!) {
+                    //                                    chromeApplication.executeJavaScript!(javascript: "document.getElementsByClassName('audio_page_player_ctrl')[0].click()")
+                    //                                    break
+                    //                                } else if (tab.URL?.starts(with: "https://www.youtube.com/watch"))! {
+                    //                                    chromeApplication.executeJavaScript!(javascript: "alert(document.title)") // , id: tab
+                    //                                    break // document.getElementById('movie_player').click()
+                    //                                }
+                    //                            }
+                    //                        }
+                    //                    }
                     break
                 }
             }
@@ -122,15 +118,15 @@ class MusicBarItem: CustomButtonTouchBarItem {
                     if (musicPlayer.className == "SpotifyApplication") {
                         let mp = (musicPlayer as SpotifyApplication)
                         mp.nextTrack!()
-                        break
+                        return
                     } else if (musicPlayer.className == "ITunesApplication") {
                         let mp = (musicPlayer as iTunesApplication)
                         mp.nextTrack!()
-                        break
+                        return
                     } else if (musicPlayer.className == "VOXApplication") {
                         let mp = (musicPlayer as VoxApplication)
                         mp.next!()
-                        break
+                        return
                     } else if (musicPlayer.className == "SafariApplication") {
                         // You must enable the 'Allow JavaScript from Apple Events' option in Safari's Develop menu to use 'do JavaScript'.
                         let safariApplication = musicPlayer as SafariApplication
@@ -139,19 +135,18 @@ class MusicBarItem: CustomButtonTouchBarItem {
                             for tab in window.tabs!() {
                                 let tab = tab as! SafariTab
                                 if (tab.URL?.starts(with: "https://music.yandex.ru"))! {
-                                    safariApplication.doJavaScript!("document.getElementsByClassName('player-controls__btn_next')[0].click()", in: tab)
-                                    break
+                                    _ = safariApplication.doJavaScript!("document.getElementsByClassName('player-controls__btn_next')[0].click()", in: tab)
+                                    return
                                 } else if ((tab.URL?.starts(with: "https://vk.com/audios"))! || (tab.URL?.starts(with: "https://vk.com/music"))!) {
-                                    safariApplication.doJavaScript!("document.getElementsByClassName('audio_page_player_next')[0].click()", in: tab)
-                                    break
+                                    _ = safariApplication.doJavaScript!("document.getElementsByClassName('audio_page_player_next')[0].click()", in: tab)
+                                    return
                                 } else if (tab.URL?.starts(with: "https://www.youtube.com/watch"))! {
-                                    safariApplication.doJavaScript!("document.getElementsByClassName('ytp-next-button')[0].click()", in: tab)
-                                    break
+                                    _ = safariApplication.doJavaScript!("document.getElementsByClassName('ytp-next-button')[0].click()", in: tab)
+                                    return
                                 }
                             }
                         }
                     }
-                    break
                 }
             }
         }
@@ -178,10 +173,10 @@ class MusicBarItem: CustomButtonTouchBarItem {
                             for tab in window.tabs!() {
                                 let tab = tab as! SafariTab
                                 if (tab.URL?.starts(with: "https://music.yandex.ru"))! {
-//                                    if (!(tab.name?.hasSuffix("на Яндекс.Музыке"))!) {
-                                        tempTitle = (tab.name)!
-                                        break
-//                                    }
+                                    //                                    if (!(tab.name?.hasSuffix("на Яндекс.Музыке"))!) {
+                                    tempTitle = (tab.name)!
+                                    break
+                                    //                                    }
                                 } else if ((tab.URL?.starts(with: "https://vk.com/audios"))! || (tab.URL?.starts(with: "https://vk.com/music"))!) {
                                     tempTitle = (tab.name)!
                                     break
@@ -218,7 +213,7 @@ class MusicBarItem: CustomButtonTouchBarItem {
                             ident = ""
                         }
                     }
-                
+
                     if (tempTitle == self.songTitle) {
                         DispatchQueue.main.asyncAfter(deadline: .now() + self.interval) { [weak self] in
                             self?.updatePlayer()
@@ -227,27 +222,27 @@ class MusicBarItem: CustomButtonTouchBarItem {
                     } else {
                         self.songTitle = tempTitle
                     }
-
-                    if (self.songTitle != "") {
-                        self.title = " " + self.songTitle! + "     "
+                    
+                    if let songTitle = self.songTitle?.ifNotEmpty {
+                        self.title = " " + songTitle + "     "
                         titleUpdated = true
                         self.timer?.invalidate()
                         self.timer = nil
                         self.timer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(self.marquee), userInfo: nil, repeats: true)
                     }
-                    if ident != "" {
-                        if let appPath = NSWorkspace.shared.absolutePathForApplication(withBundleIdentifier: ident) {
-                            self.image = NSWorkspace.shared.icon(forFile: appPath)
-                            self.image?.size = self.buttonSize
-//                            self.imagePosition = .imageLeft
-                            iconUpdated = true
-                        }
+
+                    if let ident = ident.ifNotEmpty,
+                        let appPath = NSWorkspace.shared.absolutePathForApplication(withBundleIdentifier: ident) {
+                        let image = NSWorkspace.shared.icon(forFile: appPath)
+                        image.size = self.buttonSize
+                        self.image = image
+                        iconUpdated = true
                     }
                     break
                 }
             }
         }
- 
+
         DispatchQueue.main.async {
             if !iconUpdated {
                 self.image = nil
@@ -342,8 +337,8 @@ extension SBApplication: SafariApplication {}
 @objc public protocol SafariWindow: SBObjectProtocol {
     @objc optional var name: String { get } // The title of the window.
     @objc optional func tabs() -> SBElementArray
-//    @objc optional var document: SafariDocument { get } // The document whose contents are displayed in the window.
-//    @objc optional func setCurrentTab(_ currentTab: SafariTab!) // The current tab.
+    //    @objc optional var document: SafariDocument { get } // The document whose contents are displayed in the window.
+    //    @objc optional func setCurrentTab(_ currentTab: SafariTab!) // The current tab.
 }
 extension SBObject: SafariWindow {}
 
