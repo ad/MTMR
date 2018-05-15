@@ -7,22 +7,25 @@
 //
 import Cocoa
 
-fileprivate extension NSTouchBarItem.Identifier {
-    static let test = NSTouchBarItem.Identifier("com.ad.test")
-}
-
 class GroupBarItem: NSPopoverTouchBarItem, NSTouchBarDelegate {
     
     var touchBar: NSTouchBar!
     
-    var presentingItem: NSPopoverTouchBarItem?
+    var jsonItems: [BarItemDefinition]
     
-    init(identifier: NSTouchBarItem.Identifier, title: String, onLongTap: @escaping () -> ()) {
+    var itemDefinitions: [NSTouchBarItem.Identifier: BarItemDefinition] = [:]
+    var items: [NSTouchBarItem.Identifier: NSTouchBarItem] = [:]
+    var leftIdentifiers: [NSTouchBarItem.Identifier] = []
+    var centerIdentifiers: [NSTouchBarItem.Identifier] = []
+    var centerItems: [NSTouchBarItem] = []
+    var rightIdentifiers: [NSTouchBarItem.Identifier] = []
+    var scrollArea: NSCustomTouchBarItem?
+    var centerScrollArea = NSTouchBarItem.Identifier("com.toxblh.mtmr.scrollArea.".appending(UUID().uuidString))
+    
+    init(identifier: NSTouchBarItem.Identifier, items: [BarItemDefinition]) {
+        jsonItems = items
         super.init(identifier: identifier)
-        self.collapsedRepresentationLabel = title
-        self.popoverTouchBar = makeTouchBar()
         self.popoverTouchBar.delegate = self
-        self.showsCloseButton = true
     }
     
     required init?(coder: NSCoder) {
@@ -30,14 +33,31 @@ class GroupBarItem: NSPopoverTouchBarItem, NSTouchBarDelegate {
     }
     
     @objc override func showPopover(_ sender: Any?) {
-        print("showPopover")
-        if let oldBar = TouchBarController.shared.touchBar {
+        if let oldBar = self.touchBar {
             NSTouchBar.minimizeSystemModalFunctionBar(oldBar)
         }
         self.touchBar = NSTouchBar()
-        touchBar.delegate = self
-        touchBar.defaultItemIdentifiers = [.test]
 
+        self.itemDefinitions = [:]
+        self.items = [:]
+        self.leftIdentifiers = []
+        self.centerItems = []
+        self.rightIdentifiers = []
+        
+        self.loadItemDefinitions(jsonItems: jsonItems)
+        self.createItems()
+        
+        centerItems = centerIdentifiers.compactMap({ (identifier) -> NSTouchBarItem? in
+            return items[identifier]
+        })
+        
+        self.centerScrollArea = NSTouchBarItem.Identifier("com.toxblh.mtmr.scrollArea.".appending(UUID().uuidString))
+        self.scrollArea = ScrollViewItem(identifier: centerScrollArea, items: centerItems)
+        
+        touchBar.delegate = self
+        touchBar.defaultItemIdentifiers = []
+        touchBar.defaultItemIdentifiers = self.leftIdentifiers + [centerScrollArea] + self.rightIdentifiers
+        
         if TouchBarController.shared.controlStripState {
             NSTouchBar.presentSystemModalFunctionBar(touchBar, systemTrayItemIdentifier: .controlStripItem)
         } else {
@@ -45,22 +65,42 @@ class GroupBarItem: NSPopoverTouchBarItem, NSTouchBarDelegate {
         }
     }
     
-    func makeTouchBar() -> NSTouchBar {
-        let mainBar = NSTouchBar()
-        mainBar.delegate = self
-        mainBar.defaultItemIdentifiers = [.test]
-        print(mainBar.itemIdentifiers)
-        return mainBar
-    }
-
     func touchBar(_ touchBar: NSTouchBar, makeItemForIdentifier identifier: NSTouchBarItem.Identifier) -> NSTouchBarItem? {
-        print(identifier)
-
-        if identifier == .test {
-            let item = AppScrubberTouchBarItem(identifier: identifier)
-            return item
-        } else {
-            return nil
+        if identifier == centerScrollArea {
+            return self.scrollArea
+        }
+        
+        guard let item = self.items[identifier],
+            let definition = self.itemDefinitions[identifier],
+            definition.align != .center else {
+                return nil
+        }
+        return item
+    }
+    
+    func loadItemDefinitions(jsonItems: [BarItemDefinition]) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH-mm-ss"
+        let time = dateFormatter.string(from: Date())
+        for item in jsonItems {
+            let identifierString = item.type.identifierBase.appending(time + "--" + UUID().uuidString)
+            let identifier = NSTouchBarItem.Identifier(identifierString)
+            itemDefinitions[identifier] = item
+            if item.align == .left {
+                leftIdentifiers.append(identifier)
+            }
+            if item.align == .right {
+                rightIdentifiers.append(identifier)
+            }
+            if item.align == .center {
+                centerIdentifiers.append(identifier)
+            }
+        }
+    }
+    
+    func createItems() {
+        for (identifier, definition) in self.itemDefinitions {
+            self.items[identifier] = TouchBarController.shared.createItem(forIdentifier: identifier, definition: definition)
         }
     }
 }

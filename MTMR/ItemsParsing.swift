@@ -38,16 +38,12 @@ struct BarItemDefinition: Decodable {
         var additionalParameters = try GeneralParameters(from: decoder).parameters
         let type = try container.decode(String.self, forKey: .type)
         let parametersDecoder = SupportedTypesHolder.sharedInstance.lookup(by: type)
-        do {
-            if let result = try? parametersDecoder(decoder),
-                case let (itemType, action, tapAction, longTapAction, parameters) = result {
-                parameters.forEach { additionalParameters[$0] = $1 }
-                self.init(type: itemType, action: action, tapAction: tapAction, longTapAction: longTapAction, additionalParameters: additionalParameters)
-            } else {
-                self.init(type: .staticButton(title: "\(type) unknown"))
-            }
-        } catch {
-            print("\(error)")
+        if let result = try? parametersDecoder(decoder),
+            case let (itemType, action, tapAction, longTapAction, parameters) = result {
+            parameters.forEach { additionalParameters[$0] = $1 }
+            self.init(type: itemType, action: action, tapAction: tapAction, longTapAction: longTapAction, additionalParameters: additionalParameters)
+        } else {
+            self.init(type: .staticButton(title: "\(type) unknown"))
         }
     }
 
@@ -320,6 +316,18 @@ class SupportedTypesHolder {
                 parameters: [:]
             )
         },
+        "group": { decoder in
+            enum CodingKeys: CodingKey { case items }
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            let items = try container.decode([BarItemDefinition].self, forKey: .items) // ?? [BarItemDefinition]
+            return (
+                item: .groupBar(items: items),
+                action: .none,
+                tapAction: TapAction(actionType: TapActionType.none),
+                longTapAction: LongTapAction(actionType: TapActionType.none),
+                parameters: [:]
+            )
+        },
     ]
 
     static let sharedInstance = SupportedTypesHolder()
@@ -367,7 +375,7 @@ enum ItemType: Decodable {
     case inputsource()
     case music(interval: Double)
     case pomodoro(interval: Double)
-    case groupBar(title: String)
+    case groupBar(items: [BarItemDefinition])
 
     private enum CodingKeys: String, CodingKey {
         case type
@@ -383,6 +391,7 @@ enum ItemType: Decodable {
         case image
         case url
         case longUrl
+        case items
     }
 
     enum ItemTypeRaw: String, Decodable {
@@ -444,8 +453,8 @@ enum ItemType: Decodable {
             let interval = try container.decodeIfPresent(Double.self, forKey: .refreshInterval) ?? 1500.0
             self = .pomodoro(interval: interval)
         case .groupBar:
-            let title = try container.decode(String.self, forKey: .title)
-            self = .groupBar(title: title)
+            let items = try container.decodeIfPresent([BarItemDefinition].self, forKey: .items)
+            self = .groupBar(items: items!)
         }
     }
 }
@@ -576,6 +585,7 @@ enum GeneralParameter {
     case align(_: Align)
     case bordered(_: Bool)
     case background(_:NSColor)
+    case title(_:String)
 }
 
 struct GeneralParameters: Decodable {
@@ -587,6 +597,7 @@ struct GeneralParameters: Decodable {
         case align
         case bordered
         case background
+        case title
     }
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -605,6 +616,9 @@ struct GeneralParameters: Decodable {
         }
         if let backgroundColor = try container.decodeIfPresent(String.self, forKey: .background)?.hexColor {
             result[.background] = .background(backgroundColor)
+        }
+        if let title = try container.decodeIfPresent(String.self, forKey: .title) {
+            result[.title] = .title(title)
         }
 
         parameters = result
@@ -714,14 +728,10 @@ struct TapAction: Codable {
         let url = try container.decodeIfPresent(String.self, forKey: .url) ?? ""
         let keycode = try container.decodeIfPresent(Int.self, forKey: .keycode) ?? -1
         var appleScript = try container.decodeIfPresent(String.self, forKey: .appleScript)
-        do {
-            if let test = appleScript?.fileData?.utf8string {
-                appleScript = test
-            } else if let test = appleScript?.base64Data?.utf8string {
-                appleScript = test
-            }
-        } catch {
-            print("error")
+        if let test = appleScript?.fileData?.utf8string {
+            appleScript = test
+        } else if let test = appleScript?.base64Data?.utf8string {
+            appleScript = test
         }
         let executablePath = try container.decodeIfPresent(String.self, forKey: .executablePath) ?? ""
         let shellArguments = try container.decodeIfPresent([String].self, forKey: .shellArguments) ?? []
@@ -763,14 +773,10 @@ struct LongTapAction: Codable {
         let url = try container.decodeIfPresent(String.self, forKey: .url) ?? ""
         let keycode = try container.decodeIfPresent(Int.self, forKey: .keycode) ?? -1
         var appleScript = try container.decodeIfPresent(String.self, forKey: .appleScript)
-        do {
-            if let test = appleScript?.fileData?.utf8string {
-                appleScript = test
-            } else if let test = appleScript?.base64Data?.utf8string {
-                appleScript = test
-            }
-        } catch {
-            print("error")
+        if let test = appleScript?.fileData?.utf8string {
+            appleScript = test
+        } else if let test = appleScript?.base64Data?.utf8string {
+            appleScript = test
         }
         let executablePath = try container.decodeIfPresent(String.self, forKey: .executablePath) ?? ""
         let shellArguments = try container.decodeIfPresent([String].self, forKey: .shellArguments) ?? []
