@@ -367,6 +367,7 @@ enum ItemType: Decodable {
     case inputsource()
     case music(interval: Double)
     case pomodoro(interval: Double)
+    case groupBar(title: String)
 
     private enum CodingKeys: String, CodingKey {
         case type
@@ -397,6 +398,7 @@ enum ItemType: Decodable {
         case inputsource
         case music
         case pomodoro
+        case groupBar
     }
 
     init(from decoder: Decoder) throws {
@@ -441,6 +443,9 @@ enum ItemType: Decodable {
         case .pomodoro:
             let interval = try container.decodeIfPresent(Double.self, forKey: .refreshInterval) ?? 1500.0
             self = .pomodoro(interval: interval)
+        case .groupBar:
+            let title = try container.decode(String.self, forKey: .title)
+            self = .groupBar(title: title)
         }
     }
 }

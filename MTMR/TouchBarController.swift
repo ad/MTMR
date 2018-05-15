@@ -41,6 +41,8 @@ extension ItemType {
             return "com.toxblh.mtmr.music."
         case .pomodoro(interval: _):
             return "com.toxblh.mtmr.pomodoro."
+        case .groupBar(title: _):
+            return "com.toxblh.mtmr.groupBar."
         }
     }
 
@@ -86,10 +88,12 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
         super.init()
         SupportedTypesHolder.sharedInstance.register(typename: "exitTouchbar", item: .staticButton(title: "exit"), action: .custom(closure: { [weak self] in self?.dismissTouchBar()}))
 
+        SupportedTypesHolder.sharedInstance.register(typename: "test", item: .groupBar(title: "test"), action: .custom(closure: { [weak self] in self?.dismissTouchBar()}))
+
         if let blackListed = UserDefaults.standard.stringArray(forKey: "com.toxblh.mtmr.blackListedApps") {
             self.blacklistAppIdentifiers = blackListed
         }
-        
+
         NSWorkspace.shared.notificationCenter.addObserver(self, selector: #selector(activeApplicationChanged), name: NSWorkspace.didLaunchApplicationNotification, object: nil)
         NSWorkspace.shared.notificationCenter.addObserver(self, selector: #selector(activeApplicationChanged), name: NSWorkspace.didTerminateApplicationNotification, object: nil)
         NSWorkspace.shared.notificationCenter.addObserver(self, selector: #selector(activeApplicationChanged), name: NSWorkspace.didActivateApplicationNotification, object: nil)
@@ -258,6 +262,8 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
             barItem = MusicBarItem(identifier: identifier, interval: interval)
         case .pomodoro(interval: let interval):
             barItem = PomodoroBarItem(identifier: identifier, interval: interval)
+        case .groupBar(title: let title):
+            barItem = GroupBarItem(identifier: identifier, title: title, onLongTap: longTapAction)
         }
         
         if item.action == .none {
