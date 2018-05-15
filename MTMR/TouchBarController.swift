@@ -364,7 +364,7 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
         case TapActionType.none:
             return nil
         case TapActionType.custom:
-            return item.longTapAction.custom as! () -> ()
+            return (item.longTapAction.custom as? () -> ())
         }
     }
 
@@ -401,7 +401,7 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
         case TapActionType.none:
             return nil
         case TapActionType.custom:
-            return item.tapAction.custom as! () -> ()
+            return (item.tapAction.custom as? () -> ())
         }
     }
 }
