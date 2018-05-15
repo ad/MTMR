@@ -57,6 +57,7 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
     static let shared = TouchBarController()
 
     var touchBar: NSTouchBar!
+    var activeTouchBar: NSTouchBar!
 
     var itemDefinitions: [NSTouchBarItem.Identifier: BarItemDefinition] = [:]
     var items: [NSTouchBarItem.Identifier: NSTouchBarItem] = [:]
@@ -87,6 +88,8 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
     private override init() {
         super.init()
         SupportedTypesHolder.sharedInstance.register(typename: "exitTouchbar", item: .staticButton(title: "exit"), action: .custom(closure: { [weak self] in self?.dismissTouchBar()}))
+        
+        SupportedTypesHolder.sharedInstance.register(typename: "close", item: .staticButton(title: "⨴"), action: .custom(closure: { [weak self] in if let oldBar = self?.activeTouchBar { NSTouchBar.minimizeSystemModalFunctionBar(oldBar) } }))
 
         if let blackListed = UserDefaults.standard.stringArray(forKey: "com.toxblh.mtmr.blackListedApps") {
             self.blacklistAppIdentifiers = blackListed
@@ -128,6 +131,8 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
         touchBar.defaultItemIdentifiers = []
         touchBar.defaultItemIdentifiers = self.leftIdentifiers + [centerScrollArea] + self.rightIdentifiers
 
+        self.activeTouchBar = self.touchBar
+        
         self.updateActiveApp()
     }
     
