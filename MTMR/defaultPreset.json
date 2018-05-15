@@ -97,7 +97,52 @@
   "type": "group",
   "align": "center",
   "bordered": true,
-  "title": "group",
+  "title": "stats",
+  "items": [
+            {
+            "type": "close",
+            "align": "left",
+            "width": 45
+            },
+            {
+            "title": "ip",
+            "type": "appleScriptTitledButton",
+            "refreshInterval": 10, //optional
+            "source": {
+            "inline": "return \"IP \" & do shell script \"curl http:\/\/ipinfo.io\/ip\""
+            },
+            },
+            {
+            "title": "cpu",
+            "type": "appleScriptTitledButton",
+            "refreshInterval": 10, //optional
+            "source": {
+            "inline": "set cpu to do shell script \"ps axo %cpu | awk '{s+=$1}END{print s}'\"\rreturn  \"CPU \" & cpu & \"%\""
+            },
+            "tapAction": {
+            "type": "appleScript",
+            "appleScript": "activate application \"Activity Monitor\"\rtell application \"System Events\"\r\ttell process \"Activity Monitor\"\r\t\ttell radio button \"CPU\" of radio group 1 of group 2 of toolbar 1 of window 1 to perform action \"AXPress\"\r\tend tell\rend tell",
+            },
+            },
+            {
+            "title": "mem",
+            "type": "appleScriptTitledButton",
+            "refreshInterval": 10, //optional
+            "source": {
+            "inline": "set mem to do shell script \"ps -A -o %mem | awk '{s+=$1}END{print s}'\"\rreturn \"MEM \" & mem & \"%\""
+            },
+            "tapAction": {
+            "type": "appleScript",
+            "appleScript": "activate application \"Activity Monitor\"\rtell application \"System Events\"\r\ttell process \"Activity Monitor\"\r\t\ttell radio button \"Memory\" of radio group 1 of group 2 of toolbar 1 of window 1 to perform action \"AXPress\"\r\tend tell\rend tell",
+            },
+            },
+            ]
+  },
+  {
+  "type": "group",
+  "align": "center",
+  "bordered": true,
+  "title": "media",
   "items": [
             {
             "type": "close",

@@ -103,7 +103,7 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
     }
 
     func createAndUpdatePreset(jsonItems: [BarItemDefinition]? = nil) {
-        if let oldBar = self.touchBar {
+        if let oldBar = self.activeTouchBar {
             NSTouchBar.minimizeSystemModalFunctionBar(oldBar)
         }
         self.touchBar = NSTouchBar()
@@ -209,12 +209,12 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
     }
     
     @objc func resetControlStrip() {
-        NSTouchBar.minimizeSystemModalFunctionBar(self.touchBar)
+        NSTouchBar.minimizeSystemModalFunctionBar(self.activeTouchBar)
         presentTouchBar()
     }
 
     @objc private func dismissTouchBar() {
-        NSTouchBar.minimizeSystemModalFunctionBar(touchBar)
+        NSTouchBar.minimizeSystemModalFunctionBar(activeTouchBar)
     }
 
     func touchBar(_ touchBar: NSTouchBar, makeItemForIdentifier identifier: NSTouchBarItem.Identifier) -> NSTouchBarItem? {
