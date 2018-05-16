@@ -33,9 +33,6 @@ class GroupBarItem: NSPopoverTouchBarItem, NSTouchBarDelegate {
     }
     
     @objc override func showPopover(_ sender: Any?) {
-        if let oldBar = self.touchBar {
-            NSTouchBar.minimizeSystemModalFunctionBar(oldBar)
-        }
         self.touchBar = NSTouchBar()
 
         self.itemDefinitions = [:]

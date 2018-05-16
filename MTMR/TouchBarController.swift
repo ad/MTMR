@@ -89,7 +89,10 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
         super.init()
         SupportedTypesHolder.sharedInstance.register(typename: "exitTouchbar", item: .staticButton(title: "exit"), action: .custom(closure: { [weak self] in self?.dismissTouchBar()}))
         
-        SupportedTypesHolder.sharedInstance.register(typename: "close", item: .staticButton(title: "⨴"), action: .custom(closure: { [weak self] in if let oldBar = self?.activeTouchBar { NSTouchBar.minimizeSystemModalFunctionBar(oldBar) } }))
+        
+        SupportedTypesHolder.sharedInstance.register(typename: "close") { _ in
+            return (item: .staticButton(title: ""), action: .custom(closure: { [weak self] in if let oldBar = self?.activeTouchBar { NSTouchBar.minimizeSystemModalFunctionBar(oldBar) } }), tapAction: TapAction(actionType: TapActionType.none), longTapAction: LongTapAction(actionType: TapActionType.none), parameters: [.width: .width(34), .image: .image(source: (NSImage(named: .touchBarAddDetailTemplate)?.rotateByDegreess(degrees: 45))!)])
+        }
 
         if let blackListed = UserDefaults.standard.stringArray(forKey: "com.toxblh.mtmr.blackListedApps") {
             self.blacklistAppIdentifiers = blackListed
@@ -214,7 +217,7 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
     }
 
     @objc private func dismissTouchBar() {
-        NSTouchBar.minimizeSystemModalFunctionBar(activeTouchBar)
+        NSTouchBar.minimizeSystemModalFunctionBar(self.activeTouchBar)
     }
 
     func touchBar(_ touchBar: NSTouchBar, makeItemForIdentifier identifier: NSTouchBarItem.Identifier) -> NSTouchBarItem? {
