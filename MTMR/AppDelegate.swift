@@ -83,7 +83,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 let jsonData = path.fileData
                 let jsonItems = jsonData?.barItemDefinitions() ?? [BarItemDefinition(type: .staticButton(title: "bad preset"))]
                 
-                TouchBarController.shared.createAndUpdatePreset(jsonItems: jsonItems)
+                TouchBarController.shared.createAndUpdatePreset(tempJsonItems: jsonItems)
             }
         }
     }
