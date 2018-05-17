@@ -9,8 +9,6 @@ import Cocoa
 
 class GroupBarItem: NSPopoverTouchBarItem, NSTouchBarDelegate {
     
-    var touchBar: NSTouchBar!
-    
     var jsonItems: [BarItemDefinition]
     
     var itemDefinitions: [NSTouchBarItem.Identifier: BarItemDefinition] = [:]
@@ -32,9 +30,11 @@ class GroupBarItem: NSPopoverTouchBarItem, NSTouchBarDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc override func showPopover(_ sender: Any?) {
-        self.touchBar = NSTouchBar()
+    deinit {
 
+    }
+    
+    @objc override func showPopover(_ sender: Any?) {
         self.itemDefinitions = [:]
         self.items = [:]
         self.leftIdentifiers = []
@@ -51,16 +51,14 @@ class GroupBarItem: NSPopoverTouchBarItem, NSTouchBarDelegate {
         self.centerScrollArea = NSTouchBarItem.Identifier("com.toxblh.mtmr.scrollArea.".appending(UUID().uuidString))
         self.scrollArea = ScrollViewItem(identifier: centerScrollArea, items: centerItems)
         
-        touchBar.delegate = self
-        touchBar.defaultItemIdentifiers = []
-        touchBar.defaultItemIdentifiers = self.leftIdentifiers + [centerScrollArea] + self.rightIdentifiers
-        
-        TouchBarController.shared.activeTouchBar = self.touchBar
+        TouchBarController.shared.touchBar.delegate = self
+        TouchBarController.shared.touchBar.defaultItemIdentifiers = []
+        TouchBarController.shared.touchBar.defaultItemIdentifiers = self.leftIdentifiers + [centerScrollArea] + self.rightIdentifiers
         
         if TouchBarController.shared.controlStripState {
-            NSTouchBar.presentSystemModalFunctionBar(touchBar, systemTrayItemIdentifier: .controlStripItem)
+            NSTouchBar.presentSystemModalFunctionBar(TouchBarController.shared.touchBar, systemTrayItemIdentifier: .controlStripItem)
         } else {
-            NSTouchBar.presentSystemModalFunctionBar(touchBar, placement: 1, systemTrayItemIdentifier: .controlStripItem)
+            NSTouchBar.presentSystemModalFunctionBar(TouchBarController.shared.touchBar, placement: 1, systemTrayItemIdentifier: .controlStripItem)
         }
     }
     

@@ -57,7 +57,6 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
     static let shared = TouchBarController()
 
     var touchBar: NSTouchBar!
-    var activeTouchBar: NSTouchBar!
 
     var itemDefinitions: [NSTouchBarItem.Identifier: BarItemDefinition] = [:]
     var items: [NSTouchBarItem.Identifier: NSTouchBarItem] = [:]
@@ -91,7 +90,7 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
         
         
         SupportedTypesHolder.sharedInstance.register(typename: "close") { _ in
-            return (item: .staticButton(title: ""), action: .custom(closure: { [weak self] in if let oldBar = self?.activeTouchBar { NSTouchBar.minimizeSystemModalFunctionBar(oldBar) } }), tapAction: TapAction(actionType: TapActionType.none), longTapAction: LongTapAction(actionType: TapActionType.none), parameters: [.width: .width(30), .image: .image(source: (NSImage(named: .stopProgressFreestandingTemplate))!)])
+            return (item: .staticButton(title: ""), action: .custom(closure: { [weak self] in self?.createAndUpdatePreset() }), tapAction: TapAction(actionType: TapActionType.none), longTapAction: LongTapAction(actionType: TapActionType.none), parameters: [.width: .width(30), .image: .image(source: (NSImage(named: .stopProgressFreestandingTemplate))!)])
         }
 
         if let blackListed = UserDefaults.standard.stringArray(forKey: "com.toxblh.mtmr.blackListedApps") {
@@ -106,7 +105,7 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
     }
 
     func createAndUpdatePreset(jsonItems: [BarItemDefinition]? = nil) {
-        if let oldBar = self.activeTouchBar {
+        if let oldBar = self.touchBar {
             NSTouchBar.minimizeSystemModalFunctionBar(oldBar)
         }
         self.touchBar = NSTouchBar()
@@ -133,8 +132,6 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
         touchBar.delegate = self
         touchBar.defaultItemIdentifiers = []
         touchBar.defaultItemIdentifiers = self.leftIdentifiers + [centerScrollArea] + self.rightIdentifiers
-
-        self.activeTouchBar = self.touchBar
         
         self.updateActiveApp()
     }
@@ -212,12 +209,12 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
     }
     
     @objc func resetControlStrip() {
-        NSTouchBar.minimizeSystemModalFunctionBar(self.activeTouchBar)
+        NSTouchBar.minimizeSystemModalFunctionBar(self.touchBar)
         presentTouchBar()
     }
 
     @objc private func dismissTouchBar() {
-        NSTouchBar.minimizeSystemModalFunctionBar(self.activeTouchBar)
+        NSTouchBar.minimizeSystemModalFunctionBar(self.touchBar)
     }
 
     func touchBar(_ touchBar: NSTouchBar, makeItemForIdentifier identifier: NSTouchBarItem.Identifier) -> NSTouchBarItem? {
