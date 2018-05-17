@@ -37,9 +37,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         task.launch()
     }
     
-    @objc func updatePreset(_ sender: Any?) {
-        TouchBarController.shared.createAndUpdatePreset()
-    }
+//    @objc func updatePreset(_ sender: Any?) {
+//        TouchBarController.shared.createAndUpdatePreset()
+//    }
     
     @objc func toggleControlStrip(_ sender: Any?) {
         TouchBarController.shared.controlStripState = !TouchBarController.shared.controlStripState
@@ -91,7 +91,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func createMenu() {
         let menu = NSMenu()
         menu.addItem(withTitle: "Preferences", action: #selector(openPrefereces(_:)), keyEquivalent: ",")
-        menu.addItem(withTitle: "Reload Preset", action: #selector(updatePreset(_:)), keyEquivalent: "r")
+//        menu.addItem(withTitle: "Reload Preset", action: #selector(updatePreset(_:)), keyEquivalent: "r")
         menu.addItem(withTitle: "Open Preset", action: #selector(openPreset(_:)), keyEquivalent: "O")
         menu.addItem(withTitle: TouchBarController.shared.controlStripState ? "Hide Control Strip" : "Show Control Strip" , action: #selector(toggleControlStrip(_:)), keyEquivalent: "T")
         menu.addItem(withTitle: "Toggle blackList current app" , action: #selector(toggleBlackListedApp(_:)), keyEquivalent: "B")
