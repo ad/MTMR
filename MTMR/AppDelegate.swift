@@ -83,6 +83,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 let jsonData = path.fileData
                 let jsonItems = jsonData?.barItemDefinitions() ?? [BarItemDefinition(type: .staticButton(title: "bad preset"))]
                 
+                TouchBarController.shared.touchbarHidden = true;
                 TouchBarController.shared.createAndUpdatePreset(newJsonItems: jsonItems)
             }
         }
@@ -113,6 +114,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 let jsonData = file.path.fileData
                 let jsonItems = jsonData?.barItemDefinitions() ?? [BarItemDefinition(type: .staticButton(title: "bad preset"))]
                 
+                TouchBarController.shared.touchbarHidden = true;
                 TouchBarController.shared.createAndUpdatePreset(newJsonItems: jsonItems)
             }
         })
