@@ -77,6 +77,8 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
         }
     }
     
+    var touchbarHidden: Bool = true
+    
     var blacklistAppIdentifiers: [String] = []
     var frontmostApplicationIdentifier: String? {
         get {
@@ -91,7 +93,7 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
         
         
         SupportedTypesHolder.sharedInstance.register(typename: "close") { _ in
-            return (item: .staticButton(title: ""), action: .custom(closure: { [weak self] in self?.createAndUpdatePreset() }), tapAction: TapAction(actionType: TapActionType.none), longTapAction: LongTapAction(actionType: TapActionType.none), parameters: [.width: .width(30), .image: .image(source: (NSImage(named: .stopProgressFreestandingTemplate))!)])
+            return (item: .staticButton(title: ""), action: .custom(closure: { [weak self] in self?.touchbarHidden = true; self?.createAndUpdatePreset() }), tapAction: TapAction(actionType: TapActionType.none), longTapAction: LongTapAction(actionType: TapActionType.none), parameters: [.width: .width(30), .image: .image(source: (NSImage(named: .stopProgressFreestandingTemplate))!)])
         }
 
         if let blackListed = UserDefaults.standard.stringArray(forKey: "com.toxblh.mtmr.blackListedApps") {
@@ -105,13 +107,13 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
         createAndUpdatePreset()
     }
 
-    func createAndUpdatePreset(tempJsonItems: [BarItemDefinition]? = nil) {
+    func createAndUpdatePreset(newJsonItems: [BarItemDefinition]? = nil) {
         if let oldBar = self.touchBar {
             NSTouchBar.minimizeSystemModalFunctionBar(oldBar)
         }
         self.touchBar = NSTouchBar()
-        if (tempJsonItems != nil) {
-            self.jsonItems = tempJsonItems
+        if (newJsonItems != nil) {
+            self.jsonItems = newJsonItems
         }
         self.itemDefinitions = [:]
         self.items = [:]
@@ -147,8 +149,10 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
     func updateActiveApp() {
         if self.blacklistAppIdentifiers.index(of: self.frontmostApplicationIdentifier!) != nil {
             DFRElementSetControlStripPresenceForIdentifier(.controlStripItem, false)
+            self.touchbarHidden = true
         } else {
             presentTouchBar()
+            self.touchbarHidden = false
         }
     }
 
@@ -205,10 +209,12 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
     }
 
     @objc private func presentTouchBar() {
-        if self.controlStripState {
-            NSTouchBar.presentSystemModalFunctionBar(touchBar, systemTrayItemIdentifier: .controlStripItem)
-        } else {
-            NSTouchBar.presentSystemModalFunctionBar(touchBar, placement: 1, systemTrayItemIdentifier: .controlStripItem)
+        if touchbarHidden {
+            if self.controlStripState {
+                NSTouchBar.presentSystemModalFunctionBar(touchBar, systemTrayItemIdentifier: .controlStripItem)
+            } else {
+                NSTouchBar.presentSystemModalFunctionBar(touchBar, placement: 1, systemTrayItemIdentifier: .controlStripItem)
+            }
         }
     }
     

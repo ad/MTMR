@@ -83,7 +83,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 let jsonData = path.fileData
                 let jsonItems = jsonData?.barItemDefinitions() ?? [BarItemDefinition(type: .staticButton(title: "bad preset"))]
                 
-                TouchBarController.shared.createAndUpdatePreset(tempJsonItems: jsonItems)
+                TouchBarController.shared.createAndUpdatePreset(newJsonItems: jsonItems)
             }
         }
     }
@@ -110,7 +110,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         self.fileSystemSource?.setEventHandler(handler: {
             print("Config changed, reloading...")
             DispatchQueue.main.async {
-                TouchBarController.shared.createAndUpdatePreset()
+                let jsonData = file.path.fileData
+                let jsonItems = jsonData?.barItemDefinitions() ?? [BarItemDefinition(type: .staticButton(title: "bad preset"))]
+                
+                TouchBarController.shared.createAndUpdatePreset(newJsonItems: jsonItems)
             }
         })
         
