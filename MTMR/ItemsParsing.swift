@@ -453,8 +453,8 @@ enum ItemType: Decodable {
             let interval = try container.decodeIfPresent(Double.self, forKey: .refreshInterval) ?? 1500.0
             self = .pomodoro(interval: interval)
         case .groupBar:
-            let items = try container.decodeIfPresent([BarItemDefinition].self, forKey: .items)
-            self = .groupBar(items: items!)
+            let items = try container.decode([BarItemDefinition].self, forKey: .items)
+            self = .groupBar(items: items)
         }
     }
 }

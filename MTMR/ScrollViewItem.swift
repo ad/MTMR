@@ -27,7 +27,6 @@ class ScrollViewItem: NSCustomTouchBarItem, NSGestureRecognizerDelegate {
         threefingers.action = #selector(threefingersHandler(_:))
         threefingers.allowedTouchTypes = .direct
         threefingers.numberOfTouchesRequired = 3
-        threefingers.delaysKeyEvents = true
         self.view.addGestureRecognizer(threefingers)
     }
     
