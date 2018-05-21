@@ -14,17 +14,12 @@ class ScrollViewItem: NSCustomTouchBarItem, NSGestureRecognizerDelegate {
         scrollView.documentView = stackView
         self.view = scrollView
         
-        
-        let twofingers = NSPanGestureRecognizer()
-        twofingers.target = self
-        twofingers.action = #selector(twofingersHandler(_:))
+        let twofingers = NSPanGestureRecognizer(target: self, action: #selector(twofingersHandler(_:)))
         twofingers.allowedTouchTypes = .direct
         twofingers.numberOfTouchesRequired = 2
         self.view.addGestureRecognizer(twofingers)
         
-        let threefingers = NSPanGestureRecognizer()
-        threefingers.target = self
-        threefingers.action = #selector(threefingersHandler(_:))
+        let threefingers = NSPanGestureRecognizer(target: self, action: #selector(threefingersHandler(_:)))
         threefingers.allowedTouchTypes = .direct
         threefingers.numberOfTouchesRequired = 3
         self.view.addGestureRecognizer(threefingers)
