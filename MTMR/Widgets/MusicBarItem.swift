@@ -33,7 +33,7 @@ class MusicBarItem: CustomButtonTouchBarItem {
         self.longTapClosure = { [weak self] in self?.nextTrack() }
         
         DispatchQueue.main.async {
-            self.updatePlayer()
+            self.refreshAndSchedule()
         }
     }
 
@@ -158,6 +158,15 @@ class MusicBarItem: CustomButtonTouchBarItem {
         }
     }
     
+    func refreshAndSchedule() {
+        DispatchQueue.main.async {
+            self.updatePlayer()
+            DispatchQueue.main.asyncAfter(deadline: .now() + self.interval) { [weak self] in
+                self?.refreshAndSchedule()
+            }
+        }
+    }
+    
     func updatePlayer() {
         var iconUpdated = false
         var titleUpdated = false
@@ -221,9 +230,9 @@ class MusicBarItem: CustomButtonTouchBarItem {
                     }
 
                     if (tempTitle == self.songTitle) {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + self.interval) { [weak self] in
-                            self?.updatePlayer()
-                        }
+//                        DispatchQueue.main.asyncAfter(deadline: .now() + self.interval) { [weak self] in
+//                            self?.updatePlayer()
+//                        }
                         return
                     } else {
                         self.songTitle = tempTitle
@@ -257,9 +266,6 @@ class MusicBarItem: CustomButtonTouchBarItem {
             if !titleUpdated {
                 self.title = ""
             }
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + self.interval) { [weak self] in
-            self?.updatePlayer()
         }
     }
 }
