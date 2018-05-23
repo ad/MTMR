@@ -118,14 +118,17 @@ class MusicBarItem: CustomButtonTouchBarItem {
                     if (musicPlayer.className == "SpotifyApplication") {
                         let mp = (musicPlayer as SpotifyApplication)
                         mp.nextTrack!()
+                        updatePlayer()
                         return
                     } else if (musicPlayer.className == "ITunesApplication") {
                         let mp = (musicPlayer as iTunesApplication)
                         mp.nextTrack!()
+                        updatePlayer()
                         return
                     } else if (musicPlayer.className == "VOXApplication") {
                         let mp = (musicPlayer as VoxApplication)
                         mp.next!()
+                        updatePlayer()
                         return
                     } else if (musicPlayer.className == "SafariApplication") {
                         // You must enable the 'Allow JavaScript from Apple Events' option in Safari's Develop menu to use 'do JavaScript'.
@@ -136,12 +139,15 @@ class MusicBarItem: CustomButtonTouchBarItem {
                                 let tab = tab as! SafariTab
                                 if (tab.URL?.starts(with: "https://music.yandex.ru"))! {
                                     _ = safariApplication.doJavaScript!("document.getElementsByClassName('player-controls__btn_next')[0].click()", in: tab)
+                                    updatePlayer()
                                     return
                                 } else if ((tab.URL?.starts(with: "https://vk.com/audios"))! || (tab.URL?.starts(with: "https://vk.com/music"))!) {
                                     _ = safariApplication.doJavaScript!("document.getElementsByClassName('audio_page_player_next')[0].click()", in: tab)
+                                    updatePlayer()
                                     return
                                 } else if (tab.URL?.starts(with: "https://www.youtube.com/watch"))! {
                                     _ = safariApplication.doJavaScript!("document.getElementsByClassName('ytp-next-button')[0].click()", in: tab)
+                                    updatePlayer()
                                     return
                                 }
                             }
