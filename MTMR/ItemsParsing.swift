@@ -328,17 +328,6 @@ class SupportedTypesHolder {
                 parameters: [:]
             )
         },
-        "group": { decoder in
-            enum CodingKeys: CodingKey { case items }
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            let items = try container.decode([BarItemDefinition].self, forKey: .items)
-            return (
-                item: .groupBar(items: items),
-                action: .none,
-                longAction: .none,
-                parameters: [:]
-            )
-        },
     ]
 
     static let sharedInstance = SupportedTypesHolder()

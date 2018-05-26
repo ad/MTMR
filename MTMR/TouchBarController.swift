@@ -93,7 +93,7 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
 
 
         SupportedTypesHolder.sharedInstance.register(typename: "close") { _ in
-            return (item: .staticButton(title: ""), action: .custom(closure: { [weak self] in self?.touchbarHidden = true; self?.createAndUpdatePreset() }), tapAction: TapAction(actionType: TapActionType.none), longTapAction: LongTapAction(actionType: TapActionType.none), parameters: [.width: .width(30), .image: .image(source: (NSImage(named: .stopProgressFreestandingTemplate))!)])
+            return (item: .staticButton(title: ""), action: .custom(closure: { [weak self] in self?.touchbarNeedRefresh = true; self?.createAndUpdatePreset() }), tapAction: TapAction(actionType: TapActionType.none), longTapAction: LongTapAction(actionType: TapActionType.none), parameters: [.width: .width(30), .image: .image(source: (NSImage(named: .stopProgressFreestandingTemplate))!)])
         }
 
         if let blackListed = UserDefaults.standard.stringArray(forKey: "com.toxblh.mtmr.blackListedApps") {
