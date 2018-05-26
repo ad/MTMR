@@ -32,9 +32,7 @@ class MusicBarItem: CustomButtonTouchBarItem {
         self.tapClosure = { [weak self] in self?.playPause() }
         self.longTapClosure = { [weak self] in self?.nextTrack() }
         
-        DispatchQueue.main.async {
-            self.refreshAndSchedule()
-        }
+        self.refreshAndSchedule()
     }
 
     @objc func marquee(){
