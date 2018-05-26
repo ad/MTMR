@@ -69,6 +69,7 @@ File for customize your preset for MTMR: `open ~/Library/Application\ Support/MT
 - currency
 - weather
 - inputsource
+- music (tap for pause, longTap for next)
 
 > Media Keys
 - previous
@@ -78,6 +79,10 @@ File for customize your preset for MTMR: `open ~/Library/Application\ Support/MT
 > AppleScript plugins
 - sleep
 - displaySleep
+
+## Gestures on central part: 
+- two finger slide: change you Volume
+- three finger slide: change you Brightness
 
 ## Built-in slider types:
 
@@ -129,6 +134,17 @@ File for customize your preset for MTMR: `open ~/Library/Application\ Support/MT
   "align": "right",
   "from": "BTC",
   "to": "USD",
+```
+
+- `music`
+```js
+{
+  "type": "music",
+  "align": "center",
+  "width": 80,
+  "bordered": false,
+  "refreshInterval": 2,
+},
 ```
 
 ## Actions:
@@ -249,3 +265,5 @@ File for customize your preset for MTMR: `open ~/Library/Application\ Support/MT
 <a href="https://www.buymeacoffee.com/toxblh" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
 
 Built by [@Toxblh](https://patreon.com/toxblh) and [@ReDetection](http://patreon.com/ReDetection).
+
+[![Analytics](https://ga-beacon.appspot.com/UA-96373624-2/mtmr?pixel)](https://github.com/igrigorik/ga-beacon)

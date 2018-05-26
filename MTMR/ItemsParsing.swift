@@ -328,6 +328,17 @@ class SupportedTypesHolder {
                 parameters: [:]
             )
         },
+        "group": { decoder in
+            enum CodingKeys: CodingKey { case items }
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            let items = try container.decode([BarItemDefinition].self, forKey: .items)
+            return (
+                item: .groupBar(items: items),
+                action: .none,
+                longAction: .none,
+                parameters: [:]
+            )
+        },
     ]
 
     static let sharedInstance = SupportedTypesHolder()
@@ -337,7 +348,7 @@ class SupportedTypesHolder {
             enum CodingKeys: String, CodingKey { case tapAction; case longTapAction }
             let container = try decoder.container(keyedBy: CodingKeys.self)
             let type = try ItemType(from: decoder)
-            let action = try ActionType(from: decoder) 
+            let action = try ActionType(from: decoder)
             let tapAction = try container.decodeIfPresent(TapAction.self, forKey: .tapAction) ?? TapAction(actionType: TapActionType.none)
             let longTapAction = try container.decodeIfPresent(LongTapAction.self, forKey: .longTapAction) ?? LongTapAction(actionType: TapActionType.none)
             return (
@@ -620,7 +631,6 @@ struct GeneralParameters: Decodable {
         if let title = try container.decodeIfPresent(String.self, forKey: .title) {
             result[.title] = .title(title)
         }
-
         parameters = result
     }
 }

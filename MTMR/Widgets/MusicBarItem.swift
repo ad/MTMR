@@ -14,7 +14,7 @@ class MusicBarItem: CustomButtonTouchBarItem {
     private var songTitle: String?
     private var timer: Timer?
     let buttonSize = NSSize(width: 21, height: 21)
-    
+
     let playerBundleIdentifiers = [
         "com.apple.iTunes",
         "com.spotify.client",
@@ -22,16 +22,16 @@ class MusicBarItem: CustomButtonTouchBarItem {
         "com.google.Chrome",
         "com.apple.Safari"
     ]
-    
+
     init(identifier: NSTouchBarItem.Identifier, interval: TimeInterval) {
         self.interval = interval
-        
+
         super.init(identifier: identifier, title: "⏳")
         self.isBordered = false
-        
+
         self.tapClosure = { [weak self] in self?.playPause() }
         self.longTapClosure = { [weak self] in self?.nextTrack() }
-        
+
         self.refreshAndSchedule()
     }
 
@@ -43,11 +43,11 @@ class MusicBarItem: CustomButtonTouchBarItem {
             self.title = String(str.suffix(from: indexSecond)) + String(str[indexFirst])
         }
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     @objc func playPause() {
         for ident in playerBundleIdentifiers {
             if let musicPlayer = SBApplication(bundleIdentifier: ident) {
@@ -155,7 +155,7 @@ class MusicBarItem: CustomButtonTouchBarItem {
             }
         }
     }
-    
+
     func refreshAndSchedule() {
         DispatchQueue.main.async {
             self.updatePlayer()
@@ -164,7 +164,7 @@ class MusicBarItem: CustomButtonTouchBarItem {
             }
         }
     }
-    
+
     func updatePlayer() {
         var iconUpdated = false
         var titleUpdated = false
@@ -228,14 +228,11 @@ class MusicBarItem: CustomButtonTouchBarItem {
                     }
 
                     if (tempTitle == self.songTitle) {
-//                        DispatchQueue.main.asyncAfter(deadline: .now() + self.interval) { [weak self] in
-//                            self?.updatePlayer()
-//                        }
                         return
                     } else {
                         self.songTitle = tempTitle
                     }
-                    
+
                     if let songTitle = self.songTitle?.ifNotEmpty {
                         self.title = " " + songTitle + "     "
                         titleUpdated = true
@@ -260,7 +257,7 @@ class MusicBarItem: CustomButtonTouchBarItem {
             if !iconUpdated {
                 self.image = nil
             }
-            
+
             if !titleUpdated {
                 self.title = ""
             }

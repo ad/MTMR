@@ -76,9 +76,9 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
             UserDefaults.standard.set(!controlStripState, forKey: "com.toxblh.mtmr.settings.showControlStrip")
         }
     }
-    
-    var touchbarHidden: Bool = true
-    
+
+    var touchbarNeedRefresh: Bool = true
+
     var blacklistAppIdentifiers: [String] = []
     var frontmostApplicationIdentifier: String? {
         get {
@@ -90,8 +90,8 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
     private override init() {
         super.init()
         SupportedTypesHolder.sharedInstance.register(typename: "exitTouchbar", item: .staticButton(title: "exit"), action: .custom(closure: { [weak self] in self?.dismissTouchBar()}))
-        
-        
+
+
         SupportedTypesHolder.sharedInstance.register(typename: "close") { _ in
             return (item: .staticButton(title: ""), action: .custom(closure: { [weak self] in self?.touchbarHidden = true; self?.createAndUpdatePreset() }), tapAction: TapAction(actionType: TapActionType.none), longTapAction: LongTapAction(actionType: TapActionType.none), parameters: [.width: .width(30), .image: .image(source: (NSImage(named: .stopProgressFreestandingTemplate))!)])
         }
@@ -103,7 +103,7 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
         NSWorkspace.shared.notificationCenter.addObserver(self, selector: #selector(activeApplicationChanged), name: NSWorkspace.didLaunchApplicationNotification, object: nil)
         NSWorkspace.shared.notificationCenter.addObserver(self, selector: #selector(activeApplicationChanged), name: NSWorkspace.didTerminateApplicationNotification, object: nil)
         NSWorkspace.shared.notificationCenter.addObserver(self, selector: #selector(activeApplicationChanged), name: NSWorkspace.didActivateApplicationNotification, object: nil)
-        
+
         createAndUpdatePreset()
     }
 
@@ -124,7 +124,7 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
         if (self.jsonItems == nil) {
             self.jsonItems = readConfig()
         }
-        
+
         loadItemDefinitions(jsonItems: self.jsonItems!)
         createItems()
 
@@ -138,21 +138,21 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
         touchBar.delegate = self
         touchBar.defaultItemIdentifiers = []
         touchBar.defaultItemIdentifiers = self.leftIdentifiers + [centerScrollArea] + self.rightIdentifiers
-        
+
         self.updateActiveApp()
     }
-    
+
     @objc func activeApplicationChanged(_ n: Notification) {
         updateActiveApp()
     }
-    
+
     func updateActiveApp() {
         if self.blacklistAppIdentifiers.index(of: self.frontmostApplicationIdentifier!) != nil {
             DFRElementSetControlStripPresenceForIdentifier(.controlStripItem, false)
-            self.touchbarHidden = true
+            self.touchbarNeedRefresh = true
         } else {
             presentTouchBar()
-            self.touchbarHidden = false
+            self.touchbarNeedRefresh = false
         }
     }
 
@@ -209,7 +209,7 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
     }
 
     @objc private func presentTouchBar() {
-        if touchbarHidden {
+        if touchbarNeedRefresh {
             if self.controlStripState {
                 NSTouchBar.presentSystemModalFunctionBar(touchBar, systemTrayItemIdentifier: .controlStripItem)
             } else {
@@ -217,14 +217,15 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
             }
         }
     }
-    
+
     @objc func resetControlStrip() {
-        NSTouchBar.minimizeSystemModalFunctionBar(self.touchBar)
+        dismissTouchBar()
         presentTouchBar()
     }
 
     @objc private func dismissTouchBar() {
-        NSTouchBar.minimizeSystemModalFunctionBar(self.touchBar)
+        self.touchbarNeedRefresh = true
+        NSTouchBar.minimizeSystemModalFunctionBar(touchBar)
     }
 
     func touchBar(_ touchBar: NSTouchBar, makeItemForIdentifier identifier: NSTouchBarItem.Identifier) -> NSTouchBarItem? {
@@ -278,7 +279,7 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
         case .groupBar(items: let items):
             barItem = GroupBarItem(identifier: identifier, items: items)
         }
-        
+
         if item.action == .none {
             if let tapAction = self.tapAction(forItem: item), let item = barItem as? CustomButtonTouchBarItem {
                 item.tapClosure = tapAction
