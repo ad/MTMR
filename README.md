@@ -5,7 +5,7 @@
 
 # This is Fork of "My TouchBar. My rules"
 <p align="center">
-    <img src="Resources/touchbar.png">
+    <img src="Resources/TouchBar.png">
 </p>
 
 [![GitHub release](https://img.shields.io/github/release/toxblh/MTMR.svg)](https://github.com/ad/MTMR/releases)
