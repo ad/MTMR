@@ -328,20 +328,34 @@ class SupportedTypesHolder {
                 parameters: [:]
             )
         },
-        "cpu": { _ in return (
-            item: .cpu(),
-            action: .none,
-            tapAction: TapAction(actionType: TapActionType.none),
-            longTapAction: LongTapAction(actionType: TapActionType.none),
-            parameters: [:]
+        "cpu": { decoder in
+            enum CodingKeys: String, CodingKey { case refreshInterval; case tapAction; case longTapAction }
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            let interval = try container.decodeIfPresent(Double.self, forKey: .refreshInterval)
+            let action = try ActionType(from: decoder)
+            let tapAction = try container.decodeIfPresent(TapAction.self, forKey: .tapAction)
+            let longTapAction = try container.decodeIfPresent(LongTapAction.self, forKey: .longTapAction)
+            return (
+                item: .cpu(interval: interval ?? 1.00),
+                action: action,
+                tapAction: tapAction ?? TapAction(actionType: TapActionType.none),
+                longTapAction: longTapAction ?? LongTapAction(actionType: TapActionType.none),
+                parameters: [:]
             )
         },
-        "memory": { _ in return (
-            item: .memory(),
-            action: .none,
-            tapAction: TapAction(actionType: TapActionType.none),
-            longTapAction: LongTapAction(actionType: TapActionType.none),
-            parameters: [:]
+        "memory": { decoder in
+            enum CodingKeys: String, CodingKey { case refreshInterval; case tapAction; case longTapAction }
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            let interval = try container.decodeIfPresent(Double.self, forKey: .refreshInterval)
+            let action = try ActionType(from: decoder)
+            let tapAction = try container.decodeIfPresent(TapAction.self, forKey: .tapAction)
+            let longTapAction = try container.decodeIfPresent(LongTapAction.self, forKey: .longTapAction)
+            return (
+                item: .memory(interval: interval ?? 1.00),
+                action: action,
+                tapAction: tapAction ?? TapAction(actionType: TapActionType.none),
+                longTapAction: longTapAction ?? LongTapAction(actionType: TapActionType.none),
+                parameters: [:]
             )
         },
     ]
@@ -392,8 +406,8 @@ enum ItemType: Decodable {
     case music(interval: Double)
     case pomodoro(interval: Double)
     case groupBar(items: [BarItemDefinition])
-    case cpu()
-    case memory()
+    case cpu(interval: Double)
+    case memory(interval: Double)
 
     private enum CodingKeys: String, CodingKey {
         case type
@@ -476,9 +490,11 @@ enum ItemType: Decodable {
             let items = try container.decode([BarItemDefinition].self, forKey: .items)
             self = .groupBar(items: items)
         case .cpu:
-            self = .cpu()
+            let interval = try container.decodeIfPresent(Double.self, forKey: .refreshInterval) ?? 1.0
+            self = .cpu(interval: interval)
         case .memory:
-            self = .memory()
+            let interval = try container.decodeIfPresent(Double.self, forKey: .refreshInterval) ?? 1.0
+            self = .memory(interval: interval)
         }
     }
 }

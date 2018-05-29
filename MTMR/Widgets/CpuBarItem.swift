@@ -10,12 +10,14 @@ import Foundation
 import AppKit
 
 class CpuBarItem: CustomButtonTouchBarItem {
+    private let interval: TimeInterval
     fileprivate static let machHost = mach_host_self()
     fileprivate var loadPrevious = host_cpu_load_info()
     var history: [Double] = []
     
-    init(identifier: NSTouchBarItem.Identifier) {
-        super.init(identifier: identifier, title: " ")
+    init(identifier: NSTouchBarItem.Identifier, interval: TimeInterval) {
+        self.interval = interval
+        super.init(identifier: identifier, title: "⏳")
         
         refreshAndSchedule()
     }
@@ -35,7 +37,7 @@ class CpuBarItem: CustomButtonTouchBarItem {
             self.imagePosition = .imageOverlaps
             self.image = self.drawLineOnImage(size: CGSize(width: 60, height: 30))
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + self.interval) { [weak self] in
                 self?.refreshAndSchedule()
             }
         }

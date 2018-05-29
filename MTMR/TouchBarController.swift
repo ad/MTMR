@@ -43,9 +43,9 @@ extension ItemType {
             return "com.toxblh.mtmr.pomodoro."
         case .groupBar(items: _):
             return "com.toxblh.mtmr.groupBar."
-        case .cpu():
+        case .cpu(interval: _):
             return "com.toxblh.mtmr.cpu."
-        case .memory():
+        case .memory(interval: _):
             return "com.toxblh.mtmr.memory."
         }
     }
@@ -282,10 +282,10 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
             barItem = PomodoroBarItem(identifier: identifier, interval: interval)
         case .groupBar(items: let items):
             barItem = GroupBarItem(identifier: identifier, items: items)
-        case .cpu():
-            barItem = CpuBarItem(identifier: identifier)
-        case .memory():
-            barItem = MemoryBarItem(identifier: identifier)
+        case .cpu(interval: let interval):
+            barItem = CpuBarItem(identifier: identifier, interval: interval)
+        case .memory(interval: let interval):
+            barItem = MemoryBarItem(identifier: identifier, interval: interval)
         }
 
         if item.action == .none {
