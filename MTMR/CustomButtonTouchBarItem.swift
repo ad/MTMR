@@ -59,6 +59,16 @@ class CustomButtonTouchBarItem: NSCustomTouchBarItem, NSGestureRecognizerDelegat
         }
     }
     
+
+    var imagePosition: NSControl.ImagePosition {
+        get {
+            return (self.button?.imagePosition)!
+        }
+        set {
+            self.button?.imagePosition = newValue
+        }
+    }
+    
     var attributedTitle: NSAttributedString {
         didSet {
             self.button?.imagePosition = attributedTitle.length > 0 ? .imageLeading : .imageOnly

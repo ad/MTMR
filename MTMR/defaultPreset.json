@@ -5,39 +5,44 @@
   "align": "left",
   },
   {
+  "type": "staticButton",
+  "title": "⇲",
+  "action": "appleScript",
+  "actionAppleScript": {
+  "inline": "tell application \"Safari\"\rdo JavaScript \"javascript:var video = document.querySelector('video'); video.webkitSetPresentationMode(video.webkitPresentationMode === 'picture-in-picture' ? 'inline' : 'picture-in-picture');\" in document 1\rend tell"
+  },
+  "align": "left",
+  "width": 40
+  },
+  {
   "type": "dock",
-  "width": 400,
+  "width": 350,
   "align": "left",
   },
+  {
+  "type": "music",
+  "align": "center",
+  "width": 140,
+  "bordered": false,
+  "refreshInterval": 30,
+  },
   // {
-  //     "type": "music",
-  //     "align": "center",
-  //     "width": 140,
-  //     "bordered": false,
-  //     "refreshInterval": 2,
+  //     "type": "volume",
+  //     "width": 70,
+  //     "align": "right",
+  //     "image": {
+  //         "base64": "iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAMAAADW3miqAAAAVFBMVEUAAAD///////////////////////////////////////////////////////////////////////////////////////////////////////////8wXzyWAAAAG3RSTlMADgXxgBj2hXGzIL2KPOvjx316VEglqMmfmZE4CSbFAAAA00lEQVQ4y9WT6w6CMAyFO9iAAeOmgNr3f0/PAmwYZTPhjx5IuPRL2/VC/6JEUVyi1ZcwUSgSGfNsAkzOgkTDUHHISE4F0ZinoOpDxkJQWR35ArNCCdGEd/NyZivLbJCl4Gv+5GeFlC5BlchrVwlT91ION94gwa2lcmbtYlG9mD3UcAXDiA/loJ4ze3kIga6wdHg4SLKTgx74f7dVSByUvUF6SWrYQRyB4uF84rgDiUdKECqmWosZaMvk2xJvcPf1qMSHLj6+ZxbBr1RnTiynl6Kf1xP6ghxt+GMHnAAAAABJRU5ErkJggg=="
+  //     },
   // },
   // {
-  //     "type": "test",
-  //     "title": "test",
-  //     "align": "left",
+  //     "type": "brightness",
+  //     "width": 70,
+  //     "refreshInterval": 1,
+  //     "align": "right",
+  //     "image": {
+  //         "base64": "iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAMAAADW3miqAAAAilBMVEUAAAD////+/v7+/v7////+/v7////+/v7////////+/v7////+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7////+/v7////////+/v7+/v7+/v7+/v7+/v7////////+/v7+/v7+/v7////+/v7////////+/v7+/v7+/v7////+/v7+/v7///9znp3GAAAALXRSTlMAZzr48fAG7oIDUhzqrJnW07iicjcwLA8C5sKxYltFQZSMeE4jDAr6yJ0YFxZ5f33iAAABGklEQVQ4y7XT2Y6CMBiG4Q/KUhbZRUAWl9FZ//u/vQGCKW060TjxPWra5+BvA3iqoDndRwa5jyDrX2gb6NCwW5uSbHNZFixdVl5Ge+lKllAXYeiAdaZN9hZSEdHGgar4PJzBc38e5V0YMTr/AfyYplj0Na5zYVY5Ed2qTYiUKURWqTc+rUsqLYpJqtOZUjbKQ7aGYRSAoaAQuHbj0XlCKY2xCzgpOcvWMKJT6LpuWiFXDAP6ejxKAulycjE07ZiMjn++pYi9adF3uEYc+gpLmI2nJeNumSyEcW/eUMkn84Gq24fE4uM0T+OaqsmIcsw5mKtCshWVab9Vu8CqQZgr74X6kB4yPSwGLdW4qaZ96A9+OTpTgvv1AZ7qF4exMggryAbkAAAAAElFTkSuQmCC"
+  //     },
   // },
-  {
-  "type": "volume",
-  "width": 70,
-  "align": "right",
-  "image": {
-  "base64": "iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAMAAADW3miqAAAAVFBMVEUAAAD///////////////////////////////////////////////////////////////////////////////////////////////////////////8wXzyWAAAAG3RSTlMADgXxgBj2hXGzIL2KPOvjx316VEglqMmfmZE4CSbFAAAA00lEQVQ4y9WT6w6CMAyFO9iAAeOmgNr3f0/PAmwYZTPhjx5IuPRL2/VC/6JEUVyi1ZcwUSgSGfNsAkzOgkTDUHHISE4F0ZinoOpDxkJQWR35ArNCCdGEd/NyZivLbJCl4Gv+5GeFlC5BlchrVwlT91ION94gwa2lcmbtYlG9mD3UcAXDiA/loJ4ze3kIga6wdHg4SLKTgx74f7dVSByUvUF6SWrYQRyB4uF84rgDiUdKECqmWosZaMvk2xJvcPf1qMSHLj6+ZxbBr1RnTiynl6Kf1xP6ghxt+GMHnAAAAABJRU5ErkJggg=="
-  },
-  },
-  {
-  "type": "brightness",
-  "width": 70,
-  "refreshInterval": 1,
-  "align": "right",
-  "image": {
-  "base64": "iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAMAAADW3miqAAAAilBMVEUAAAD////+/v7+/v7////+/v7////+/v7////////+/v7////+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7////+/v7////////+/v7+/v7+/v7+/v7+/v7////////+/v7+/v7+/v7////+/v7////////+/v7+/v7+/v7////+/v7+/v7///9znp3GAAAALXRSTlMAZzr48fAG7oIDUhzqrJnW07iicjcwLA8C5sKxYltFQZSMeE4jDAr6yJ0YFxZ5f33iAAABGklEQVQ4y7XT2Y6CMBiG4Q/KUhbZRUAWl9FZ//u/vQGCKW060TjxPWra5+BvA3iqoDndRwa5jyDrX2gb6NCwW5uSbHNZFixdVl5Ge+lKllAXYeiAdaZN9hZSEdHGgar4PJzBc38e5V0YMTr/AfyYplj0Na5zYVY5Ed2qTYiUKURWqTc+rUsqLYpJqtOZUjbKQ7aGYRSAoaAQuHbj0XlCKY2xCzgpOcvWMKJT6LpuWiFXDAP6ejxKAulycjE07ZiMjn++pYi9adF3uEYc+gpLmI2nJeNumSyEcW/eUMkn84Gq24fE4uM0T+OaqsmIcsw5mKtCshWVab9Vu8CqQZgr74X6kB4yPSwGLdW4qaZ96A9+OTpTgvv1AZ7qF4exMggryAbkAAAAAElFTkSuQmCC"
-  },
-  },
   {
   "type": "weather",
   "refreshInterval": 1800,
@@ -105,37 +110,53 @@
             "width": 45
             },
             {
-            "title": "ip",
-            "type": "appleScriptTitledButton",
-            "refreshInterval": 10, //optional
-            "source": {
-            "inline": "return \"IP \" & do shell script \"curl http:\/\/ipinfo.io\/ip\""
-            },
-            },
-            {
-            "title": "cpu",
-            "type": "appleScriptTitledButton",
-            "refreshInterval": 10, //optional
-            "source": {
-            "inline": "set cpu to do shell script \"ps axo %cpu | awk '{s+=$1}END{print s}'\"\rreturn  \"CPU \" & cpu & \"%\""
-            },
+            "type": "cpu",
             "tapAction": {
             "type": "appleScript",
             "appleScript": "activate application \"Activity Monitor\"\rtell application \"System Events\"\r\ttell process \"Activity Monitor\"\r\t\ttell radio button \"CPU\" of radio group 1 of group 2 of toolbar 1 of window 1 to perform action \"AXPress\"\r\tend tell\rend tell",
             },
+            "bordered": false
             },
+            // {
+            //     "title": "ip",
+            //     "type": "appleScriptTitledButton",
+            //     "refreshInterval": 10, //optional
+            //     "source": {
+            //         "inline": "return \"IP \" & do shell script \"curl http:\/\/ipinfo.io\/ip\""
+            //     },
+            // },
+            // {
+            //     "title": "cpu",
+            //     "type": "appleScriptTitledButton",
+            //     "refreshInterval": 10, //optional
+            //     "source": {
+            //         "inline": "set cpu to do shell script \"ps axo %cpu | awk '{s+=$1}END{print s}'\"\rreturn  \"CPU \" & cpu & \"%\""
+            //     },
+            //     "tapAction": {
+            //         "type": "appleScript",
+            //         "appleScript": "activate application \"Activity Monitor\"\rtell application \"System Events\"\r\ttell process \"Activity Monitor\"\r\t\ttell radio button \"CPU\" of radio group 1 of group 2 of toolbar 1 of window 1 to perform action \"AXPress\"\r\tend tell\rend tell",
+            //     },
+            // },
             {
-            "title": "mem",
-            "type": "appleScriptTitledButton",
-            "refreshInterval": 10, //optional
-            "source": {
-            "inline": "set mem to do shell script \"ps -A -o %mem | awk '{s+=$1}END{print s}'\"\rreturn \"MEM \" & mem & \"%\""
-            },
+            "type": "memory",
             "tapAction": {
             "type": "appleScript",
             "appleScript": "activate application \"Activity Monitor\"\rtell application \"System Events\"\r\ttell process \"Activity Monitor\"\r\t\ttell radio button \"Memory\" of radio group 1 of group 2 of toolbar 1 of window 1 to perform action \"AXPress\"\r\tend tell\rend tell",
             },
+            "bordered": false
             },
+            // {
+            //     "title": "mem",
+            //     "type": "appleScriptTitledButton",
+            //     "refreshInterval": 10, //optional
+            //     "source": {
+            //         "inline": "set mem to do shell script \"ps -A -o %mem | awk '{s+=$1}END{print s}'\"\rreturn \"MEM \" & mem & \"%\""
+            //     },
+            //     "tapAction": {
+            //         "type": "appleScript",
+            //         "appleScript": "activate application \"Activity Monitor\"\rtell application \"System Events\"\r\ttell process \"Activity Monitor\"\r\t\ttell radio button \"Memory\" of radio group 1 of group 2 of toolbar 1 of window 1 to perform action \"AXPress\"\r\tend tell\rend tell",
+            //     },
+            // },
             ]
   },
   {
@@ -151,49 +172,49 @@
             },
             {
             "type": "volumeDown",
-            "align": "right",
+            "align": "center",
             "width": 30
             },
             {
             "type": "volume",
             "width": 70,
-            "align": "right",
+            "align": "center",
             "image": {
             "base64": "iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAMAAADW3miqAAAAVFBMVEUAAAD///////////////////////////////////////////////////////////////////////////////////////////////////////////8wXzyWAAAAG3RSTlMADgXxgBj2hXGzIL2KPOvjx316VEglqMmfmZE4CSbFAAAA00lEQVQ4y9WT6w6CMAyFO9iAAeOmgNr3f0/PAmwYZTPhjx5IuPRL2/VC/6JEUVyi1ZcwUSgSGfNsAkzOgkTDUHHISE4F0ZinoOpDxkJQWR35ArNCCdGEd/NyZivLbJCl4Gv+5GeFlC5BlchrVwlT91ION94gwa2lcmbtYlG9mD3UcAXDiA/loJ4ze3kIga6wdHg4SLKTgx74f7dVSByUvUF6SWrYQRyB4uF84rgDiUdKECqmWosZaMvk2xJvcPf1qMSHLj6+ZxbBr1RnTiynl6Kf1xP6ghxt+GMHnAAAAABJRU5ErkJggg=="
             },
             },
             {
             "type": "volumeUp",
-            "align": "right",
+            "align": "center",
             "width": 30
             },
             {
             "type": "mute",
-            "align": "right",
+            "align": "center",
             "width": 30
             },
             {
             "type": "brightnessDown",
-            "align": "right",
+            "align": "center",
             "width": 36
             },
             {
             "type": "brightness",
             "width": 70,
             "refreshInterval": 1,
-            "align": "right",
+            "align": "center",
             "image": {
             "base64": "iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAMAAADW3miqAAAAilBMVEUAAAD////+/v7+/v7////+/v7////+/v7////////+/v7////+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7+/v7////+/v7////////+/v7+/v7+/v7+/v7+/v7////////+/v7+/v7+/v7////+/v7////////+/v7+/v7+/v7////+/v7+/v7///9znp3GAAAALXRSTlMAZzr48fAG7oIDUhzqrJnW07iicjcwLA8C5sKxYltFQZSMeE4jDAr6yJ0YFxZ5f33iAAABGklEQVQ4y7XT2Y6CMBiG4Q/KUhbZRUAWl9FZ//u/vQGCKW060TjxPWra5+BvA3iqoDndRwa5jyDrX2gb6NCwW5uSbHNZFixdVl5Ge+lKllAXYeiAdaZN9hZSEdHGgar4PJzBc38e5V0YMTr/AfyYplj0Na5zYVY5Ed2qTYiUKURWqTc+rUsqLYpJqtOZUjbKQ7aGYRSAoaAQuHbj0XlCKY2xCzgpOcvWMKJT6LpuWiFXDAP6ejxKAulycjE07ZiMjn++pYi9adF3uEYc+gpLmI2nJeNumSyEcW/eUMkn84Gq24fE4uM0T+OaqsmIcsw5mKtCshWVab9Vu8CqQZgr74X6kB4yPSwGLdW4qaZ96A9+OTpTgvv1AZ7qF4exMggryAbkAAAAAElFTkSuQmCC"
             },
             },
             {
             "type": "brightnessUp",
-            "align": "right",
+            "align": "center",
             "width": 36
             },
             {
             "type": "timeButton",
-            "align": "right",
+            "align": "center",
             "bordered": false,
             },
             ]

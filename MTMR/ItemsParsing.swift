@@ -328,6 +328,22 @@ class SupportedTypesHolder {
                 parameters: [:]
             )
         },
+        "cpu": { _ in return (
+            item: .cpu(),
+            action: .none,
+            tapAction: TapAction(actionType: TapActionType.none),
+            longTapAction: LongTapAction(actionType: TapActionType.none),
+            parameters: [:]
+            )
+        },
+        "memory": { _ in return (
+            item: .memory(),
+            action: .none,
+            tapAction: TapAction(actionType: TapActionType.none),
+            longTapAction: LongTapAction(actionType: TapActionType.none),
+            parameters: [:]
+            )
+        },
     ]
 
     static let sharedInstance = SupportedTypesHolder()
@@ -376,6 +392,8 @@ enum ItemType: Decodable {
     case music(interval: Double)
     case pomodoro(interval: Double)
     case groupBar(items: [BarItemDefinition])
+    case cpu()
+    case memory()
 
     private enum CodingKeys: String, CodingKey {
         case type
@@ -408,6 +426,8 @@ enum ItemType: Decodable {
         case music
         case pomodoro
         case groupBar
+        case cpu
+        case memory
     }
 
     init(from decoder: Decoder) throws {
@@ -455,6 +475,10 @@ enum ItemType: Decodable {
         case .groupBar:
             let items = try container.decode([BarItemDefinition].self, forKey: .items)
             self = .groupBar(items: items)
+        case .cpu:
+            self = .cpu()
+        case .memory:
+            self = .memory()
         }
     }
 }
