@@ -31,7 +31,7 @@ class MemoryBarItem: CustomButtonTouchBarItem {
             
             self.title = (NSString(format: "%.2f", total_mem-(mem_info.active+mem_info.wired+mem_info.compressed)) as String) + "GB"
             
-            self.history.append((total_mem-(mem_info.active+mem_info.wired+mem_info.compressed))*100/total_mem)
+            self.history.append((mem_info.active+mem_info.wired+mem_info.compressed)*100/total_mem)
             
             if self.history.count > 60 {
                 self.history = Array(self.history.suffix(60))
@@ -116,12 +116,12 @@ class MemoryBarItem: CustomButtonTouchBarItem {
             let rect = NSMakeRect(CGFloat(pos), 0, 1, size.height*CGFloat(x)/100)
             let ctx = NSGraphicsContext.current?.cgContext
             ctx!.clear(rect)
-            if x > 75 {
-                ctx!.setFillColor(NSColor.red.cgColor)
-            } else if x > 50 {
-                ctx!.setFillColor(NSColor.yellow.cgColor)
+            if x > 90 {
+                ctx!.setFillColor(NSColor(red: 215/255, green: 75/255, blue: 75/255, alpha: 1.0).cgColor)
+            } else if x > 75 {
+                ctx!.setFillColor(NSColor(red: 245/255, green: 215/255, blue: 75/255, alpha: 1.0).cgColor)
             } else {
-                ctx!.setFillColor(NSColor.green.cgColor)
+                ctx!.setFillColor(NSColor(red: 145/255, green: 215/255, blue: 75/255, alpha: 1.0).cgColor)
             }
             ctx!.fill(rect)
             

@@ -107,11 +107,11 @@ class CpuBarItem: CustomButtonTouchBarItem {
             let ctx = NSGraphicsContext.current?.cgContext
             ctx!.clear(rect)
             if x > 75 {
-                ctx!.setFillColor(NSColor.red.cgColor)
+                ctx!.setFillColor(NSColor(red: 215/255, green: 75/255, blue: 75/255, alpha: 1.0).cgColor)
             } else if x > 50 {
-                ctx!.setFillColor(NSColor.yellow.cgColor)
+                ctx!.setFillColor(NSColor(red: 245/255, green: 215/255, blue: 75/255, alpha: 1.0).cgColor)
             } else {
-                ctx!.setFillColor(NSColor.green.cgColor)
+                ctx!.setFillColor(NSColor(red: 145/255, green: 215/255, blue: 75/255, alpha: 1.0).cgColor)
             }
             ctx!.fill(rect)
             
