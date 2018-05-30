@@ -101,7 +101,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         menu.addItem(withTitle: "Open Preset", action: #selector(openPreset(_:)), keyEquivalent: "O")
         menu.addItem(withTitle: TouchBarController.shared.controlStripState ? "Hide Control Strip" : "Show Control Strip" , action: #selector(toggleControlStrip(_:)), keyEquivalent: "T")
         menu.addItem(withTitle: "Toggle blackList current app" , action: #selector(toggleBlackListedApp(_:)), keyEquivalent: "B")
-        menu.addItem(withTitle: LaunchAtLoginController().launchAtLogin ? "Disable start at login" : "Enable start at login", action: #selector(toggleStartAtLogin(_:)), keyEquivalent: ",")
+        menu.addItem(withTitle: LaunchAtLoginController().launchAtLogin ? "Disable start at login" : "Enable start at login", action: #selector(toggleStartAtLogin(_:)), keyEquivalent: "L")
         menu.addItem(NSMenuItem.separator())
         menu.addItem(withTitle: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
         statusItem.menu = menu
