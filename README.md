@@ -14,7 +14,10 @@
 
 
 - Added Pomodoro widget
+- Added CPU and Memory widgets
 - Added more flexible customization of actions
+- Added Start at login
+
 ```
         "tapAction": {
             "type": "openUrl",
