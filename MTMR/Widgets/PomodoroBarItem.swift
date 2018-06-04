@@ -53,7 +53,7 @@ class PomodoroBarItem: CustomButtonTouchBarItem {
     }
     
     private func finish() {
-        sendNotication()
+        sendNotification()
         reset()
         playSound()
     }
@@ -87,7 +87,7 @@ class PomodoroBarItem: CustomButtonTouchBarItem {
         NSSound.beep()
     }
     
-    private func sendNotication() {
+    private func sendNotification() {
         let notification: NSUserNotification = NSUserNotification()
         notification.title = "Time's up"
         notification.informativeText = "Keep up the good work!"

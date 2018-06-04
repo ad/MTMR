@@ -26,7 +26,7 @@ extension ItemType {
             return "com.toxblh.mtmr.appleScriptButton."
         case .timeButton(formatTemplate: _):
             return "com.toxblh.mtmr.timeButton."
-        case .battery():
+        case .battery(notifyPercent: _):
             return "com.toxblh.mtmr.battery."
         case .dock():
             return "com.toxblh.mtmr.dock"
@@ -259,8 +259,8 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
             barItem = AppleScriptTouchBarItem(identifier: identifier, source: source, interval: interval)
         case .timeButton(formatTemplate: let template):
             barItem = TimeTouchBarItem(identifier: identifier, formatTemplate: template)
-        case .battery():
-            barItem = BatteryBarItem(identifier: identifier)
+        case .battery(notifyPercent: let notifyPercent):
+            barItem = BatteryBarItem(identifier: identifier, notifyPercent: notifyPercent)
         case .dock:
             barItem = AppScrubberTouchBarItem(identifier: identifier)
         case .volume:

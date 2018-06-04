@@ -11,8 +11,11 @@ import Foundation
 
 class BatteryBarItem: CustomButtonTouchBarItem {
     private let batteryInfo = BatteryInfo()
+    private let notifyPercent: NSInteger
+    private var isNotified: Bool = false
     
-    init(identifier: NSTouchBarItem.Identifier) {
+    init(identifier: NSTouchBarItem.Identifier, notifyPercent: Int) {
+        self.notifyPercent = notifyPercent
         super.init(identifier: identifier, title: " ")
         
         batteryInfo.start { [weak self] in
@@ -27,10 +30,24 @@ class BatteryBarItem: CustomButtonTouchBarItem {
     
     func refresh() {
         self.attributedTitle = self.batteryInfo.formattedInfo()
+        if (self.batteryInfo.current < notifyPercent && isNotified == false) {
+            showNotification()
+            isNotified = true
+        } else {
+            isNotified = false
+        }
     }
     
     deinit {
         batteryInfo.stop()
+    }
+
+    private func showNotification() {
+        let notification: NSUserNotification = NSUserNotification()
+        notification.title = "Battery level"
+        notification.informativeText = NSString(format: "Current battery level is less than %d%%", notifyPercent) as String
+        NSUserNotificationCenter.default.deliver(notification)
+        NSSound.beep()
     }
 }
 

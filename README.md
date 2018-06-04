@@ -15,6 +15,7 @@
 
 - Added Pomodoro widget
 - Added CPU and Memory widgets
+- Added Notification (popup) about low battery (notifyPercent option in battery widget config, 10 by default)
 - Added more flexible customization of actions
 
 ```
@@ -33,7 +34,7 @@
 ```
   {
     "type": "staticButton",
-    "title": "⇲",
+    "title": "⇲", // Picture in Picture button
     "action": "appleScript",
     "actionAppleScript": {
       "inline":

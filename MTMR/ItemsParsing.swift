@@ -205,13 +205,14 @@ class SupportedTypesHolder {
             )
         },
         "battery": { decoder in
-            enum CodingKeys: String, CodingKey { case tapAction; case longTapAction }
+            enum CodingKeys: String, CodingKey { case tapAction; case longTapAction; case notifyPercent }
             let container = try decoder.container(keyedBy: CodingKeys.self)
             let action = try ActionType(from: decoder)
             let tapAction = try container.decodeIfPresent(TapAction.self, forKey: .tapAction)
             let longTapAction = try container.decodeIfPresent(LongTapAction.self, forKey: .longTapAction)
+            let notifyPercent = try container.decodeIfPresent(Int.self, forKey: .notifyPercent)
             return (
-                item: .battery(),
+                item: .battery(notifyPercent: notifyPercent ?? 10),
                 action: action,
                 tapAction: tapAction ?? TapAction(actionType: TapActionType.none),
                 longTapAction: longTapAction ?? LongTapAction(actionType: TapActionType.none),
@@ -396,7 +397,7 @@ enum ItemType: Decodable {
     case staticButton(title: String)
     case appleScriptTitledButton(source: SourceProtocol, refreshInterval: Double)
     case timeButton(formatTemplate: String)
-    case battery()
+    case battery(notifyPercent: Int)
     case dock()
     case volume()
     case brightness(refreshInterval: Double)
@@ -424,6 +425,7 @@ enum ItemType: Decodable {
         case url
         case longUrl
         case items
+        case notifyPercent
     }
 
     enum ItemTypeRaw: String, Decodable {
@@ -459,7 +461,11 @@ enum ItemType: Decodable {
             let template = try container.decodeIfPresent(String.self, forKey: .formatTemplate) ?? "HH:mm"
             self = .timeButton(formatTemplate: template)
         case .battery:
-            self = .battery()
+            var notifyPercent = try container.decodeIfPresent(Int.self, forKey: .notifyPercent) ?? 10
+            if (0 < notifyPercent || notifyPercent > 100) {
+                notifyPercent = 10
+            }
+            self = .battery(notifyPercent: notifyPercent)
         case .dock:
             self = .dock()
         case .volume:
