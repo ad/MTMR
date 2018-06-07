@@ -154,8 +154,8 @@ class BatteryInfo: NSObject {
             color = NSColor.red
         }
         
-        let newTitle = NSMutableAttributedString(string: title as String, attributes: [.foregroundColor: color, .font: NSFont.systemFont(ofSize: 15), .baselineOffset: 1])
-        let newTitleSecond = NSMutableAttributedString(string: timeRemaining as String, attributes: [NSAttributedStringKey.foregroundColor: color, NSAttributedStringKey.font: NSFont.systemFont(ofSize: 8, weight: .regular), NSAttributedStringKey.baselineOffset: 7])
+        let newTitle = NSMutableAttributedString(string: title as String, attributes: [NSAttributedString.Key.foregroundColor: color, NSAttributedString.Key.font: NSFont.systemFont(ofSize: 15), NSAttributedString.Key.baselineOffset: 1])
+        let newTitleSecond = NSMutableAttributedString(string: timeRemaining as String, attributes: [NSAttributedString.Key.foregroundColor: color, NSAttributedString.Key.font: NSFont.systemFont(ofSize: 8, weight: .regular), NSAttributedString.Key.baselineOffset: 7])
         newTitle.append(newTitleSecond)
         newTitle.setAlignment(.center, range: NSRange(location: 0, length: title.count))
         return newTitle

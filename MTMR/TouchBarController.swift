@@ -104,7 +104,7 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
             return (item: .staticButton(title: ""), action: .custom(closure: { [weak self] in
                 guard let `self` = self else { return }
                 self.reloadPreset(path: self.lastPresetPath)
-            }), tapAction: TapAction(actionType: TapActionType.none), longTapAction: LongTapAction(actionType: TapActionType.none), parameters: [.width: .width(30), .image: .image(source: (NSImage(named: .stopProgressFreestandingTemplate))!)])
+            }), tapAction: TapAction(actionType: TapActionType.none), longTapAction: LongTapAction(actionType: TapActionType.none), parameters: [.width: .width(30), .image: .image(source: (NSImage(named: NSImage.stopProgressFreestandingTemplateName))!)])
         }
 
         if let blackListed = UserDefaults.standard.stringArray(forKey: "com.toxblh.mtmr.blackListedApps") {
@@ -120,7 +120,11 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
 
     func createAndUpdatePreset(newJsonItems: [BarItemDefinition]) {
         if let oldBar = self.touchBar {
-            NSTouchBar.minimizeSystemModalFunctionBar(oldBar)
+            if #available(OSX 10.14, *) {
+                NSTouchBar.minimizeSystemModalTouchBar(oldBar)
+            } else {
+                NSTouchBar.minimizeSystemModalFunctionBar(oldBar)
+            }
         }
         self.touchBar = NSTouchBar()
         self.jsonItems = newJsonItems
@@ -219,10 +223,18 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
 
     @objc private func presentTouchBar() {
         if touchbarNeedRefresh {
-            if self.controlStripState {
-                NSTouchBar.presentSystemModalFunctionBar(touchBar, systemTrayItemIdentifier: .controlStripItem)
+            if #available(OSX 10.14, *) {
+                if self.controlStripState {
+                    NSTouchBar.presentSystemModalTouchBar(touchBar, systemTrayItemIdentifier: .controlStripItem)
+                } else {
+                    NSTouchBar.presentSystemModalTouchBar(touchBar, placement: 1, systemTrayItemIdentifier: .controlStripItem)
+                }
             } else {
-                NSTouchBar.presentSystemModalFunctionBar(touchBar, placement: 1, systemTrayItemIdentifier: .controlStripItem)
+                if self.controlStripState {
+                    NSTouchBar.presentSystemModalFunctionBar(touchBar, systemTrayItemIdentifier: .controlStripItem)
+                } else {
+                    NSTouchBar.presentSystemModalFunctionBar(touchBar, placement: 1, systemTrayItemIdentifier: .controlStripItem)
+                }
             }
         }
     }
@@ -234,7 +246,11 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
 
     @objc private func dismissTouchBar() {
         self.touchbarNeedRefresh = true
-        NSTouchBar.minimizeSystemModalFunctionBar(touchBar)
+        if #available(OSX 10.14, *) {
+            NSTouchBar.minimizeSystemModalTouchBar(touchBar)
+        } else {
+            NSTouchBar.minimizeSystemModalFunctionBar(touchBar)
+        }
     }
 
     func touchBar(_ touchBar: NSTouchBar, makeItemForIdentifier identifier: NSTouchBarItem.Identifier) -> NSTouchBarItem? {

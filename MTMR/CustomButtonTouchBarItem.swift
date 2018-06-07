@@ -181,7 +181,7 @@ class CustomButtonCell: NSButtonCell {
 
     func setAttributedTitle(_ title: NSAttributedString, withColor color: NSColor) {
         let attrTitle = NSMutableAttributedString(attributedString: title)
-        attrTitle.addAttributes([.foregroundColor: color], range: NSRange(location: 0, length: attrTitle.length))
+        attrTitle.addAttributes([NSAttributedString.Key.foregroundColor: color], range: NSRange(location: 0, length: attrTitle.length))
         self.attributedTitle = attrTitle
     }
 
@@ -189,7 +189,7 @@ class CustomButtonCell: NSButtonCell {
 
 extension String {
     var defaultTouchbarAttributedString: NSAttributedString {
-        let attrTitle = NSMutableAttributedString(string: self, attributes: [.foregroundColor: NSColor.white, .font: NSFont.systemFont(ofSize: 15, weight: .regular), .baselineOffset: 1])
+        let attrTitle = NSMutableAttributedString(string: self, attributes: [NSAttributedString.Key.foregroundColor: NSColor.white, NSAttributedString.Key.font: NSFont.systemFont(ofSize: 15, weight: .regular), NSAttributedString.Key.baselineOffset: 1])
         attrTitle.setAlignment(.center, range: NSRange(location: 0, length: self.count))
         return attrTitle
     }

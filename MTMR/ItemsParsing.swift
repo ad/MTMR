@@ -89,7 +89,7 @@ class SupportedTypesHolder {
             )
         },
         "volumeDown": { _ in
-            let imageParameter = GeneralParameter.image(source: NSImage(named: .touchBarVolumeDownTemplate)!)
+            let imageParameter = GeneralParameter.image(source: NSImage(named: NSImage.touchBarVolumeDownTemplateName)!)
             return (
                 item: .staticButton(title: ""),
                 action: .hidKey(keycode: NX_KEYTYPE_SOUND_DOWN),
@@ -99,7 +99,7 @@ class SupportedTypesHolder {
             )
         },
         "volumeUp": { _ in
-            let imageParameter = GeneralParameter.image(source: NSImage(named: .touchBarVolumeUpTemplate)!)
+            let imageParameter = GeneralParameter.image(source: NSImage(named: NSImage.touchBarVolumeUpTemplateName)!)
             return (
                 item: .staticButton(title: ""),
                 action: .hidKey(keycode: NX_KEYTYPE_SOUND_UP),
@@ -109,7 +109,7 @@ class SupportedTypesHolder {
             )
         },
         "mute": { _ in
-            let imageParameter = GeneralParameter.image(source: NSImage(named: .touchBarAudioOutputMuteTemplate)!)
+            let imageParameter = GeneralParameter.image(source: NSImage(named: NSImage.touchBarAudioOutputMuteTemplateName)!)
             return (
                 item: .staticButton(title: ""),
                 action: .hidKey(keycode: NX_KEYTYPE_MUTE),
@@ -119,7 +119,7 @@ class SupportedTypesHolder {
             )
         },
         "previous": { _ in
-            let imageParameter = GeneralParameter.image(source: NSImage(named: .touchBarRewindTemplate)!)
+            let imageParameter = GeneralParameter.image(source: NSImage(named: NSImage.touchBarRewindTemplateName)!)
             return (
                 item: .staticButton(title: ""),
                 action: .hidKey(keycode: NX_KEYTYPE_PREVIOUS),
@@ -129,7 +129,7 @@ class SupportedTypesHolder {
             )
         },
         "play": { _ in
-            let imageParameter = GeneralParameter.image(source: NSImage(named: .touchBarPlayPauseTemplate)!)
+            let imageParameter = GeneralParameter.image(source: NSImage(named: NSImage.touchBarPlayPauseTemplateName)!)
             return (
                 item: .staticButton(title: ""),
                 action: .hidKey(keycode: NX_KEYTYPE_PLAY),
@@ -139,7 +139,7 @@ class SupportedTypesHolder {
             )
         },
         "next": { _ in
-            let imageParameter = GeneralParameter.image(source: NSImage(named: .touchBarFastForwardTemplate)!)
+            let imageParameter = GeneralParameter.image(source: NSImage(named: NSImage.touchBarFastForwardTemplateName)!)
             return (
                 item: .staticButton(title: ""),
                 action: .hidKey(keycode: NX_KEYTYPE_NEXT),
