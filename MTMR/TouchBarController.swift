@@ -120,11 +120,7 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
 
     func createAndUpdatePreset(newJsonItems: [BarItemDefinition]) {
         if let oldBar = self.touchBar {
-            if #available(OSX 10.14, *) {
-                NSTouchBar.minimizeSystemModalTouchBar(oldBar)
-            } else {
-                NSTouchBar.minimizeSystemModalFunctionBar(oldBar)
-            }
+            minimizeSystemModal(oldBar)
         }
         self.touchBar = NSTouchBar()
         self.jsonItems = newJsonItems
@@ -223,34 +219,22 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
 
     @objc private func presentTouchBar() {
         if touchbarNeedRefresh {
-            if #available(OSX 10.14, *) {
-                if self.controlStripState {
-                    NSTouchBar.presentSystemModalTouchBar(touchBar, systemTrayItemIdentifier: .controlStripItem)
-                } else {
-                    NSTouchBar.presentSystemModalTouchBar(touchBar, placement: 1, systemTrayItemIdentifier: .controlStripItem)
-                }
+            if self.controlStripState {
+                presentSystemModal(touchBar, systemTrayItemIdentifier: .controlStripItem)
             } else {
-                if self.controlStripState {
-                    NSTouchBar.presentSystemModalFunctionBar(touchBar, systemTrayItemIdentifier: .controlStripItem)
-                } else {
-                    NSTouchBar.presentSystemModalFunctionBar(touchBar, placement: 1, systemTrayItemIdentifier: .controlStripItem)
-                }
+                presentSystemModal(touchBar, placement: 1, systemTrayItemIdentifier: .controlStripItem)
             }
         }
+    }
+
+    @objc private func dismissTouchBar() {
+        self.touchbarNeedRefresh = true
+        minimizeSystemModal(touchBar)
     }
 
     @objc func resetControlStrip() {
         dismissTouchBar()
         presentTouchBar()
-    }
-
-    @objc private func dismissTouchBar() {
-        self.touchbarNeedRefresh = true
-        if #available(OSX 10.14, *) {
-            NSTouchBar.minimizeSystemModalTouchBar(touchBar)
-        } else {
-            NSTouchBar.minimizeSystemModalFunctionBar(touchBar)
-        }
     }
 
     func touchBar(_ touchBar: NSTouchBar, makeItemForIdentifier identifier: NSTouchBarItem.Identifier) -> NSTouchBarItem? {
