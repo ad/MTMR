@@ -12,8 +12,7 @@ xcodebuild \
 
 cd Release
 rm -r App.xcarchive
-
-create-dmg "MTMR.app"
+rm -r MTMR.dmg
 
 zip -r "MTMR.zip" "MTMR.app"
 
@@ -21,3 +20,9 @@ killall MTMR
 rm -r "/Applications/MTMR.app"
 cp -R "MTMR.app" "/Applications"
 open "/Applications/MTMR.app"
+
+echo $VERSION
+
+hdiutil create -fs HFS+ -srcfolder ./MTMR.app -volname MTMR ./MTMR.dmg
+
+ditto -c -k --sequesterRsrc --keepParent "MTMR.app" "MTMR.zip"

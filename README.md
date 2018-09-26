@@ -3,14 +3,93 @@
     <img src="Resources/logo.png" width="120">
 </p>
 
+<<<<<<< HEAD
 # This is Fork of "My TouchBar. My rules"
+=======
+# My TouchBar. My rules
+
+*The TouchBar Customization App for your MacBook Pro*
+
+[![GitHub release](https://img.shields.io/github/release/toxblh/MTMR.svg)](https://github.com/Toxblh/MTMR/releases)
+[![license](https://img.shields.io/github/license/Toxblh/MTMR.svg)](https://github.com/Toxblh/MTMR/blob/master/LICENSE) [![Total downloads](https://img.shields.io/github/downloads/Toxblh/MTMR/total.svg)](https://github.com/Toxblh/MTMR/releases/latest) ![minimal system requirements](https://img.shields.io/badge/required-macOS%2010.12.2-blue.svg) ![travis](https://travis-ci.org/Toxblh/MTMR.svg?branch=master)
+
+>>>>>>> 2023ab29f3b1fa1b2290368120f87db7f7ebd562
 <p align="center">
     <img src="Resources/TouchBar.png">
 </p>
 
+<<<<<<< HEAD
 [![GitHub release](https://img.shields.io/github/release/toxblh/MTMR.svg)](https://github.com/ad/MTMR/releases)
 [![license](https://img.shields.io/github/license/Toxblh/MTMR.svg)](https://github.com/Toxblh/MTMR/blob/master/LICENSE)
 [![minimal system requirements](https://img.shields.io/badge/required-macOS%2010.12.2-blue.svg)]()
+=======
+**MTMR** Community:
+[<img height="24px" src="https://github.com/discourse/DiscourseMobile/raw/master/icon.png" /> Discourse](https://forum.mtmr.app)
+[<img height="24px" src="https://telegram.org/img/t_logo.png" /> Telegram](https://t.me/joinchat/AmVYGg8vW38c13_3MxdE_g)
+
+<a href="https://www.buymeacoffee.com/toxblh" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" height="32px" ></a>
+<a href="https://www.patreon.com/bePatron?u=9900748"><img height="32px"  src="https://c5.patreon.com/external/logo/become_a_patron_button.png" srcset="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png 2x"></a>
+[<img src="https://d1qb2nb5cznatu.cloudfront.net/startups/i/854859-e299e139ab7f79855c0bc589f10b0ec6-medium_jpg.jpg?buster=1453074480" height="32px" /> Become a backer](https://opencollective.com/MTMR#backer)
+[<img src="https://d1qb2nb5cznatu.cloudfront.net/startups/i/854859-e299e139ab7f79855c0bc589f10b0ec6-medium_jpg.jpg?buster=1453074480" height="32px" /> Become a sponsor](https://opencollective.com/MTMR#sponsor)
+
+
+My the idea is to create the program like a platform for plugins for customization TouchBar. I very like BTT and a full custom TouchBar (my [BTT preset](https://github.com/Toxblh/btt-touchbar-preset)). And I want to create it. And it's my the first Swift project for MacOS :)
+
+### Roadmap
+- [x] Create the first prototype with TouchBar in Storyboard
+- [x] Put in stripe menu on startup the application
+- [x] Find how to simulate real buttons like brightness, volume, night shift and etc.
+- [x] Time in touchbar!
+- [x] First the weather plugin
+- [x] Find how to open full-screen TouchBar without the cross and stripe menu
+- [x] Find how to add haptic feedback
+- [x] Add icon and menu in StatusBar
+- [x] Hide from Dock
+- [x] Status menu: "preferences", "quit"
+- [x] JSON or another approch for save preset, maybe in `~/Library/Application Support/MTMR/`
+- [x] Custom buttons size, actions by click
+- [x] Layout: [always left, NSSliderView for center, always right]
+- [x] System for autoupdate (https://sparkle-project.org/)
+- [ ] Overwrite default values from item types (e.g. title for brightness)
+- [ ] Custom settings for paddings and margins for buttons
+- [ ] XPC Service for scripts
+- [ ] UI for settings
+- [ ] Import config from BTT
+
+Settings:
+- [ ] Interface for plugins and export like presets
+- [x] Startup at login
+- [ ] Show on/off in Dock
+- [ ] Show on/off in StatusBar
+- [ ] On/off Haptic Feedback
+
+Maybe:
+- [ ] Refactoring the application on packages (AppleScript, JavaScript? and Swift?)
+
+
+## Installation
+- Download last [release](https://github.com/Toxblh/MTMR/releases)
+- Or via Homebrew `brew cask install mtmr`
+
+## Preset
+
+File for customize your preset for MTMR: `open ~/Library/Application\ Support/MTMR/items.json`
+
+## Built-in button types:
+
+- escape
+- exitTouchbar
+- brightnessUp
+- brightnessDown
+- illuminationUp (keyboard illumination)
+- illuminationDown (keyboard illumination)
+- volumeDown
+- volumeUp
+- mute
+- dock (half-long click to open app, full-long click to kill app)
+- nightShift
+- dnd (Dont disturb)
+>>>>>>> 2023ab29f3b1fa1b2290368120f87db7f7ebd562
 
 
 - Added Pomodoro widget
@@ -29,6 +108,98 @@
         },
 ```
 
+<<<<<<< HEAD
+=======
+## Native plugins
+- `weather`
+> Provider: https://openweathermap.org Need allowance location service
+```js
+  "type": "weather",
+  "refreshInterval": 600,
+  "units": "metric", // or imperial
+  "icon_type": "text" // or images
+  "api_key": "" // you can get the key on openweather
+```
+
+- `currency`
+> Provider: https://coinbase.com
+```js
+  "type": "currency",
+  "refreshInterval": 600,
+  "align": "right",
+  "from": "BTC",
+  "to": "USD",
+```
+
+- `music`
+```js
+{
+  "type": "music",
+  "align": "center",
+  "width": 80,
+  "bordered": false,
+  "refreshInterval": 2,
+},
+```
+
+## Actions:
+- `hidKey`
+> https://github.com/aosm/IOHIDFamily/blob/master/IOHIDSystem/IOKit/hidsystem/ev_keymap.h use only numbers
+```json
+ "action": "hidKey",
+ "keycode": 53,
+```
+
+- `keyPress`
+```json
+ "action": "keyPress",
+ "keycode": 1,
+```
+
+- `appleScript`
+```js
+ "action": "appleScript",
+ "actionAppleScript": {
+     "inline": "tell application \"Finder\"\rmake new Finder window\rset target of front window to path to home folder as string\ractivate\rend tell"
+    // "filePath" or "base64" will work as well
+ },
+```
+
+- `shellScript`
+```js
+ "action": "shellScript",
+ "executablePath": "/usr/bin/pmset",
+ "shellArguments": ["sleepnow"], // optional
+
+```
+
+- `openUrl`
+```js
+ "action": "openUrl",
+ "url": "https://google.com",
+```
+
+## LongActions
+This then you want to use longPress for some operations is will the same values like for Actions but different additional parameters, example:
+```js
+ "longAction": "hidKey",
+ "longKeycode": 53,
+```
+
+- longAction
+- longKeycode
+- longActionAppleScript
+- longExecutablePath
+- longShellArguments
+- longUrl
+
+## Additional parameters:
+
+- `width` allow to restrict how much room a particular button will take
+```json
+  "width": 34
+```
+>>>>>>> 2023ab29f3b1fa1b2290368120f87db7f7ebd562
 
 # Examples:
 ```
@@ -47,6 +218,7 @@
 
 # My current config
 
+<<<<<<< HEAD
 ```
 [
     {
@@ -259,3 +431,21 @@
         "bordered": false,
     },
 ]
+=======
+### Author's presets
+
+[@Toxblh preset](Resources/toxblh.json)
+
+[@ReDetection preset](Resources/ReDetection.json)
+
+### User's presets
+
+[@luongvo209 preset](Resources/luongvo209.json)
+![](Resources/luongvo209.png)
+
+## Credits
+
+Built by [@Toxblh](https://patreon.com/toxblh) and [@ReDetection](http://patreon.com/ReDetection).
+
+[![Analytics](https://ga-beacon.appspot.com/UA-96373624-2/mtmr?pixel)](https://github.com/igrigorik/ga-beacon)
+>>>>>>> 2023ab29f3b1fa1b2290368120f87db7f7ebd562

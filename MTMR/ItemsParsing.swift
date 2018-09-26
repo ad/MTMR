@@ -18,13 +18,12 @@ struct BarItemDefinition: Decodable {
     let longTapAction: LongTapAction
     let tapAction: TapAction
     let additionalParameters: [GeneralParameters.CodingKeys: GeneralParameter]
-
+    
     private enum CodingKeys: String, CodingKey {
         case type
         case tapAction
         case longTapAction
     }
-
     init(type: ItemType, action: ActionType? = .none, tapAction: TapAction? = TapAction(actionType: TapActionType.none), longTapAction: LongTapAction? = LongTapAction(actionType: TapActionType.none), additionalParameters: [GeneralParameters.CodingKeys:GeneralParameter]? = [:]) {
         self.type = type
         self.action = action ?? .none
@@ -32,7 +31,7 @@ struct BarItemDefinition: Decodable {
         self.tapAction = tapAction ?? TapAction(actionType: TapActionType.none)
         self.additionalParameters = additionalParameters ?? [:]
     }
-
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         var additionalParameters = try GeneralParameters(from: decoder).parameters
@@ -46,7 +45,7 @@ struct BarItemDefinition: Decodable {
             self.init(type: .staticButton(title: "\(type) unknown"))
         }
     }
-
+    
 }
 
 class SupportedTypesHolder {
@@ -78,6 +77,7 @@ class SupportedTypesHolder {
                 parameters: [.image: imageParameter]
             )
         },
+        
         "brightnessDown": { _ in
             let imageParameter = GeneralParameter.image(source: #imageLiteral(resourceName: "brightnessDown"))
             return (
@@ -88,6 +88,29 @@ class SupportedTypesHolder {
                 parameters: [.image: imageParameter]
             )
         },
+        
+        "illuminationUp": { _ in
+            let imageParameter = GeneralParameter.image(source: #imageLiteral(resourceName: "ill_up"))
+            return (
+                item: .staticButton(title: ""),
+                action: .hidKey(keycode: NX_KEYTYPE_ILLUMINATION_UP),
+                tapAction: TapAction(actionType: TapActionType.hidKey, keycode: Int(NX_KEYTYPE_ILLUMINATION_UP)),
+                longTapAction: LongTapAction(actionType: TapActionType.none),
+                parameters: [.image: imageParameter]
+            )
+        },
+        
+        "illuminationDown": { _ in
+            let imageParameter = GeneralParameter.image(source: #imageLiteral(resourceName: "ill_down"))
+            return (
+                item: .staticButton(title: ""),
+                action: .hidKey(keycode: NX_KEYTYPE_ILLUMINATION_DOWN),
+                tapAction: TapAction(actionType: TapActionType.hidKey, keycode: Int(NX_KEYTYPE_ILLUMINATION_DOWN)),
+                longTapAction: LongTapAction(actionType: TapActionType.none),
+                parameters: [.image: imageParameter]
+            )
+        },
+        
         "volumeDown": { _ in
             let imageParameter = GeneralParameter.image(source: NSImage(named: NSImage.touchBarVolumeDownTemplateName)!)
             return (
@@ -98,6 +121,7 @@ class SupportedTypesHolder {
                 parameters: [.image: imageParameter]
             )
         },
+        
         "volumeUp": { _ in
             let imageParameter = GeneralParameter.image(source: NSImage(named: NSImage.touchBarVolumeUpTemplateName)!)
             return (
@@ -108,6 +132,7 @@ class SupportedTypesHolder {
                 parameters: [.image: imageParameter]
             )
         },
+        
         "mute": { _ in
             let imageParameter = GeneralParameter.image(source: NSImage(named: NSImage.touchBarAudioOutputMuteTemplateName)!)
             return (
@@ -118,6 +143,7 @@ class SupportedTypesHolder {
                 parameters: [.image: imageParameter]
             )
         },
+        
         "previous": { _ in
             let imageParameter = GeneralParameter.image(source: NSImage(named: NSImage.touchBarRewindTemplateName)!)
             return (
@@ -128,6 +154,7 @@ class SupportedTypesHolder {
                 parameters: [.image: imageParameter]
             )
         },
+        
         "play": { _ in
             let imageParameter = GeneralParameter.image(source: NSImage(named: NSImage.touchBarPlayPauseTemplateName)!)
             return (
@@ -138,6 +165,7 @@ class SupportedTypesHolder {
                 parameters: [.image: imageParameter]
             )
         },
+        
         "next": { _ in
             let imageParameter = GeneralParameter.image(source: NSImage(named: NSImage.touchBarFastForwardTemplateName)!)
             return (
@@ -148,6 +176,7 @@ class SupportedTypesHolder {
                 parameters: [.image: imageParameter]
             )
         },
+        
         "weather": { decoder in
             enum CodingKeys: String, CodingKey { case refreshInterval; case units; case api_key ; case icon_type; case tapAction; case longTapAction }
             let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -166,6 +195,7 @@ class SupportedTypesHolder {
                 parameters: [:]
             )
         },
+        
         "currency": { decoder in
             enum CodingKeys: String, CodingKey { case refreshInterval; case from; case to; case tapAction; case longTapAction }
             let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -183,6 +213,7 @@ class SupportedTypesHolder {
                 parameters: [:]
             )
         },
+        
         "dock": { decoder in
             return (
                 item: .dock(),
@@ -192,6 +223,7 @@ class SupportedTypesHolder {
                 parameters: [:]
             )
         },
+        
         "inputsource": { decoder in
             enum CodingKeys: String, CodingKey { case longTapAction }
             let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -234,6 +266,7 @@ class SupportedTypesHolder {
                 parameters: [:]
             )
         },
+        
         "volume": { decoder in
             enum CodingKeys: String, CodingKey { case image }
             let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -255,6 +288,7 @@ class SupportedTypesHolder {
                 )
             }
         },
+        
         "brightness": { decoder in
             enum CodingKeys: String, CodingKey { case refreshInterval; case image }
             let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -317,6 +351,7 @@ class SupportedTypesHolder {
                 parameters: [:]
             )
         },
+        
         "group": { decoder in
             enum CodingKeys: CodingKey { case items }
             let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -359,10 +394,31 @@ class SupportedTypesHolder {
                 parameters: [:]
             )
         },
+        
+        "nightShift": {_ in
+            return (
+                item: .nightShift(),
+                action: .none,
+                tapAction: TapAction(actionType: TapActionType.none),
+                longTapAction: LongTapAction(actionType: TapActionType.none),
+                parameters: [:]
+            )
+        },
+        
+        "dnd": { _ in
+            return (
+                item: .dnd(),
+                action: .none,
+                tapAction: TapAction(actionType: TapActionType.none),
+                longTapAction: LongTapAction(actionType: TapActionType.none),
+                parameters: [:]
+            )
+            
+        }
     ]
-
+    
     static let sharedInstance = SupportedTypesHolder()
-
+    
     func lookup(by type: String) -> ParametersDecoder {
         return supportedTypes[type] ?? { decoder in
             enum CodingKeys: String, CodingKey { case tapAction; case longTapAction }
@@ -380,11 +436,11 @@ class SupportedTypesHolder {
             )
         }
     }
-
+    
     func register(typename: String, decoder: @escaping ParametersDecoder) {
         supportedTypes[typename] = decoder
     }
-
+    
     func register(typename: String, item: ItemType, action: ActionType? = .none, tapAction: TapAction? = TapAction(actionType: TapActionType.none), longTapAction: LongTapAction? = LongTapAction(actionType: TapActionType.none)) {
         register(typename: typename) { _ in
             return (item: item, action: action!, tapAction: tapAction!, longTapAction: longTapAction!, parameters: [:])
@@ -409,7 +465,9 @@ enum ItemType: Decodable {
     case groupBar(items: [BarItemDefinition])
     case cpu(interval: Double)
     case memory(interval: Double)
-
+    case nightShift()
+    case dnd()
+    
     private enum CodingKeys: String, CodingKey {
         case type
         case title
@@ -427,7 +485,7 @@ enum ItemType: Decodable {
         case items
         case notifyPercent
     }
-
+    
     enum ItemTypeRaw: String, Decodable {
         case staticButton
         case appleScriptTitledButton
@@ -444,22 +502,28 @@ enum ItemType: Decodable {
         case groupBar
         case cpu
         case memory
+        case nightShift
+        case dnd
     }
-
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(ItemTypeRaw.self, forKey: .type)
         switch type {
+            
         case .appleScriptTitledButton:
             let source = try container.decode(Source.self, forKey: .source)
             let interval = try container.decodeIfPresent(Double.self, forKey: .refreshInterval) ?? 1800.0
             self = .appleScriptTitledButton(source: source, refreshInterval: interval)
+            
         case .staticButton:
             let title = try container.decode(String.self, forKey: .title)
             self = .staticButton(title: title)
+            
         case .timeButton:
             let template = try container.decodeIfPresent(String.self, forKey: .formatTemplate) ?? "HH:mm"
             self = .timeButton(formatTemplate: template)
+            
         case .battery:
             var notifyPercent = try container.decodeIfPresent(Int.self, forKey: .notifyPercent) ?? 10
             if (0 < notifyPercent || notifyPercent > 100) {
@@ -468,24 +532,30 @@ enum ItemType: Decodable {
             self = .battery(notifyPercent: notifyPercent)
         case .dock:
             self = .dock()
+            
         case .volume:
             self = .volume()
+            
         case .brightness:
             let interval = try container.decodeIfPresent(Double.self, forKey: .refreshInterval) ?? 0.5
             self = .brightness(refreshInterval: interval)
+            
         case .weather:
             let interval = try container.decodeIfPresent(Double.self, forKey: .refreshInterval) ?? 1800.0
             let units = try container.decodeIfPresent(String.self, forKey: .units) ?? "metric"
             let api_key = try container.decodeIfPresent(String.self, forKey: .api_key) ?? "32c4256d09a4c52b38aecddba7a078f6"
             let icon_type = try container.decodeIfPresent(String.self, forKey: .icon_type) ?? "text"
             self = .weather(interval: interval, units: units, api_key: api_key, icon_type: icon_type)
+            
         case .currency:
             let interval = try container.decodeIfPresent(Double.self, forKey: .refreshInterval) ?? 600.0
             let from = try container.decodeIfPresent(String.self, forKey: .from) ?? "RUB"
             let to = try container.decodeIfPresent(String.self, forKey: .to) ?? "USD"
             self = .currency(interval: interval, from: from, to: to)
+            
         case .inputsource:
             self = .inputsource()
+            
         case .music:
             let interval = try container.decodeIfPresent(Double.self, forKey: .refreshInterval) ?? 1800.0
             self = .music(interval: interval)
@@ -501,6 +571,11 @@ enum ItemType: Decodable {
         case .memory:
             let interval = try container.decodeIfPresent(Double.self, forKey: .refreshInterval) ?? 1.0
             self = .memory(interval: interval)
+        case .nightShift:
+            self = .nightShift()
+            
+        case .dnd:
+            self = .dnd()
         }
     }
 }
@@ -509,11 +584,11 @@ enum ActionType: Decodable {
     case none
     case hidKey(keycode: Int32)
     case keyPress(keycode: Int)
-    case appleSctipt(source: SourceProtocol)
+    case appleScript(source: SourceProtocol)
     case shellScript(executable: String, parameters: [String])
     case custom(closure: ()->())
     case openUrl(url: String)
-
+    
     private enum CodingKeys: String, CodingKey {
         case action
         case keycode
@@ -522,7 +597,7 @@ enum ActionType: Decodable {
         case shellArguments
         case url
     }
-
+    
     private enum ActionTypeRaw: String, Decodable {
         case hidKey
         case keyPress
@@ -530,29 +605,35 @@ enum ActionType: Decodable {
         case shellScript
         case openUrl
     }
-
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decodeIfPresent(ActionTypeRaw.self, forKey: .action)
+        
         switch type {
-        case .some(.hidKey):
-            let keycode = try container.decode(Int32.self, forKey: .keycode)
-            self = .hidKey(keycode: keycode)
-        case .some(.keyPress):
-            let keycode = try container.decode(Int.self, forKey: .keycode)
-            self = .keyPress(keycode: keycode)
-        case .some(.appleScript):
-            let source = try container.decode(Source.self, forKey: .actionAppleScript)
-            self = .appleSctipt(source: source)
-        case .some(.shellScript):
-            let executable = try container.decode(String.self, forKey: .executablePath)
-            let parameters = try container.decodeIfPresent([String].self, forKey: .shellArguments) ?? []
-            self = .shellScript(executable: executable, parameters: parameters)
-        case .some(.openUrl):
-            let url = try container.decode(String.self, forKey: .url)
-            self = .openUrl(url: url)
-        case .none:
-            self = .none
+            case .some(.hidKey):
+                let keycode = try container.decode(Int32.self, forKey: .keycode)
+                self = .hidKey(keycode: keycode)
+            
+            case .some(.keyPress):
+                let keycode = try container.decode(Int.self, forKey: .keycode)
+                self = .keyPress(keycode: keycode)
+            
+            case .some(.appleScript):
+                let source = try container.decode(Source.self, forKey: .actionAppleScript)
+                self = .appleScript(source: source)
+            
+            case .some(.shellScript):
+                let executable = try container.decode(String.self, forKey: .executablePath)
+                let parameters = try container.decodeIfPresent([String].self, forKey: .shellArguments) ?? []
+                self = .shellScript(executable: executable, parameters: parameters)
+            
+            case .some(.openUrl):
+                let url = try container.decode(String.self, forKey: .url)
+                self = .openUrl(url: url)
+            
+            case .none:
+                self = .none
         }
     }
 }
@@ -577,17 +658,17 @@ enum LongActionType: Decodable {
     case none
     case hidKey(keycode: Int32)
     case keyPress(keycode: Int)
-    case appleSctipt(source: SourceProtocol)
+    case appleScript(source: SourceProtocol)
     case shellScript(executable: String, parameters: [String])
     case custom(closure: ()->())
     case openUrl(url: String)
 
     private enum CodingKeys: String, CodingKey {
         case longAction
-        case keycode
-        case actionAppleScript
-        case executablePath
-        case shellArguments
+        case longKeycode
+        case longActionAppleScript
+        case longExecutablePath
+        case longShellArguments
         case longUrl
     }
 
@@ -602,25 +683,31 @@ enum LongActionType: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let longType = try container.decodeIfPresent(LongActionTypeRaw.self, forKey: .longAction)
+        
         switch longType {
-        case .some(.hidKey):
-            let keycode = try container.decode(Int32.self, forKey: .keycode)
-            self = .hidKey(keycode: keycode)
-        case .some(.keyPress):
-            let keycode = try container.decode(Int.self, forKey: .keycode)
-            self = .keyPress(keycode: keycode)
-        case .some(.appleScript):
-            let source = try container.decode(Source.self, forKey: .actionAppleScript)
-            self = .appleSctipt(source: source)
-        case .some(.shellScript):
-            let executable = try container.decode(String.self, forKey: .executablePath)
-            let parameters = try container.decodeIfPresent([String].self, forKey: .shellArguments) ?? []
-            self = .shellScript(executable: executable, parameters: parameters)
-        case .some(.openUrl):
-            let longUrl = try container.decode(String.self, forKey: .longUrl)
-            self = .openUrl(url: longUrl)
-        case .none:
-            self = .none
+            case .some(.hidKey):
+                let keycode = try container.decode(Int32.self, forKey: .longKeycode)
+                self = .hidKey(keycode: keycode)
+            
+            case .some(.keyPress):
+                let keycode = try container.decode(Int.self, forKey: .longKeycode)
+                self = .keyPress(keycode: keycode)
+            
+            case .some(.appleScript):
+                let source = try container.decode(Source.self, forKey: .longActionAppleScript)
+                self = .appleScript(source: source)
+            
+            case .some(.shellScript):
+                let executable = try container.decode(String.self, forKey: .longExecutablePath)
+                let parameters = try container.decodeIfPresent([String].self, forKey: .longShellArguments) ?? []
+                self = .shellScript(executable: executable, parameters: parameters)
+            
+            case .some(.openUrl):
+                let longUrl = try container.decode(String.self, forKey: .longUrl)
+                self = .openUrl(url: longUrl)
+            
+            case .none:
+                self = .none
         }
     }
 }
@@ -636,7 +723,7 @@ enum GeneralParameter {
 
 struct GeneralParameters: Decodable {
     let parameters: [GeneralParameters.CodingKeys: GeneralParameter]
-
+    
     enum CodingKeys: String, CodingKey {
         case width
         case image
@@ -645,36 +732,45 @@ struct GeneralParameters: Decodable {
         case background
         case title
     }
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         var result: [GeneralParameters.CodingKeys: GeneralParameter] = [:]
+        
         if let value = try container.decodeIfPresent(CGFloat.self, forKey: .width) {
             result[.width] = .width(value)
         }
+        
         if let imageSource = try container.decodeIfPresent(Source.self, forKey: .image) {
             result[.image] = .image(source: imageSource)
         }
+        
         let align = try container.decodeIfPresent(Align.self, forKey: .align) ?? .center
         result[.align] = .align(align)
 
         if let borderedFlag = try container.decodeIfPresent(Bool.self, forKey: .bordered) {
             result[.bordered] = .bordered(borderedFlag)
         }
+        
         if let backgroundColor = try container.decodeIfPresent(String.self, forKey: .background)?.hexColor {
             result[.background] = .background(backgroundColor)
         }
+        
         if let title = try container.decodeIfPresent(String.self, forKey: .title) {
             result[.title] = .title(title)
         }
+        
         parameters = result
     }
 }
+
 protocol SourceProtocol {
     var data: Data? { get }
     var string: String? { get }
     var image: NSImage? { get }
     var appleScript: NSAppleScript? { get }
 }
+
 struct Source: Decodable, SourceProtocol {
     let filePath: String?
     let base64: String?
@@ -689,35 +785,43 @@ struct Source: Decodable, SourceProtocol {
     var data: Data? {
         return base64?.base64Data ?? inline?.data(using: .utf8) ?? filePath?.fileData
     }
+    
     var string: String? {
         return inline ?? filePath?.fileString
     }
+    
     var image: NSImage? {
         return data?.image
     }
+    
     var appleScript: NSAppleScript? {
         return filePath?.fileURL.appleScript ?? self.string?.appleScript
     }
-
+    
     private init(filePath: String?, base64: String?, inline: String?) {
         self.filePath = filePath
         self.base64 = base64
         self.inline = inline
     }
+    
     init(filePath: String) {
         self.init(filePath: filePath, base64: nil, inline: nil)
     }
 }
+
 extension NSImage: SourceProtocol {
     var data: Data? {
         return nil
     }
+    
     var string: String? {
         return nil
     }
+    
     var image: NSImage? {
         return self
     }
+    
     var appleScript: NSAppleScript? {
         return nil
     }
@@ -727,6 +831,7 @@ extension String {
     var base64Data: Data? {
         return Data(base64Encoded: self)
     }
+    
     var fileData: Data? {
         return try? Data(contentsOf: URL(fileURLWithPath: self))
     }
@@ -754,6 +859,7 @@ extension Data {
     var utf8string: String? {
         return String(data: self, encoding: .utf8)
     }
+    
     var image: NSImage? {
         return NSImage(data: self)?.resize(maxSize: NSSize(width: 24, height: 24))
     }
@@ -782,7 +888,7 @@ struct TapAction: Codable {
         case executablePath
         case shellArguments
     }
-
+    
     init(actionType: TapActionType, url: String? = "", keycode: Int? = -1, appleScript: String? = "", executablePath: String? = "", shellArguments: [String]? = [], custom: @escaping () -> Void? = {return}) {
         self.actionType = actionType
         self.url = url

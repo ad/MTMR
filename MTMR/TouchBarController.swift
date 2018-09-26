@@ -50,6 +50,10 @@ extension ItemType {
             return "com.toxblh.mtmr.cpu."
         case .memory(interval: _):
             return "com.toxblh.mtmr.memory."
+        case .nightShift(items: _):
+            return "com.toxblh.mtmr.nightShift."
+        case .dnd(items: _):
+            return "com.toxblh.mtmr.dnd."
         }
     }
 
@@ -291,6 +295,10 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
             barItem = CpuBarItem(identifier: identifier, interval: interval)
         case .memory(interval: let interval):
             barItem = MemoryBarItem(identifier: identifier, interval: interval)
+        case .nightShift():
+            barItem = NightShiftBarItem(identifier: identifier)
+        case .dnd():
+            barItem = DnDBarItem(identifier: identifier)
         }
 
         if item.action == .none {
@@ -333,7 +341,7 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
             return { HIDPostAuxKey(keycode) }
         case .keyPress(keycode: let keycode):
             return { GenericKeyPress(keyCode: CGKeyCode(keycode)).send() }
-        case .appleSctipt(source: let source):
+        case .appleScript(source: let source):
             guard let appleScript = source.appleScript else {
                 print("cannot create apple script for item \(item)")
                 return {}

@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import Sparkle
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -16,6 +17,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         let _ = AXIsProcessTrustedWithOptions([kAXTrustedCheckOptionPrompt.takeRetainedValue() as NSString: true] as NSDictionary) // accessibilityEnabled
         
+
+        // Configure Sparkle
+        SUUpdater.shared().automaticallyDownloadsUpdates = false
+        SUUpdater.shared().automaticallyChecksForUpdates = true
+        SUUpdater.shared().checkForUpdatesInBackground()
+
         TouchBarController.shared.setupControlStripPresence()
 
         if let button = statusItem.button {
@@ -97,6 +104,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         menu.addItem(withTitle: "Preferences", action: #selector(openPreferences(_:)), keyEquivalent: ",")
         menu.addItem(withTitle: "Open preset", action: #selector(openPreset(_:)), keyEquivalent: "O")
+        menu.addItem(withTitle: "Check for Updates...", action: #selector(SUUpdater.checkForUpdates(_:)), keyEquivalent: "").target = SUUpdater.shared()
+
         menu.addItem(NSMenuItem.separator())
         menu.addItem(settingSeparator)
         menu.addItem(hideControlStrip)
