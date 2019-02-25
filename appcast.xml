@@ -3,17 +3,17 @@
     <channel>
         <item>
             <title>0.20.1</title>
-            <pubDate>Mon, 25 Feb 2019 11:48:10 +0300</pubDate>
+            <pubDate>Mon, 25 Feb 2019 11:50:07 +0300</pubDate>
             <description>
-                
+
             </description>
             <sparkle:minimumSystemVersion>10.14</sparkle:minimumSystemVersion>
             <enclosure url="https://github.com/ad/MTMR/releases/download/latest/MTMR.dmg"
-                sparkle:version="38"
+                sparkle:version="39"
                 sparkle:shortVersionString="0.20.1"
-                length="5876296"
+                length="5876279"
                 type="application/octet-stream"
-                sparkle:edSignature="7TLGq71Hiyu/Vo1LXgGhCbKtFKNkOykQQqm1wAC+rUmPRp740hMrdXQW14+jVHTFH3IMW9cHg7tbsgIIFaXdBw==" length="5876296"
+                sparkle:edSignature="Tu4dmHxpfD/nBs4TXPMw2izIKrEcl6yuZzQemZn2FXg7OEbJXaYKq1nOUaZFp/lpj9CG/bP7Z8kejKKedY0lBg==" length="5876279"
             />
         </item>
     </channel>

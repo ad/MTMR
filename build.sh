@@ -1,27 +1,27 @@
-# rm -r Release 2>/dev/null
+rm -r Release 2>/dev/null
 
-# xcodebuild archive \
-# 	-scheme "MTMR" \
-# 	-archivePath Release/App.xcarchive
+xcodebuild archive \
+	-scheme "MTMR" \
+	-archivePath Release/App.xcarchive
 
-# xcodebuild \
-# 	-exportArchive \
-# 	-archivePath Release/App.xcarchive \
-# 	-exportOptionsPlist export-options.plist \
-# 	-exportPath Release
+xcodebuild \
+	-exportArchive \
+	-archivePath Release/App.xcarchive \
+	-exportOptionsPlist export-options.plist \
+	-exportPath Release
 
 cd Release
-# rm -r App.xcarchive
-# rm -r MTMR.dmg
+rm -r App.xcarchive
+rm -r MTMR.dmg
 
-# zip -r "MTMR.zip" "MTMR.app"
+zip -r "MTMR.zip" "MTMR.app"
 
-# killall MTMR
-# rm -r "/Applications/MTMR.app"
-# cp -R "MTMR.app" "/Applications"
-# open "/Applications/MTMR.app"
+killall MTMR
+rm -r "/Applications/MTMR.app"
+cp -R "MTMR.app" "/Applications"
+open "/Applications/MTMR.app"
 
-# hdiutil create -fs HFS+ -srcfolder ./MTMR.app -volname MTMR ./MTMR.dmg
+hdiutil create -fs HFS+ -srcfolder ./MTMR.app -volname MTMR ./MTMR.dmg
 
 
 DATE=`date +"%a, %d %b %Y %H:%M:%S %z"`
