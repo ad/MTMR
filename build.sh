@@ -1,27 +1,27 @@
-rm -r Release 2>/dev/null
+# rm -r Release 2>/dev/null
 
-xcodebuild archive \
-	-scheme "MTMR" \
-	-archivePath Release/App.xcarchive
+# xcodebuild archive \
+# 	-scheme "MTMR" \
+# 	-archivePath Release/App.xcarchive
 
-xcodebuild \
-	-exportArchive \
-	-archivePath Release/App.xcarchive \
-	-exportOptionsPlist export-options.plist \
-	-exportPath Release
+# xcodebuild \
+# 	-exportArchive \
+# 	-archivePath Release/App.xcarchive \
+# 	-exportOptionsPlist export-options.plist \
+# 	-exportPath Release
 
 cd Release
-rm -r App.xcarchive
-rm -r MTMR.dmg
+# rm -r App.xcarchive
+# rm -r MTMR.dmg
 
-zip -r "MTMR.zip" "MTMR.app"
+# zip -r "MTMR.zip" "MTMR.app"
 
-killall MTMR
-rm -r "/Applications/MTMR.app"
-cp -R "MTMR.app" "/Applications"
-open "/Applications/MTMR.app"
+# killall MTMR
+# rm -r "/Applications/MTMR.app"
+# cp -R "MTMR.app" "/Applications"
+# open "/Applications/MTMR.app"
 
-hdiutil create -fs HFS+ -srcfolder ./MTMR.app -volname MTMR ./MTMR.dmg
+# hdiutil create -fs HFS+ -srcfolder ./MTMR.app -volname MTMR ./MTMR.dmg
 
 
 DATE=`date +"%a, %d %b %Y %H:%M:%S %z"`
@@ -29,7 +29,7 @@ BUILD=`/usr/libexec/PlistBuddy -c "Print CFBundleVersion" MTMR.app/Contents/Info
 VERSION=`/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" MTMR.app/Contents/Info.plist`
 MINIMUM=`/usr/libexec/PlistBuddy -c "Print LSMinimumSystemVersion" MTMR.app/Contents/Info.plist`
 SIZE=`stat -f%z MTMR.dmg`
-SIGN=`~/Sparkle/bin/sign_update MTMR.dmg ~/Sparkle/bin/dsa_priv.pem | awk '{printf "%s",$0} END {print ""}'`
+SIGN=`~/Sparkle/bin/sign_update MTMR.dmg | awk '{printf "%s",$0} END {print ""}'`
 SHA256=`shasum -a 256 MTMR.dmg | awk '{print $1}'`
 
 # ditto -c -k --sequesterRsrc --keepParent "${NAME}.app" "${NAME}v${VERSION}.zip"
@@ -56,7 +56,7 @@ echo "<?xml version=\"1.0\" standalone=\"yes\"?>
                 sparkle:shortVersionString=\"${VERSION}\"
                 length=\"${SIZE}\"
                 type=\"application/octet-stream\"
-                sparkle:dsaSignature=\"${SIGN}\"
+                ${SIGN}
             />
         </item>
     </channel>
