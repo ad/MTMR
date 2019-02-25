@@ -1,21 +1,19 @@
 <?xml version="1.0" standalone="yes"?>
 <rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
     <channel>
-        <title>MTMR</title>
         <item>
-            <title>MTMR 0.18.2</title>
+            <title>0.20.1</title>
+            <pubDate>Mon, 25 Feb 2019 11:25:48 +0300</pubDate>
             <description>
-                - Fix for AppleScripts in Mojave
+                
             </description>
-            <pubDate>Tue, 26 Sep 2018 16:19:54 +0100</pubDate>
             <sparkle:minimumSystemVersion>10.14</sparkle:minimumSystemVersion>
-            <enclosure
-                url="https://github.com/ad/MTMR/releases/download/latest/MTMR.dmg"
-                sparkle:version="20"
-                sparkle:shortVersionString="0.18.2"
-                length="5034146"
+            <enclosure url="https://github.com/ad/MTMR/releases/download/latest/MTMR.dmg"
+                sparkle:version="35"
+                sparkle:shortVersionString="0.20.1"
+                length="7188024"
                 type="application/octet-stream"
-                sparkle:dsaSignature="MEQCIG5yq3FYmcQrkaNheaPIcpDyB7Ij1MOFSeYdvpuAsdXuAiAw3j2vnFGB38s6VFv7FR4Y9bmsG32eB33OfifE/Y3KAg=="
+                sparkle:dsaSignature="Usage: /Users/ad/Sparkle/bin/sign_update <archive to sign>Privavte EdDSA (ed25519) key is automatically read from the Keychain."
             />
         </item>
     </channel>

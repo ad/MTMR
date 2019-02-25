@@ -21,8 +21,43 @@ rm -r "/Applications/MTMR.app"
 cp -R "MTMR.app" "/Applications"
 open "/Applications/MTMR.app"
 
-echo $VERSION
-
 hdiutil create -fs HFS+ -srcfolder ./MTMR.app -volname MTMR ./MTMR.dmg
 
-ditto -c -k --sequesterRsrc --keepParent "MTMR.app" "MTMR.zip"
+
+DATE=`date +"%a, %d %b %Y %H:%M:%S %z"`
+BUILD=`/usr/libexec/PlistBuddy -c "Print CFBundleVersion" MTMR.app/Contents/Info.plist`
+VERSION=`/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" MTMR.app/Contents/Info.plist`
+MINIMUM=`/usr/libexec/PlistBuddy -c "Print LSMinimumSystemVersion" MTMR.app/Contents/Info.plist`
+SIZE=`stat -f%z MTMR.dmg`
+SIGN=`~/Sparkle/bin/sign_update MTMR.dmg ~/Sparkle/bin/dsa_priv.pem | awk '{printf "%s",$0} END {print ""}'`
+SHA256=`shasum -a 256 MTMR.dmg | awk '{print $1}'`
+
+# ditto -c -k --sequesterRsrc --keepParent "${NAME}.app" "${NAME}v${VERSION}.zip"
+
+echo DATE $DATE
+echo VERSION $VERSION
+echo BUILD $BUILD
+echo MINIMUM $MINIMUM
+echo SIZE $SIZE
+echo SIGN ${SIGN}
+
+echo "<?xml version=\"1.0\" standalone=\"yes\"?>
+<rss xmlns:sparkle=\"http://www.andymatuschak.org/xml-namespaces/sparkle\" version=\"2.0\">
+    <channel>
+        <item>
+            <title>${VERSION}</title>
+            <pubDate>${DATE}</pubDate>
+            <description>
+                ${1}
+            </description>
+            <sparkle:minimumSystemVersion>${MINIMUM}</sparkle:minimumSystemVersion>
+            <enclosure url=\"https://github.com/ad/MTMR/releases/download/latest/MTMR.dmg\"
+                sparkle:version=\"${BUILD}\"
+                sparkle:shortVersionString=\"${VERSION}\"
+                length=\"${SIZE}\"
+                type=\"application/octet-stream\"
+                sparkle:dsaSignature=\"${SIGN}\"
+            />
+        </item>
+    </channel>
+</rss>" > ../appcast.xml

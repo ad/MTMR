@@ -467,6 +467,7 @@ enum ItemType: Decodable {
     case memory(interval: Double)
     case nightShift()
     case dnd()
+    case network()
     
     private enum CodingKeys: String, CodingKey {
         case type
@@ -504,6 +505,7 @@ enum ItemType: Decodable {
         case memory
         case nightShift
         case dnd
+        case network
     }
     
     init(from decoder: Decoder) throws {
@@ -573,9 +575,10 @@ enum ItemType: Decodable {
             self = .memory(interval: interval)
         case .nightShift:
             self = .nightShift()
-            
         case .dnd:
             self = .dnd()
+        case .network:
+            self = .network()
         }
     }
 }

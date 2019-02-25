@@ -54,6 +54,8 @@ extension ItemType {
             return "com.toxblh.mtmr.nightShift."
         case .dnd(items: _):
             return "com.toxblh.mtmr.dnd."
+        case .network():
+            return NetworkBarItem.identifier
         }
     }
 
@@ -299,6 +301,8 @@ class TouchBarController: NSObject, NSTouchBarDelegate {
             barItem = NightShiftBarItem(identifier: identifier)
         case .dnd():
             barItem = DnDBarItem(identifier: identifier)
+        case .network():
+            barItem = NetworkBarItem(identifier: identifier)
         }
 
         if item.action == .none {
