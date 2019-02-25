@@ -18,9 +18,10 @@
 		36C2ECDD207C723B003CDA33 /* ParseConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C2ECDC207C723B003CDA33 /* ParseConfigTests.swift */; };
 		36C2ECDE207C82DE003CDA33 /* ItemsParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36C2ECDA207C3FE7003CDA33 /* ItemsParsing.swift */; };
 		36C2ECE0207CB1B0003CDA33 /* defaultPreset.json in Resources */ = {isa = PBXBuildFile; fileRef = 36C2ECDF207CB1B0003CDA33 /* defaultPreset.json */; };
+		60177D492223E4A20084BF15 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6021AF7D2223E10900F98D33 /* Sparkle.framework */; };
+		60177D4A2223E5440084BF15 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6021AF7D2223E10900F98D33 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6021AF7A2223D81D00F98D33 /* NetworkBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021AF792223D81D00F98D33 /* NetworkBarItem.swift */; };
 		6021AF7C2223D94100F98D33 /* WidgetProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6021AF7B2223D94100F98D33 /* WidgetProtocol.swift */; };
-		6021AF7E2223E10900F98D33 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6021AF7D2223E10900F98D33 /* Sparkle.framework */; };
 		6027D1B92080E52A004FFDC7 /* BrightnessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6027D1B72080E52A004FFDC7 /* BrightnessViewController.swift */; };
 		6027D1BA2080E52A004FFDC7 /* VolumeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6027D1B82080E52A004FFDC7 /* VolumeViewController.swift */; };
 		6042B6A72083E03A00C525C8 /* AppScrubberTouchBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6042B6A62083E03A00C525C8 /* AppScrubberTouchBarItem.swift */; };
@@ -72,6 +73,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				60177D4A2223E5440084BF15 /* Sparkle.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -156,8 +158,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				60EF94FC20A1987B009D9E18 /* CoreLocation.framework in Frameworks */,
+				60177D492223E4A20084BF15 /* Sparkle.framework in Frameworks */,
 				B081732A2135F354005D4908 /* CoreBrightness.framework in Frameworks */,
-				6021AF7E2223E10900F98D33 /* Sparkle.framework in Frameworks */,
 				B059D62D205F11E8006E6B86 /* DFRFoundation.framework in Frameworks */,
 				B09EB1E6207C0F8E00D5C1E0 /* MultitouchSupport.framework in Frameworks */,
 			);
