@@ -60,4 +60,4 @@ echo "<?xml version=\"1.0\" standalone=\"yes\"?>
             />
         </item>
     </channel>
-</rss>" > ../appcast.xml
+</rss>" > appcast.xml
